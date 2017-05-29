@@ -68,7 +68,6 @@ public class Util {
     public static final Function<File, String> JSON_FILE_TO_STRING_WITHOUT_EXTENSION = file ->
             (file.getName().substring(0, file.getName().length() - EXTENSION_JSON.length()));
 
-    //TODO fixme maybe we will have several test ID...
     public static final Function<String, String[]> STRING_ARRAY_TO_INDEX = string ->
             string.split("\\[")[1].split("]")[0].replaceAll(" ", "").split(",");
 

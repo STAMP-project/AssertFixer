@@ -35,7 +35,6 @@ public class AssertionReplacer {
             return isAssert.test(candidate) && super.isToBeProcessed(candidate);
         }
 
-        // TODO Maybe we have to fix this... because we assume test as assert(expected, actual)
         @Override
         public void process(CtInvocation element) {
             final int index = element.getParent(CtBlock.class).getStatements().indexOf(element);

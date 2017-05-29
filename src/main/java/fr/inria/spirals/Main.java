@@ -36,7 +36,7 @@ public class Main {
             final List<File> collect = Arrays.stream(directoryOfResults.listFiles())
                     .filter(IS_JSON_FILE)
                     .collect(Collectors.toList());
-//            collect.stream().filter(file -> file.getName().startsWith("math80")).forEach(
+//            collect.stream().filter(file -> file.getName().startsWith("chart17")).forEach(
             collect.forEach(
                     TaskBuilder::buildTaskFor
             );

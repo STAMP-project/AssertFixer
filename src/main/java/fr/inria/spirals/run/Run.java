@@ -8,7 +8,6 @@ import org.junit.runners.model.TestTimedOutException;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 import spoon.reflect.declaration.CtClass;
-import spoon.reflect.visitor.PrettyPrinter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import static fr.inria.spirals.util.Util.*;
  */
 public class Run {
 
-    public enum RepairCode {REPAIRED, NO_FAILURE, TIMEOUT};
+    public enum RepairCode {REPAIRED, NO_FAILURE, TIMEOUT}
 
     public static List<JSONTest> runAllTestCaseName(String project, String bugId, String seed, String[] testsCaseName, String fullQualifiedName) throws Throwable {
         System.out.println(project + "#" + bugId + "::" + seed);
@@ -41,30 +40,19 @@ public class Run {
             }
             final List<Failure> failures = TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
             testsResults.add(new JSONTest(testCaseName, failures.isEmpty(), failures.toString(),
-                    code == RepairCode.NO_FAILURE, code == RepairCode.TIMEOUT)); //TODO
+                    code == RepairCode.NO_FAILURE, code == RepairCode.TIMEOUT));
         }
         final CtClass<Object> loggerCtClass = spoon.getFactory().Class().get(Logger.class);
         loggerCtClass.delete();
-        loggerCtClass.getPackage().removeType(loggerCtClass);
         loggerCtClass.updateAllParentsBelow();
         spoon.prettyprint();
         return testsResults;
     }
 
-    private static String indexToRealTestCaseName(Launcher spoon, String indexTest, String fullQualifiedName) {
-        return spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test" + indexTest).isEmpty() ?
-                (spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test0" + indexTest).isEmpty() ?
-                        "test00" + indexTest :
-                        "test0" + indexTest
-                ) : "test" + indexTest;
-    }
-
-
     public static RepairCode run(Launcher spoon, String project, String bugId, String seed, String testCaseName, String fullQualifiedName) throws Throwable {
-
         String cp = getBaseClassPath(project, bugId);
         cp += PATH_SEPARATOR + spoon.getEnvironment().getBinaryOutputDirectory();
-        List<Failure> failures = TestRunner.runTest(
+        final List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
                 cp.split(":"));// should fail bug exposing test
@@ -97,10 +85,18 @@ public class Run {
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
-        spoon.setSourceOutputDirectory("output" + FILE_SEPARATOR + project + FILE_SEPARATOR + bugId + FILE_SEPARATOR + seed);
         String cp = getBaseClassPath(project, bugId);
         spoon.getEnvironment().setSourceClasspath((cp).split(PATH_SEPARATOR));
         spoon.run();
+        spoon.setSourceOutputDirectory("output" + FILE_SEPARATOR + project + FILE_SEPARATOR + bugId + FILE_SEPARATOR + seed);
         return spoon;
+    }
+
+    private static String indexToRealTestCaseName(Launcher spoon, String indexTest, String fullQualifiedName) {
+        return spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test" + indexTest).isEmpty() ?
+                (spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test0" + indexTest).isEmpty() ?
+                        "test00" + indexTest :
+                        "test0" + indexTest
+                ) : "test" + indexTest;
     }
 }

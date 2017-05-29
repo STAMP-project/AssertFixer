@@ -22,6 +22,7 @@ import static fr.inria.spirals.util.Util.*;
  */
 public class TaskBuilder {
 
+    @SuppressWarnings("unchecked")
     public static void buildTaskFor(File jsonFile) {
         try {
             JSONParser parser = new JSONParser();
@@ -30,7 +31,7 @@ public class TaskBuilder {
             final String bugID = extractDigitAtEndOfString(projectBugID);
             final String project = projectBugID.substring(0, projectBugID.length() - bugID.length());
 
-//            jsonObject.keySet().stream().filter(o -> ((String) o).equals("seed98")).forEach(key -> {
+//            jsonObject.keySet().stream().filter(o -> ((String) o).equals("seed166")).forEach(key -> {
             jsonObject.keySet().forEach(key -> {
                 final String valueBugExposingTest = (String) ((JSONObject) jsonObject.get(key)).get(BUG_EXPOSING_TEST_KEY);
                 if (!EMPTY_ARRAY_AS_STRING.equals(valueBugExposingTest)) {
