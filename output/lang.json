@@ -1,0 +1,200 @@
+{
+  "project": "lang",
+  "JSONBugIDS": [
+    {
+      "bugID": "51",
+      "seeds": [
+        {
+          "seed": "83",
+          "tests": [
+            {
+              "name": "test050",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "44",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test026",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "66",
+          "tests": [
+            {
+              "name": "test030",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "60",
+          "tests": [
+            {
+              "name": "test082",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "41",
+          "tests": [
+            {
+              "name": "test21",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "83",
+          "tests": [
+            {
+              "name": "test79",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "161",
+          "tests": [
+            {
+              "name": "test23",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "186",
+          "tests": [
+            {
+              "name": "test086",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "100",
+          "tests": [
+            {
+              "name": "test083",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test085",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "12",
+          "tests": [
+            {
+              "name": "test74",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "54",
+          "tests": [
+            {
+              "name": "test085",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "98",
+          "tests": [
+            {
+              "name": "test030",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "173",
+          "tests": [
+            {
+              "name": "test096",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "63",
+      "seeds": [
+        {
+          "seed": "186",
+          "tests": [
+            {
+              "name": "test46",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

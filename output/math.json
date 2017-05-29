@@ -1,0 +1,2224 @@
+{
+  "project": "math",
+  "JSONBugIDS": [
+    {
+      "bugID": "42",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test60",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "111",
+          "tests": [
+            {
+              "name": "test45",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "66",
+          "tests": [
+            {
+              "name": "test47",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "28",
+          "tests": [
+            {
+              "name": "test54",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "26",
+          "tests": [
+            {
+              "name": "test45",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "60",
+          "tests": [
+            {
+              "name": "test49",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "161",
+          "tests": [
+            {
+              "name": "test42",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "180",
+          "tests": [
+            {
+              "name": "test54",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "143",
+          "tests": [
+            {
+              "name": "test43",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "120",
+          "tests": [
+            {
+              "name": "test48",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "4",
+          "tests": [
+            {
+              "name": "test52",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "18",
+          "tests": [
+            {
+              "name": "test53",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "100",
+          "tests": [
+            {
+              "name": "test44",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "12",
+          "tests": [
+            {
+              "name": "test45",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "54",
+          "tests": [
+            {
+              "name": "test46",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test46",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "193",
+          "tests": [
+            {
+              "name": "test43",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test44",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "173",
+          "tests": [
+            {
+              "name": "test52",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "33",
+      "seeds": [
+        {
+          "seed": "18",
+          "tests": [
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "80",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "135",
+          "tests": [
+            {
+              "name": "test23",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "111",
+          "tests": [
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "66",
+          "tests": [
+            {
+              "name": "test23",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "28",
+          "tests": [
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test18",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "26",
+          "tests": [
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "60",
+          "tests": [
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "41",
+          "tests": [
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test21",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test29",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "83",
+          "tests": [
+            {
+              "name": "test00",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test24",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "180",
+          "tests": [
+            {
+              "name": "test06",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "143",
+          "tests": [
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test30",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "120",
+          "tests": [
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test23",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "4",
+          "tests": [
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "18",
+          "tests": [
+            {
+              "name": "test00",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "100",
+          "tests": [
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test17",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test28",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test35",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "166",
+          "tests": [
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test00",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "35",
+          "tests": [
+            {
+              "name": "test03",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "12",
+          "tests": [
+            {
+              "name": "test24",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "54",
+          "tests": [
+            {
+              "name": "test29",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test30",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "98",
+          "tests": [
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "75",
+          "tests": [
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test00",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test24",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test29",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "193",
+          "tests": [
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "81",
+      "seeds": [
+        {
+          "seed": "181",
+          "tests": [
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test28",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "173",
+          "tests": [
+            {
+              "name": "test17",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "7",
+      "seeds": [
+        {
+          "seed": "28",
+          "tests": [
+            {
+              "name": "test24",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "166",
+          "tests": [
+            {
+              "name": "test00",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "87",
+      "seeds": [
+        {
+          "seed": "111",
+          "tests": [
+            {
+              "name": "test50",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "181",
+          "tests": [
+            {
+              "name": "test53",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "120",
+          "tests": [
+            {
+              "name": "test47",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "186",
+          "tests": [
+            {
+              "name": "test54",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "4",
+          "tests": [
+            {
+              "name": "test54",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "18",
+          "tests": [
+            {
+              "name": "test51",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "166",
+          "tests": [
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test47",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "75",
+          "tests": [
+            {
+              "name": "test57",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "173",
+          "tests": [
+            {
+              "name": "test47",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test48",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test51",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "105",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "60",
+          "tests": [
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "161",
+          "tests": [
+            {
+              "name": "test10",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "180",
+          "tests": [
+            {
+              "name": "test04",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test08",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "12",
+          "tests": [
+            {
+              "name": "test09",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "50",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test22",
+              "repaired": false,
+              "failure": "[test22(org.apache.commons.math.analysis.solvers.BaseSecantSolver_ESTest): test timed out after 4000 milliseconds]",
+              "nofailure": false,
+              "timeout": true
+            }
+          ]
+        },
+        {
+          "seed": "66",
+          "tests": [
+            {
+              "name": "test28",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "28",
+          "tests": [
+            {
+              "name": "test06",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test30",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "60",
+          "tests": [
+            {
+              "name": "test26",
+              "repaired": false,
+              "failure": "[test26(org.apache.commons.math.analysis.solvers.BaseSecantSolver_ESTest): test timed out after 4000 milliseconds]",
+              "nofailure": false,
+              "timeout": true
+            },
+            {
+              "name": "test28",
+              "repaired": false,
+              "failure": "[test28(org.apache.commons.math.analysis.solvers.BaseSecantSolver_ESTest): test timed out after 4000 milliseconds]",
+              "nofailure": false,
+              "timeout": true
+            },
+            {
+              "name": "test30",
+              "repaired": false,
+              "failure": "[test30(org.apache.commons.math.analysis.solvers.BaseSecantSolver_ESTest): test timed out after 4000 milliseconds]",
+              "nofailure": false,
+              "timeout": true
+            },
+            {
+              "name": "test37",
+              "repaired": false,
+              "failure": "[test37(org.apache.commons.math.analysis.solvers.BaseSecantSolver_ESTest): test timed out after 4000 milliseconds]",
+              "nofailure": false,
+              "timeout": true
+            }
+          ]
+        },
+        {
+          "seed": "41",
+          "tests": [
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test27",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "181",
+          "tests": [
+            {
+              "name": "test04",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "180",
+          "tests": [
+            {
+              "name": "test32",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "186",
+          "tests": [
+            {
+              "name": "test17",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "18",
+          "tests": [
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test32",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "100",
+          "tests": [
+            {
+              "name": "test30",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test32",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "35",
+          "tests": [
+            {
+              "name": "test25",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test30",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "54",
+          "tests": [
+            {
+              "name": "test23",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "75",
+          "tests": [
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test31",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "173",
+          "tests": [
+            {
+              "name": "test28",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "40",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test09",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test25",
+              "repaired": false,
+              "failure": "[test25(org.apache.commons.math.analysis.solvers.BracketingNthOrderBrentSolver_ESTest): illegal state: maximal count (49) exceeded: evaluations]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "135",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "111",
+          "tests": [
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "66",
+          "tests": [
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test23",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "26",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test18",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "60",
+          "tests": [
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "41",
+          "tests": [
+            {
+              "name": "test20",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "83",
+          "tests": [
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "181",
+          "tests": [
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "180",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "143",
+          "tests": [
+            {
+              "name": "test09",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "120",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test24",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "186",
+          "tests": [
+            {
+              "name": "test08",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "4",
+          "tests": [
+            {
+              "name": "test18",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "18",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "100",
+          "tests": [
+            {
+              "name": "test10",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test22",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "166",
+          "tests": [
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "104",
+          "tests": [
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test09",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test10",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "35",
+          "tests": [
+            {
+              "name": "test01",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "12",
+          "tests": [
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test26",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "54",
+          "tests": [
+            {
+              "name": "test10",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test16",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test17",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "98",
+          "tests": [
+            {
+              "name": "test09",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test11",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "75",
+          "tests": [
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test00",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test10",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test12",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test24",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "193",
+          "tests": [
+            {
+              "name": "test13",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test15",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test19",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "88",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test05",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "135",
+          "tests": [
+            {
+              "name": "test07",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "28",
+          "tests": [
+            {
+              "name": "test08",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "26",
+          "tests": [
+            {
+              "name": "test05",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "181",
+          "tests": [
+            {
+              "name": "test51",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "120",
+          "tests": [
+            {
+              "name": "test06",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "4",
+          "tests": [
+            {
+              "name": "test06",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "166",
+          "tests": [
+            {
+              "name": "test09",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "35",
+          "tests": [
+            {
+              "name": "test06",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test05",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "153",
+          "tests": [
+            {
+              "name": "test02",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "project": "chart",
+  "JSONBugIDS": [
+    {
+      "bugID": "17",
+      "seeds": [
+        {
+          "seed": "113",
+          "tests": [
+            {
+              "name": "test14",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test38",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test53",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            },
+            {
+              "name": "test65",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "111",
+          "tests": [
+            {
+              "name": "test047",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "83",
+          "tests": [
+            {
+              "name": "test027",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "166",
+          "tests": [
+            {
+              "name": "test075",
+              "repaired": false,
+              "failure": "[test075(org.jfree.data.time.TimeSeries_ESTest): You are trying to add data where the time period class is org.jfree.data.time.Minute, but the TimeSeries is expecting an instance of java.awt.List.]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "128",
+          "tests": [
+            {
+              "name": "test017",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test005",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "193",
+          "tests": [
+            {
+              "name": "test025",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bugID": "5",
+      "seeds": [
+        {
+          "seed": "26",
+          "tests": [
+            {
+              "name": "test040",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "186",
+          "tests": [
+            {
+              "name": "test41",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        },
+        {
+          "seed": "150",
+          "tests": [
+            {
+              "name": "test049",
+              "repaired": true,
+              "failure": "[]",
+              "nofailure": false,
+              "timeout": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
