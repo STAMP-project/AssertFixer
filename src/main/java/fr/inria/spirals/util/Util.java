@@ -26,6 +26,8 @@ public class Util {
 
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
+    public static final String NEW_LINE = System.getProperty("line.separator");
+
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     public static final String RELATIVE_PATH_SRC_BIN_KEY = "binjava";
@@ -93,6 +95,19 @@ public class Util {
         return relativePathToClasses + PATH_SEPARATOR + ES_DEPENDENCY_PATH;
     }
 
+    public static int getComplianceLevel(String project, String bugId) {
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(
+                    new FileReader(new File(PATH_TO_PROJECTS_JSON + project + EXTENSION_JSON))
+            );
+            final JSONObject complianceLevel = (JSONObject) jsonObject.get("complianceLevel");
+            return ((Long)((JSONObject)complianceLevel.get(bugId)).get("target")).intValue();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static String getRelativePathToClasses(String project, String bugId) {
         try {
@@ -104,12 +119,12 @@ public class Util {
             final JSONObject rightVersionSources = (JSONObject) src.get(
                     src.keySet().size() == 1 ?
                     src.keySet().stream().findAny().orElseThrow(() -> new RuntimeException(project + "#" + bugId)) :
+                    src.get(bugId) != null ? bugId :
                     (src.keySet()
                             .stream()
                             .sorted()
-                            .filter(key -> ((String) key)
-                                    .compareTo(bugId) < 0).
-                                    reduce((k1, k2) -> k2)
+                            .filter(key -> Integer.parseInt(bugId) - Integer.parseInt((String)key) <= 0).
+                                    reduce((k1, k2) -> k1)
                             .orElseThrow(() -> new RuntimeException(project + "#" + bugId))
                             .toString()
                     )

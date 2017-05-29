@@ -1,11 +1,16 @@
 package fr.inria.spirals.run;
 
 import fr.inria.spirals.asserts.log.Logger;
+import fr.inria.spirals.json.JSONTest;
 import fr.inria.spirals.test.TestRunner;
 import org.junit.runner.notification.Failure;
+import org.junit.runners.model.TestTimedOutException;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
+import spoon.reflect.declaration.CtClass;
+import spoon.reflect.visitor.PrettyPrinter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static fr.inria.spirals.asserts.AssertFixer.fixAssert;
@@ -18,49 +23,70 @@ import static fr.inria.spirals.util.Util.*;
  */
 public class Run {
 
-    public static void runAllTestCaseName(String project, String bugId, String seed, String [] testCaseName, String fullQualifiedName) throws Throwable {
+    public enum RepairCode {REPAIRED, NO_FAILURE, TIMEOUT};
+
+    public static List<JSONTest> runAllTestCaseName(String project, String bugId, String seed, String[] testsCaseName, String fullQualifiedName) throws Throwable {
+        System.out.println(project + "#" + bugId + "::" + seed);
+        List<JSONTest> testsResults = new ArrayList<>();
         Launcher spoon = buildSpoonModel(project, bugId, seed);
-        for (String s : testCaseName) {
-            run(spoon, project, bugId, seed, s, fullQualifiedName);
-        }
         String cp = getBaseClassPath(project, bugId);
         cp += PATH_SEPARATOR + spoon.getEnvironment().getBinaryOutputDirectory();
-        final SpoonModelBuilder compiler = spoon.createCompiler();
-        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        if (TestRunner.runTest(fullQualifiedName, cp.split(":")).isEmpty()) {
-            System.out.println("project:" + project);
-            System.out.println("bugId:" + bugId);
-            System.out.println("seed:" + seed);
-            System.out.println("Fixing Assert succeed!");
-            spoon.getFactory().Class().get(Logger.class).delete();
-            spoon.getFactory().Class().get(Logger.class).updateAllParentsBelow();
-            spoon.prettyprint();
-        } else {
-            System.out.println("project:" + project);
-            System.out.println("bugId:" + bugId);
-            System.out.println("seed:" + seed);
-            System.exit(-1);
+        for (String indexTest : testsCaseName) {
+            String testCaseName = indexToRealTestCaseName(spoon, indexTest, fullQualifiedName);
+            RepairCode code = run(spoon, project, bugId, seed, testCaseName, fullQualifiedName);
+            final SpoonModelBuilder compiler = spoon.createCompiler();
+            final boolean compile = compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+            if (!compile) {
+                throw new RuntimeException();
+            }
+            final List<Failure> failures = TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
+            testsResults.add(new JSONTest(testCaseName, failures.isEmpty(), failures.toString(),
+                    code == RepairCode.NO_FAILURE, code == RepairCode.TIMEOUT)); //TODO
         }
+        final CtClass<Object> loggerCtClass = spoon.getFactory().Class().get(Logger.class);
+        loggerCtClass.delete();
+        loggerCtClass.getPackage().removeType(loggerCtClass);
+        loggerCtClass.updateAllParentsBelow();
+        spoon.prettyprint();
+        return testsResults;
     }
 
-    public static void run(Launcher spoon, String project, String bugId, String seed, String testCaseName, String fullQualifiedName) throws Throwable {
-        testCaseName = spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test" + testCaseName).isEmpty() ?
-                "test0" + testCaseName : "test" + testCaseName;
+    private static String indexToRealTestCaseName(Launcher spoon, String indexTest, String fullQualifiedName) {
+        return spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test" + indexTest).isEmpty() ?
+                (spoon.getFactory().Class().get(fullQualifiedName).getMethodsByName("test0" + indexTest).isEmpty() ?
+                        "test00" + indexTest :
+                        "test0" + indexTest
+                ) : "test" + indexTest;
+    }
+
+
+    public static RepairCode run(Launcher spoon, String project, String bugId, String seed, String testCaseName, String fullQualifiedName) throws Throwable {
 
         String cp = getBaseClassPath(project, bugId);
         cp += PATH_SEPARATOR + spoon.getEnvironment().getBinaryOutputDirectory();
-        final List<Failure> failures = TestRunner.runTest(
+        List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
                 cp.split(":"));// should fail bug exposing test
 
-        System.out.println(project + " >> " + bugId + " >> " + seed);
+        if (failures.isEmpty()) {
+            System.err.println("No failure has been found for: ");
+            System.err.println(project + "#" + bugId + "::" + seed + "<" + testCaseName + ">");
+            return RepairCode.NO_FAILURE;
+        }
+
+        if (failures.get(0).getException() instanceof TestTimedOutException) {
+            System.err.println("Timeout Exception");
+            System.err.println(project + "#" + bugId + "::" + seed + "<" + testCaseName + ">");
+            return RepairCode.TIMEOUT;
+        }
 
         fixAssert(spoon,
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
                 cp);
+        return RepairCode.REPAIRED; // TODO add other cases such as flaky, or not repaired
     }
 
 

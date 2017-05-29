@@ -1,11 +1,18 @@
 package fr.inria.spirals.run;
 
+import fr.inria.spirals.json.JSONBugID;
+import fr.inria.spirals.json.JSONProject;
+import fr.inria.spirals.json.JSONSeed;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Collection;
+import java.util.Collections;
 
+import static fr.inria.spirals.Main.projects;
+import static fr.inria.spirals.json.JSONSeed.NO_BUG_EXPOSING;
 import static fr.inria.spirals.util.Util.*;
 
 /**
@@ -21,24 +28,32 @@ public class TaskBuilder {
             JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(jsonFile));
             final String projectBugID = JSON_FILE_TO_STRING_WITHOUT_EXTENSION.apply(jsonFile);
             final String bugID = extractDigitAtEndOfString(projectBugID);
-            final String project = projectBugID.substring(0, projectBugID.length() - bugID.toString().length());
-            jsonObject.keySet().stream().filter(o -> ((String) o).equals("seed166")).forEach(key -> {
-            //jsonbject.keySet().forEach(key -> {
+            final String project = projectBugID.substring(0, projectBugID.length() - bugID.length());
+
+//            jsonObject.keySet().stream().filter(o -> ((String) o).equals("seed98")).forEach(key -> {
+            jsonObject.keySet().forEach(key -> {
                 final String valueBugExposingTest = (String) ((JSONObject) jsonObject.get(key)).get(BUG_EXPOSING_TEST_KEY);
                 if (!EMPTY_ARRAY_AS_STRING.equals(valueBugExposingTest)) {
+                    if (!projects.containsKey(project)) {
+                        projects.put(project, new JSONProject(project));
+                    }
+                    if (projects.get(project).getJSONBugID(bugID) == null) {
+                        projects.get(project).JSONBugIDS.add(new JSONBugID(bugID));
+                    }
                     final String seedID = extractDigitAtEndOfString((String) key);
                     try {
                         String fullQualifiedName = findFullQualifiedName(project, bugID, seedID);
                         fullQualifiedName = fullQualifiedName.substring(0, fullQualifiedName.length() - EXTENSION_JAVA.length());
-                        Run.runAllTestCaseName(project, bugID, seedID,
-                                STRING_ARRAY_TO_INDEX.apply(valueBugExposingTest),
-                                fullQualifiedName);
+                        projects.get(project).getJSONBugID(bugID).seeds.add(
+                                new JSONSeed(seedID,
+                                        Run.runAllTestCaseName(project, bugID, seedID,
+                                                STRING_ARRAY_TO_INDEX.apply(valueBugExposingTest),
+                                                fullQualifiedName)));
                     } catch (Throwable e) {
                         throw new RuntimeException(e);
                     }
                 }
             });
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -60,7 +75,6 @@ public class TaskBuilder {
             return fullQualifiedName.toString();
         }
     }
-
 
 
 }

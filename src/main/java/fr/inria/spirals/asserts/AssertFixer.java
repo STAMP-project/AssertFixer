@@ -37,7 +37,7 @@ public class AssertFixer {
             CtMethod<?> clone = testCaseToBeFix.clone();
             classTestToBeFixed.removeMethod(testCaseToBeFix);
             classTestToBeFixed.addMethod(clone);
-            if ((exception.getMessage().startsWith(PREFIX_MESSAGE_EXPECTED_EXCEPTION)
+            if ((exception.getMessage() != null && exception.getMessage().startsWith(PREFIX_MESSAGE_EXPECTED_EXCEPTION)
                     && exception.getMessage().endsWith("Exception"))) {
                 replaceExpectedException(spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
             } else {
@@ -46,6 +46,8 @@ public class AssertFixer {
                 // run tests
                 final SpoonModelBuilder compiler = spoon.createCompiler();
                 compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+                TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
+                TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
                 TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
                 // replace wrong value
                 classTestToBeFixed.removeMethod(clone);
@@ -80,7 +82,7 @@ public class AssertFixer {
         final SpoonModelBuilder compiler = spoon.createCompiler();
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         try {
-            final List<Failure> failures = TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
+            TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -90,7 +92,7 @@ public class AssertFixer {
         final CtTry aTry = spoon.getFactory().createTry();
         final CtCatch aCatch = spoon.getFactory().createCatch();
         aTry.addCatcher(aCatch);
-        final CtCatchVariable<? extends Throwable> catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
+        final CtCatchVariable catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
                 testCaseToBeFix.getFactory().Type().createReference(exception.getClass()),
                 PREFIX_NAME_EXPECTED_EXCEPTION + exception.getClass().getSimpleName()
         );
@@ -110,10 +112,10 @@ public class AssertFixer {
 
     @SuppressWarnings("unchecked")
     private static void fixAssertion(Factory factory, CtMethod<?> testCaseToBeFix, List<Integer> indexToLog) {
+//        int index = indexToLog.get(0);
         indexToLog.forEach(index -> {
                     final CtElement valueToReplace = (CtElement) ((CtInvocation) testCaseToBeFix.getBody()
                             .getStatement(index)).getArguments().get(0);
-
                     if (Logger.observations.get(index) != null &&
                             Logger.observations.get(index).getClass().isArray()) {
                         if (isPrimitiveArray.test(Logger.observations.get(index))) {//TODO only primitive are supported
@@ -129,8 +131,8 @@ public class AssertFixer {
                     }
                 }
         );
+        Logger.reset();
     }
-
 
     //TODO fix me to other primitive type
     private static String createSnippetFromObservations(Object o) {

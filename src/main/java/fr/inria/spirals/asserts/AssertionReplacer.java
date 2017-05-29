@@ -42,9 +42,16 @@ public class AssertionReplacer {
             final CtMethod<?> ctMethod = element.getParent(CtMethod.class);
             indexToBeLogged.add(index);
             String snippet = "fr.inria.spirals.asserts.log.Logger.log(";
-            element.replace(
-                    ctMethod.getFactory().createCodeSnippetStatement(snippet + index + "," + element.getArguments().get(1) + ")")
-            );
+            if(element.getExecutable().getSimpleName().endsWith("True") ||
+                    element.getExecutable().getSimpleName().endsWith("False")) {
+                element.replace(
+                        ctMethod.getFactory().createCodeSnippetStatement(snippet + index + "," + element.getArguments().get(0) + ")")
+                );
+            } else {
+                element.replace(
+                        ctMethod.getFactory().createCodeSnippetStatement(snippet + index + "," + element.getArguments().get(1) + ")")
+                );
+            }
         }
     }
 

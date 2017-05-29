@@ -1,15 +1,21 @@
 package fr.inria.spirals;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fr.inria.spirals.json.JSONProject;
 import fr.inria.spirals.run.TaskBuilder;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static fr.inria.spirals.util.Util.IS_JSON_FILE;
-import static fr.inria.spirals.util.Util.PATH_TO_TEST4REPAIR_RESULTS;
+import static fr.inria.spirals.util.Util.*;
 
 /**
  * Created by Benjamin DANGLOT
@@ -18,8 +24,9 @@ import static fr.inria.spirals.util.Util.PATH_TO_TEST4REPAIR_RESULTS;
  */
 public class Main {
 
-    // TODO UNFIX MATH 33
-    // TODO FIX MATH 80
+    public static Map<String, JSONProject> projects = new HashMap<>();
+
+    public static final String[] projectsName = new String[]{"chart", "lang", "math", "time"};
 
     public static void main(String[] args) throws MalformedURLException, ClassNotFoundException {
         final File directoryOfResults = new File(PATH_TO_TEST4REPAIR_RESULTS);
@@ -29,9 +36,18 @@ public class Main {
             final List<File> collect = Arrays.stream(directoryOfResults.listFiles())
                     .filter(IS_JSON_FILE)
                     .collect(Collectors.toList());
-            collect.stream().filter(file -> file.getName().startsWith("chart17")).forEach(
-            //collect.stream().forEach(
+//            collect.stream().filter(file -> file.getName().startsWith("math80")).forEach(
+            collect.forEach(
                     TaskBuilder::buildTaskFor
+            );
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            Arrays.stream(projectsName).forEach(name -> {
+                        try (FileWriter writer = new FileWriter(new File("output" + FILE_SEPARATOR + name + EXTENSION_JSON), false)) {
+                            writer.write(gson.toJson(projects.get(name)));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
             );
         }
     }

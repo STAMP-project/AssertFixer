@@ -13,6 +13,11 @@ public class Logger {
     public static final Map<Integer, Object> observations = new HashMap<>();
 
     public static void log(int i, Object value) {
+        if (observations.containsKey(i)) {
+            if (!observations.get(i).equals(value)) {
+                System.err.println("WARNING: this test may be flaky");
+            }
+        }
         observations.put(i, value);
     }
 
