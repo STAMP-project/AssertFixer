@@ -1,4 +1,4 @@
-package fr.inria.spirals.run;
+package fr.inria.spirals.test4repair;
 
 import fr.inria.spirals.json.JSONBugID;
 import fr.inria.spirals.json.JSONProject;
@@ -10,7 +10,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 
-import static fr.inria.spirals.Main.projects;
+import static fr.inria.spirals.test4repair.UtilTest4Repair.*;
+import static fr.inria.spirals.test4repair.Main.projects;
 import static fr.inria.spirals.util.Util.*;
 
 /**
@@ -47,7 +48,7 @@ public class TaskBuilder {
                         projects.get(project).getJSONBugID(bugID).seeds.add(
                                 new JSONSeed(seedID,
                                         Run.runAllTestCaseName(project, bugID, seedID,
-                                                STRING_ARRAY_TO_INDEX.apply(valueBugExposingTest),
+                                                UtilTest4Repair.STRING_ARRAY_TO_INDEX.apply(valueBugExposingTest),
                                                 fullQualifiedName)));
                     } catch (Throwable e) {
                         throw new RuntimeException(e);
@@ -60,9 +61,9 @@ public class TaskBuilder {
     }
 
     private static String findFullQualifiedName(String project, String bugID, String seed) {
-        File current = new File(PATH_TO_TEST4REPAIR_RESULTS + project + "/" + bugID + "/" + seed);
+        File current = new File(UtilTest4Repair.PATH_TO_TEST4REPAIR_RESULTS + project + "/" + bugID + "/" + seed);
         if (current.listFiles() == null) {
-            throw new RuntimeException(PATH_TO_TEST4REPAIR_RESULTS + project + "/" + bugID + "/" + seed + " not found or empty");
+            throw new RuntimeException(UtilTest4Repair.PATH_TO_TEST4REPAIR_RESULTS + project + "/" + bugID + "/" + seed + " not found or empty");
         } else {
             current = current.listFiles()[0];
             StringBuilder fullQualifiedName = new StringBuilder();
@@ -71,7 +72,7 @@ public class TaskBuilder {
                 current = current.listFiles()[0];
             }
             fullQualifiedName.append(current.getName()).append(".");
-            fullQualifiedName.append(GET_ESTEST.apply(current.listFiles()));
+            fullQualifiedName.append(UtilTest4Repair.GET_ESTEST.apply(current.listFiles()));
             return fullQualifiedName.toString();
         }
     }
