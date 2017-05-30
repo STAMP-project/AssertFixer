@@ -104,6 +104,9 @@ public class Counter {
 
     public static void print() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        if (!new File("output").exists()) {
+            new File("output").mkdir();
+        }
         try (FileWriter writer = new FileWriter(new File("output" + FILE_SEPARATOR + "metrics" + EXTENSION_JSON), false)) {
             JSONMetrics jsonMetrics = new JSONMetrics(
                     _getInstance().initialNumberOfTest,
