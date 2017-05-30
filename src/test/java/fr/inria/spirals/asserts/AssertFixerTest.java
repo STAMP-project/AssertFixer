@@ -58,6 +58,11 @@ public class AssertFixerTest {
     }
 
     @Test
+    public void testFixAssertionBoolean() throws Exception {
+        test("testAssertionErrorBoolean");
+    }
+
+    @Test
     public void testFixAssertionPrimitive() throws Exception {
         test("testAssertionErrorPrimitive");
     }
