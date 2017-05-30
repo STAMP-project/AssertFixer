@@ -56,7 +56,7 @@ public class AssertionReplacer {
         }
     }
 
-    private static final Predicate<CtInvocation> isAssert = ctInvocation ->
+    public static final Predicate<CtInvocation> isAssert = ctInvocation ->
             ctInvocation.getExecutable().getSimpleName().startsWith("assert") ||
                     isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getDeclaration());
 

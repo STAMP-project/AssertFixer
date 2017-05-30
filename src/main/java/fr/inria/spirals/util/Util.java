@@ -26,7 +26,7 @@ public class Util {
 
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
-    public static final String NEW_LINE = System.getProperty("line.separator");
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
@@ -44,8 +44,6 @@ public class Util {
             "java" + FILE_SEPARATOR +
             "data" + FILE_SEPARATOR +
             "projects" + FILE_SEPARATOR; // TODO this is not java file, why put them into src/main/java ???
-
-    private static final String ES_DEPENDENCY_PATH = getEvosuiteDependenciesPath();
 
     private static final String ES_MODULE_NAME = "evosuite-master";
 
@@ -91,7 +89,7 @@ public class Util {
 
     public static String getBaseClassPath(String project, String bugId) {
         final String relativePathToClasses = getRelativePathToClasses(project, bugId);
-        return relativePathToClasses + PATH_SEPARATOR + ES_DEPENDENCY_PATH;
+        return relativePathToClasses + PATH_SEPARATOR + getEvosuiteDependenciesPath();
     }
 
     public static int getComplianceLevel(String project, String bugId) {
@@ -101,7 +99,7 @@ public class Util {
                     new FileReader(new File(PATH_TO_PROJECTS_JSON + project + EXTENSION_JSON))
             );
             final JSONObject complianceLevel = (JSONObject) jsonObject.get("complianceLevel");
-            return ((Long)((JSONObject)complianceLevel.get(bugId)).get("target")).intValue();
+            return ((Long) ((JSONObject) complianceLevel.get(bugId)).get("target")).intValue();
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
@@ -117,16 +115,16 @@ public class Util {
             final JSONObject src = (JSONObject) jsonObject.get("src");
             final JSONObject rightVersionSources = (JSONObject) src.get(
                     src.keySet().size() == 1 ?
-                    src.keySet().stream().findAny().orElseThrow(() -> new RuntimeException(project + "#" + bugId)) :
-                    src.get(bugId) != null ? bugId :
-                    (src.keySet()
-                            .stream()
-                            .sorted()
-                            .filter(key -> Integer.parseInt(bugId) - Integer.parseInt((String)key) <= 0).
-                                    reduce((k1, k2) -> k1)
-                            .orElseThrow(() -> new RuntimeException(project + "#" + bugId))
-                            .toString()
-                    )
+                            src.keySet().stream().findAny().orElseThrow(() -> new RuntimeException(project + "#" + bugId)) :
+                            src.get(bugId) != null ? bugId :
+                                    (src.keySet()
+                                            .stream()
+                                            .sorted()
+                                            .filter(key -> Integer.parseInt(bugId) - Integer.parseInt((String) key) <= 0).
+                                                    reduce((k1, k2) -> k1)
+                                            .orElseThrow(() -> new RuntimeException(project + "#" + bugId))
+                                            .toString()
+                                    )
             );
             return PATH_TO_PROJECTS_REPOS + project + "_" + bugId +
                     FILE_SEPARATOR + rightVersionSources.get(RELATIVE_PATH_SRC_BIN_KEY).toString()
@@ -139,10 +137,15 @@ public class Util {
     }
 
     private static String getEvosuiteDependenciesPath() {
-        String cmd = "mvn dependency:build-classpath -Dmdep.outputFile=.cp";
-        try {
-            Runtime.getRuntime().exec(cmd);
-            BufferedReader reader = new BufferedReader(new FileReader(new File(".cp")));
+        if (!new File("target/.cp").exists()) {
+            String cmd = "mvn dependency:build-classpath -Dmdep.outputFile=target/.cp";
+            try {
+                Runtime.getRuntime().exec(cmd);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File("target/.cp")))) {
             return Arrays.stream(reader.lines()
                     .findFirst()
                     .orElseThrow(RuntimeException::new)
@@ -153,6 +156,7 @@ public class Util {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
 }

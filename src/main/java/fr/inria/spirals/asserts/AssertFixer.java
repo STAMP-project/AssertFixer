@@ -2,7 +2,7 @@ package fr.inria.spirals.asserts;
 
 import fr.inria.spirals.asserts.log.Logger;
 import fr.inria.spirals.test.TestRunner;
-import org.junit.Assert;
+import fr.inria.spirals.util.Counter;
 import org.junit.runner.notification.Failure;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static fr.inria.spirals.asserts.AssertionReplacer.isAssert;
 import static fr.inria.spirals.asserts.AssertionReplacer.isAssertionClass;
 
 /**
@@ -32,14 +33,24 @@ public class AssertFixer {
         final CtClass<?> classTestToBeFixed = spoon.getFactory().Class().get(fullQualifiedName);
         System.out.println(fullQualifiedName + "#" + testCaseName);
         CtMethod<?> testCaseToBeFix = classTestToBeFixed.getMethodsByName(testCaseName).get(0);
+
+        Counter.addNumberOfAssertionInTests(testCaseToBeFix.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
+            @Override
+            public boolean matches(CtInvocation element) {
+                return isAssert.test(element);
+            }
+        }).size());
+
         final Throwable exception = failure.getException();
         if (exception instanceof java.lang.AssertionError) {
+            Counter.incNumberOfFailingAssertion();
+            Counter.incNumberOfFailingTestFromAssertion();
             CtMethod<?> clone = testCaseToBeFix.clone();
             classTestToBeFixed.removeMethod(testCaseToBeFix);
             classTestToBeFixed.addMethod(clone);
             if ((exception.getMessage() != null && exception.getMessage().startsWith(PREFIX_MESSAGE_EXPECTED_EXCEPTION)
                     && exception.getMessage().endsWith("Exception"))) {
-                replaceExpectedException(spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
+                removeExpectedException(spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
             } else {
                 // replace assertion
                 final List<Integer> indexToLog = AssertionReplacer.replaceAssertionByLog(clone, spoon.getFactory());
@@ -55,6 +66,7 @@ public class AssertFixer {
                 fixAssertion(spoon.getFactory(), testCaseToBeFix, indexToLog);
             }
         } else {
+            Counter.incNumberOfFailingTestFromException();
             final List<CtCatch> catches = testCaseToBeFix.getElements(new TypeFilter<>(CtCatch.class));
             if (!catches.isEmpty()) {
                 fixTryCatchFailAssertion(spoon, testCaseToBeFix, exception, catches);
@@ -68,7 +80,7 @@ public class AssertFixer {
             ctInvocation.getExecutable().getSimpleName().startsWith("fail") ||
                     isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getDeclaration());
 
-    private static void replaceExpectedException(Launcher spoon, String fullQualifiedName, String testCaseName, String cp, CtMethod<?> clone) {
+    private static void removeExpectedException(Launcher spoon, String fullQualifiedName, String testCaseName, String cp, CtMethod<?> clone) {
         final CtTry ctTry = clone.getElements(new TypeFilter<>(CtTry.class)).get(0);
         ctTry.replace(ctTry.getBody());
         final CtInvocation failToRemove = clone.getElements(new TypeFilter<>(CtInvocation.class)).stream()
@@ -123,6 +135,7 @@ public class AssertFixer {
                             if (isPrimitiveArray.test(Logger.observations.get(index))) {//TODO only primitive are supported
                                 String snippet = createSnippetFromObservations(Logger.observations.get(index));
                                 valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
+                                Counter.incNumberOfArrayFixed();
                             }
                         } else if (Logger.observations.get(index) instanceof Boolean) {
                             String snippet = ((CtInvocation) testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
@@ -135,6 +148,7 @@ public class AssertFixer {
                                             Logger.observations.get(index)
                                     )
                             );
+                            Counter.incNumberOfPrimitivesValuesFixed();
                         }
                         testCaseToBeFix.getBody().getStatement(index).addComment(comment);
                     }

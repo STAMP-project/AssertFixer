@@ -3,16 +3,14 @@ package fr.inria.spirals.run;
 import fr.inria.spirals.json.JSONBugID;
 import fr.inria.spirals.json.JSONProject;
 import fr.inria.spirals.json.JSONSeed;
+import fr.inria.spirals.util.Counter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.Collection;
-import java.util.Collections;
 
 import static fr.inria.spirals.Main.projects;
-import static fr.inria.spirals.json.JSONSeed.NO_BUG_EXPOSING;
 import static fr.inria.spirals.util.Util.*;
 
 /**
@@ -33,6 +31,7 @@ public class TaskBuilder {
 
 //            jsonObject.keySet().stream().filter(o -> ((String) o).equals("seed166")).forEach(key -> {
             jsonObject.keySet().forEach(key -> {
+                Counter.incNumberOfTest();
                 final String valueBugExposingTest = (String) ((JSONObject) jsonObject.get(key)).get(BUG_EXPOSING_TEST_KEY);
                 if (!EMPTY_ARRAY_AS_STRING.equals(valueBugExposingTest)) {
                     if (!projects.containsKey(project)) {

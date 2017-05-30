@@ -3,8 +3,10 @@
 AssertFixer.iml
 
 ### Generated files
+output
 .cp
 spooned-classes
+spooned
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Maven template
