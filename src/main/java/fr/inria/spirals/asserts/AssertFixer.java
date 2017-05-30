@@ -135,8 +135,8 @@ public class AssertFixer {
                                             Logger.observations.get(index)
                                     )
                             );
-                            testCaseToBeFix.getBody().getStatement(index).addComment(comment);
                         }
+                        testCaseToBeFix.getBody().getStatement(index).addComment(comment);
                     }
                 }
         );
