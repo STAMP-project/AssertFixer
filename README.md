@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/danglotb/AssertFixer.svg?branch=master)](https://travis-ci.org/danglotb/AssertFixer)[![Coverage Status](https://coveralls.io/repos/github/danglotb/AssertFixer/badge.svg?branch=master)](https://coveralls.io/github/danglotb/AssertFixer?branch=master)
 AssertFixer
 =====================================================================================================================
 
