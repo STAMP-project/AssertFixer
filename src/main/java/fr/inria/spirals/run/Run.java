@@ -84,6 +84,7 @@ public class Run {
         spoon.addInputResource("src/main/java/fr/inria/spirals/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
+        spoon.getEnvironment().setCommentEnabled(true);
         spoon.getEnvironment().setShouldCompile(true);
         String cp = getBaseClassPath(project, bugId);
         spoon.getEnvironment().setSourceClasspath((cp).split(PATH_SEPARATOR));

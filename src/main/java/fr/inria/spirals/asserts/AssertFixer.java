@@ -112,10 +112,11 @@ public class AssertFixer {
 
     @SuppressWarnings("unchecked")
     private static void fixAssertion(Factory factory, CtMethod<?> testCaseToBeFix, List<Integer> indexToLog) {
-//        int index = indexToLog.get(0);
         indexToLog.forEach(index -> {
                     final CtElement valueToReplace = (CtElement) ((CtInvocation) testCaseToBeFix.getBody()
                             .getStatement(index)).getArguments().get(0);
+                    final CtComment comment = factory.createComment("AssertFixer: old assertion " + testCaseToBeFix.getBody().getStatement(index).toString(),
+                            CtComment.CommentType.INLINE);
                     if (Logger.observations.containsKey(index)) {
                         if (Logger.observations.get(index) != null &&
                                 Logger.observations.get(index).getClass().isArray()) {
@@ -124,7 +125,7 @@ public class AssertFixer {
                                 valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
                             }
                         } else if (Logger.observations.get(index) instanceof Boolean) {
-                            String snippet = ((CtInvocation)testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
+                            String snippet = ((CtInvocation) testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
                                     ".assert" + Logger.observations.get(index).toString().toUpperCase().substring(0, 1) + Logger.observations.get(index).toString().substring(1)
                                     + "(" + valueToReplace + ")";
                             testCaseToBeFix.getBody().getStatement(index).replace(factory.createCodeSnippetStatement(snippet));
@@ -135,6 +136,7 @@ public class AssertFixer {
                                     )
                             );
                         }
+                        testCaseToBeFix.getBody().getStatement(index).addComment(comment);
                     }
                 }
         );
