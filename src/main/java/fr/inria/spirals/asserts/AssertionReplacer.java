@@ -2,8 +2,10 @@ package fr.inria.spirals.asserts;
 
 import spoon.processing.AbstractProcessor;
 import spoon.reflect.code.*;
+import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtType;
 import spoon.reflect.factory.Factory;
 import spoon.support.QueueProcessingManager;
 
@@ -56,10 +58,11 @@ public class AssertionReplacer {
 
     private static final Predicate<CtInvocation> isAssert = ctInvocation ->
             ctInvocation.getExecutable().getSimpleName().startsWith("assert") ||
-                    isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getActualClass());
+                    isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getDeclaration());
 
-    public static boolean isAssertionClass(Class klass) {
-        return (klass.equals(org.junit.Assert.class) || klass.equals(junit.framework.Assert.class)) &&
-                klass.getSuperclass() != null && isAssertionClass(klass.getSuperclass());
+    public static boolean isAssertionClass(CtType klass) {
+        return klass != null &&
+                ("org.junit.Assert".equals(klass.getQualifiedName()) || "junit.framework.Assert".equals(klass.getQualifiedName())) &&
+                klass.getSuperclass() != null && isAssertionClass(klass.getSuperclass().getDeclaration());
     }
 }

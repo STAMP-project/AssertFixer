@@ -34,6 +34,7 @@ public class TestRunner {
                     })
                     .toArray(URL[]::new);
 
+    //TODO should maybe run the Listener
 
     public static List<Failure> runTest(String fullQualifiedName, String testCaseName, String[] classpath) throws MalformedURLException, ClassNotFoundException {
         ClassLoader classLoader = new URLClassLoader(

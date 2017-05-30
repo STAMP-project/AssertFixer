@@ -66,7 +66,7 @@ public class AssertFixer {
 
     private static final Predicate<CtInvocation> isFail = ctInvocation ->
             ctInvocation.getExecutable().getSimpleName().startsWith("fail") ||
-                    isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getActualClass());
+                    isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getDeclaration());
 
     private static void replaceExpectedException(Launcher spoon, String fullQualifiedName, String testCaseName, String cp, CtMethod<?> clone) {
         final CtTry ctTry = clone.getElements(new TypeFilter<>(CtTry.class)).get(0);
@@ -116,18 +116,20 @@ public class AssertFixer {
         indexToLog.forEach(index -> {
                     final CtElement valueToReplace = (CtElement) ((CtInvocation) testCaseToBeFix.getBody()
                             .getStatement(index)).getArguments().get(0);
-                    if (Logger.observations.get(index) != null &&
-                            Logger.observations.get(index).getClass().isArray()) {
-                        if (isPrimitiveArray.test(Logger.observations.get(index))) {//TODO only primitive are supported
-                            String snippet = createSnippetFromObservations(Logger.observations.get(index));
-                            valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
+                    if (Logger.observations.containsKey(index)) {
+                        if (Logger.observations.get(index) != null &&
+                                Logger.observations.get(index).getClass().isArray()) {
+                            if (isPrimitiveArray.test(Logger.observations.get(index))) {//TODO only primitive are supported
+                                String snippet = createSnippetFromObservations(Logger.observations.get(index));
+                                valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
+                            }
+                        } else {
+                            valueToReplace.replace(
+                                    factory.createLiteral(
+                                            Logger.observations.get(index)
+                                    )
+                            );
                         }
-                    } else {
-                        valueToReplace.replace(
-                                factory.createLiteral(
-                                        Logger.observations.get(index)
-                                )
-                        );
                     }
                 }
         );
@@ -164,9 +166,9 @@ public class AssertFixer {
             @Override
             public boolean matches(CtInvocation element) {
                 return element.getExecutable() != null &&
-                        element.getExecutable().getDeclaringType() != null &&
-                        element.getExecutable().getDeclaringType().getActualClass() != null &&
-                        element.getExecutable().getDeclaringType().getActualClass() == Assert.class &&
+                        element.getExecutable().getDeclaringType() != null&&
+                        element.getExecutable().getDeclaringType().getDeclaration() != null &&
+                        element.getExecutable().getDeclaringType().getDeclaration().getQualifiedName().equals("org.junit.Assert.class") &&
                         NAME_FAIL_METHOD.equals(element.getExecutable().getSimpleName()) &&
                         super.matches(element);
             }

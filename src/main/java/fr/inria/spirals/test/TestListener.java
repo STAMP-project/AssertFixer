@@ -37,10 +37,6 @@ class TestListener extends RunListener {
         //empty
     }
 
-    List<Description> getTestRun() {
-        return testRun;
-    }
-
     List<Failure> getTestFails() {
         return testFails;
     }
