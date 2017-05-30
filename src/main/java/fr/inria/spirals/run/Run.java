@@ -3,6 +3,7 @@ package fr.inria.spirals.run;
 import fr.inria.spirals.asserts.log.Logger;
 import fr.inria.spirals.json.JSONTest;
 import fr.inria.spirals.test.TestRunner;
+import fr.inria.spirals.util.Counter;
 import org.junit.runner.notification.Failure;
 import org.junit.runners.model.TestTimedOutException;
 import spoon.Launcher;
@@ -11,6 +12,7 @@ import spoon.reflect.declaration.CtClass;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static fr.inria.spirals.asserts.AssertFixer.fixAssert;
 import static fr.inria.spirals.util.Util.*;
@@ -41,6 +43,12 @@ public class Run {
             final List<Failure> failures = TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
             testsResults.add(new JSONTest(testCaseName, failures.isEmpty(), failures.toString(),
                     code == RepairCode.NO_FAILURE, code == RepairCode.TIMEOUT));
+            if (failures.isEmpty()) {
+                Counter.incNumberOfFixedTests();
+            } else {
+                Counter.incNumberOfNotFixedTests();
+            }
+            Counter.updateNumberOfFailingAssertionInTests();
         }
         final CtClass<Object> loggerCtClass = spoon.getFactory().Class().get(Logger.class);
         loggerCtClass.delete();
@@ -52,7 +60,7 @@ public class Run {
     public static RepairCode run(Launcher spoon, String project, String bugId, String seed, String testCaseName, String fullQualifiedName) throws Throwable {
         String cp = getBaseClassPath(project, bugId);
         cp += PATH_SEPARATOR + spoon.getEnvironment().getBinaryOutputDirectory();
-        final List<Failure> failures = TestRunner.runTest(
+        List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
                 cp.split(":"));// should fail bug exposing test
@@ -74,8 +82,21 @@ public class Run {
                 testCaseName,
                 failures.get(0),
                 cp);
+
+        failures = TestRunner.runTest(
+                fullQualifiedName,
+                testCaseName,
+                cp.split(":"));
+
+        if (gotAssertionError.test(failures)) {
+            return run(spoon, project, bugId, seed, testCaseName, fullQualifiedName);
+        }
+
         return RepairCode.REPAIRED; // TODO add other cases such as flaky, or not repaired
     }
+
+    private static Predicate<List<Failure>> gotAssertionError = (failures ->
+            failures.stream().anyMatch(failure -> failure.getException() instanceof AssertionError));
 
 
     private static Launcher buildSpoonModel(String project, String bugId, String seed) {

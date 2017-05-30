@@ -8,16 +8,16 @@ package fr.inria.spirals.json;
 public class JSONTest {
 
     public final String name;
-    public final boolean repaired;
-    public final String failure;
-    public final boolean nofailure;
-    public final boolean timeout;
+    public final boolean adaptationSuccessful;
+    public final String remainingFailures;
+    public final boolean noObservedFailureOnOriginalTest;
+    public final boolean timeoutBeforeAdaptation;
 
-    public JSONTest(String name, boolean repaired, String failure, boolean nofailure, boolean timeout) {
+    public JSONTest(String name, boolean adaptationSuccessful, String remainingFailures, boolean noObservedFailureOnOriginalTest, boolean timeoutBeforeAdaptation) {
         this.name = name;
-        this.repaired = repaired;
-        this.failure = failure;
-        this.nofailure = nofailure;
-        this.timeout = timeout;
+        this.adaptationSuccessful = adaptationSuccessful;
+        this.remainingFailures = remainingFailures;
+        this.noObservedFailureOnOriginalTest = noObservedFailureOnOriginalTest;
+        this.timeoutBeforeAdaptation = timeoutBeforeAdaptation;
     }
 }

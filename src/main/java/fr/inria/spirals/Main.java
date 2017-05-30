@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.inria.spirals.json.JSONProject;
 import fr.inria.spirals.run.TaskBuilder;
+import fr.inria.spirals.util.Counter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +37,7 @@ public class Main {
             final List<File> collect = Arrays.stream(directoryOfResults.listFiles())
                     .filter(IS_JSON_FILE)
                     .collect(Collectors.toList());
-//            collect.stream().filter(file -> file.getName().startsWith("chart17")).forEach(
+//            collect.stream().filter(file -> file.getName().startsWith("chart5")).forEach(
             collect.forEach(
                     TaskBuilder::buildTaskFor
             );
@@ -49,6 +50,7 @@ public class Main {
                         }
                     }
             );
+            Counter.print();
         }
     }
 }
