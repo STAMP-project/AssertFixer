@@ -1,9 +1,8 @@
-package fr.inria.spirals;
+package fr.inria.spirals.test4repair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.inria.spirals.json.JSONProject;
-import fr.inria.spirals.run.TaskBuilder;
 import fr.inria.spirals.util.Counter;
 
 import java.io.File;
@@ -30,7 +29,7 @@ public class Main {
     public static final String[] projectsName = new String[]{"chart", "lang", "math", "time"};
 
     public static void main(String[] args) throws MalformedURLException, ClassNotFoundException {
-        final File directoryOfResults = new File(PATH_TO_TEST4REPAIR_RESULTS);
+        final File directoryOfResults = new File(UtilTest4Repair.PATH_TO_TEST4REPAIR_RESULTS);
         if (directoryOfResults.listFiles() == null) {
             //TODO should clone repos test4repair-experiments
         } else {

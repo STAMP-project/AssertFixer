@@ -1,4 +1,4 @@
-package fr.inria.spirals.run;
+package fr.inria.spirals.test4repair;
 
 import fr.inria.spirals.asserts.log.Logger;
 import fr.inria.spirals.json.JSONTest;
@@ -30,7 +30,7 @@ public class Run {
         System.out.println(project + "#" + bugId + "::" + seed);
         List<JSONTest> testsResults = new ArrayList<>();
         Launcher spoon = buildSpoonModel(project, bugId, seed);
-        String cp = getBaseClassPath(project, bugId);
+        String cp = UtilTest4Repair.getBaseClassPath(project, bugId);
         cp += PATH_SEPARATOR + spoon.getEnvironment().getBinaryOutputDirectory();
         for (String indexTest : testsCaseName) {
             String testCaseName = indexToRealTestCaseName(spoon, indexTest, fullQualifiedName);
@@ -58,7 +58,7 @@ public class Run {
     }
 
     public static RepairCode run(Launcher spoon, String project, String bugId, String seed, String testCaseName, String fullQualifiedName) throws Throwable {
-        String cp = getBaseClassPath(project, bugId);
+        String cp = UtilTest4Repair.getBaseClassPath(project, bugId);
         cp += PATH_SEPARATOR + spoon.getEnvironment().getBinaryOutputDirectory();
         List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
@@ -101,13 +101,13 @@ public class Run {
 
     private static Launcher buildSpoonModel(String project, String bugId, String seed) {
         Launcher spoon = new Launcher();
-        spoon.addInputResource(PATH_TO_TEST4REPAIR_RESULTS + project + FILE_SEPARATOR + bugId + FILE_SEPARATOR + seed);
+        spoon.addInputResource(UtilTest4Repair.PATH_TO_TEST4REPAIR_RESULTS + project + FILE_SEPARATOR + bugId + FILE_SEPARATOR + seed);
         spoon.addInputResource("src/main/java/fr/inria/spirals/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setCommentEnabled(true);
         spoon.getEnvironment().setShouldCompile(true);
-        String cp = getBaseClassPath(project, bugId);
+        String cp = UtilTest4Repair.getBaseClassPath(project, bugId);
         spoon.getEnvironment().setSourceClasspath((cp).split(PATH_SEPARATOR));
         spoon.run();
         spoon.setSourceOutputDirectory("output" + FILE_SEPARATOR + project + FILE_SEPARATOR + bugId + FILE_SEPARATOR + seed);
