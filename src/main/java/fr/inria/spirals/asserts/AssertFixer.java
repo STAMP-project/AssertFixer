@@ -123,6 +123,11 @@ public class AssertFixer {
                                 String snippet = createSnippetFromObservations(Logger.observations.get(index));
                                 valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
                             }
+                        } else if (Logger.observations.get(index) instanceof Boolean) {
+                            String snippet = ((CtInvocation)testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
+                                    ".assert" + Logger.observations.get(index).toString().toUpperCase().substring(0, 1) + Logger.observations.get(index).toString().substring(1)
+                                    + "(" + valueToReplace + ")";
+                            testCaseToBeFix.getBody().getStatement(index).replace(factory.createCodeSnippetStatement(snippet));
                         } else {
                             valueToReplace.replace(
                                     factory.createLiteral(
@@ -166,9 +171,8 @@ public class AssertFixer {
             @Override
             public boolean matches(CtInvocation element) {
                 return element.getExecutable() != null &&
-                        element.getExecutable().getDeclaringType() != null&&
-                        element.getExecutable().getDeclaringType().getDeclaration() != null &&
-                        element.getExecutable().getDeclaringType().getDeclaration().getQualifiedName().equals("org.junit.Assert.class") &&
+                        element.getExecutable().getDeclaringType() != null &&
+                        "Assert".equals(element.getExecutable().getDeclaringType().getSimpleName()) &&
                         NAME_FAIL_METHOD.equals(element.getExecutable().getSimpleName()) &&
                         super.matches(element);
             }
