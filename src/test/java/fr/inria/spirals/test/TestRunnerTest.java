@@ -38,10 +38,11 @@ public class TestRunnerTest {
     public void testRunTestClass() throws Exception {
         final List<Failure> failures =
                 TestRunner.runTest("aPackage.ClassResourcesTest", new String[]{"spooned-classes/"});
-        assertEquals(7, failures.size());
+        assertEquals(9, failures.size());
         assertEquals(3, failures.stream().filter(failure -> failure.getException() instanceof NullPointerException).count());
         assertEquals(4, failures.stream().filter(failure -> failure.getException() instanceof AssertionError).count());//The ArrayComparisonFailure is a subclass of AssertionError
         assertEquals(1, failures.stream().filter(failure -> failure.getException() instanceof ArrayComparisonFailure).count());
+        assertEquals(5, failures.stream().filter(failure -> failure.getException() instanceof RuntimeException).count());
     }
 
     @Test
