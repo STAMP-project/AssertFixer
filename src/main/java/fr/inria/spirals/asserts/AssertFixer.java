@@ -178,11 +178,23 @@ public class AssertFixer {
     private static final String NAME_FAIL_METHOD = "fail";
 
     private static void fixTryCatchFailAssertion(Launcher spoon, CtMethod<?> testCaseToBeFix, Throwable exception, List<CtCatch> catches) {
+        //replace wrong expected exception
         final CtCatchVariable<? extends Throwable> catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
                 testCaseToBeFix.getFactory().Type().createReference(exception.getClass()),
                 PREFIX_NAME_EXPECTED_EXCEPTION + exception.getClass().getSimpleName()
         );
+        if (!catches.get(0).getBody().getStatements().isEmpty()) {
+            catches.get(0).getBody().getElements(new TypeFilter<CtVariableAccess>(CtVariableAccess.class) {
+                @Override
+                public boolean matches(CtVariableAccess element) {
+                    return element.getVariable().getDeclaration().equals(catches.get(0).getParameter()) && super.matches(element);
+                }
+            }).forEach(variableAccess -> variableAccess.replace(spoon.getFactory().createVariableRead(catchVariable.getReference(), false)));
+        }
         catches.get(0).setParameter(catchVariable);
+
+
+        // update fail() statement
         final List<CtInvocation> failInvocation = testCaseToBeFix.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
             @Override
             public boolean matches(CtInvocation element) {

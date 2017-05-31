@@ -82,6 +82,11 @@ public class AssertFixerTest {
         test("testReplaceExpectedException");
     }
 
+    @Test
+    public void testReplaceExpectedExceptionWithForwardReference() throws Exception {
+        test("testReplaceExpectedExceptionWithForwardReference");
+    }
+
     //TODO check that this the behavior we want,
     //TODO it is based on convetion (message of fail() is starting with "Expecting exception: " and endsWith "Exception".
     @Test

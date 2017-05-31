@@ -68,6 +68,22 @@ public class ClassResourcesTest {
     }
 
     @Test
+    public void testReplaceExpectedExceptionWithForwardReference() {
+        try {
+            throwNPE();
+            doNotThrowNPE();
+            fail("Expecting exception: IndexOutOfBoundsException");
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            uselessMethod(e);
+        }
+    }
+
+    private static void uselessMethod(Throwable t) {
+        //do nothing
+    }
+
+    @Test
     public void testRemoveTryCatchBlock() {
         try {
             doNotThrowNPE();
