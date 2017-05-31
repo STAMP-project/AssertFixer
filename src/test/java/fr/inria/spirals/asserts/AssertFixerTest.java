@@ -97,6 +97,11 @@ public class AssertFixerTest {
         test("testAddExpectedExceptionAnonymous");
     }
 
+    @Test
+    public void testAssertionErrorField() throws Exception {
+        test("testAssertionErrorField");
+    }
+
     //TODO check that this the behavior we want,
     //TODO it is based on convetion (message of fail() is starting with "Expecting exception: " and endsWith "Exception".
     @Test

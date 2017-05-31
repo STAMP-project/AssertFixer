@@ -16,6 +16,7 @@ import spoon.reflect.visitor.filter.TypeFilter;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class AssertFixer {
                 removeExpectedException(spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
             } else {
                 // replace assertion
-                final List<Integer> indexToLog = AssertionReplacer.replaceAssertionByLog(clone, spoon.getFactory());
+                final List<Integer> indexToLog = AssertionReplacer.replace(clone, exception.getMessage());
                 // run tests
                 final SpoonModelBuilder compiler = spoon.createCompiler();
                 compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
@@ -129,8 +130,9 @@ public class AssertFixer {
     }
 
     @SuppressWarnings("unchecked")
-    private static void fixAssertion(Factory factory, CtMethod<?> testCaseToBeFix, List<Integer> indexToLog) {
-        indexToLog.forEach(index -> {
+    private static void fixAssertion(Factory factory, CtMethod<?> testCaseToBeFix, List<Integer> indices) {
+        indices.forEach(index -> {
+                    boolean replaced = false;
                     final CtElement valueToReplace = (CtElement) ((CtInvocation) testCaseToBeFix.getBody()
                             .getStatement(index)).getArguments().get(0);
                     final CtComment comment = factory.createComment("AssertFixer: old assertion " + testCaseToBeFix.getBody().getStatement(index).toString(),
@@ -142,26 +144,49 @@ public class AssertFixer {
                                 String snippet = createSnippetFromObservations(Logger.observations.get(index));
                                 valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
                                 Counter.incNumberOfArrayFixed();
+                                replaced = true;
                             }
-                        } else if (Logger.observations.get(index) instanceof Boolean) {
-                            String snippet = ((CtInvocation) testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
-                                    ".assert" + Logger.observations.get(index).toString().toUpperCase().substring(0, 1) + Logger.observations.get(index).toString().substring(1)
-                                    + "(" + valueToReplace + ")";
-                            testCaseToBeFix.getBody().getStatement(index).replace(factory.createCodeSnippetStatement(snippet));
-                        } else {
-                            valueToReplace.replace(
-                                    factory.createLiteral(
-                                            Logger.observations.get(index)
-                                    )
-                            );
-                            Counter.incNumberOfPrimitivesValuesFixed();
+                        } else if (!((valueToReplace instanceof CtLiteral) && Logger.observations.get(index).equals(((CtLiteral) valueToReplace).getValue()))) {
+                            if (Logger.observations.get(index) instanceof Boolean) {
+                                String snippet = ((CtInvocation) testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
+                                        ".assert" + Logger.observations.get(index).toString().toUpperCase().substring(0, 1) + Logger.observations.get(index).toString().substring(1)
+                                        + "(" + valueToReplace + ")";
+                                testCaseToBeFix.getBody().getStatement(index).replace(factory.createCodeSnippetStatement(snippet));
+                            } else if (isFieldOfClass.test(Logger.observations.get(index))) {
+                                valueToReplace.replace(
+                                        factory.createCodeSnippetExpression(
+                                                fieldOfObjectToString.apply(Logger.observations.get(index))
+                                        )
+                                );
+                            } else {
+                                valueToReplace.replace(
+                                        factory.createLiteral(
+                                                Logger.observations.get(index)
+                                        )
+                                );
+                                Counter.incNumberOfPrimitivesValuesFixed();
+                            }
+                            replaced = true;
                         }
-                        testCaseToBeFix.getBody().getStatement(index).addComment(comment);
+                        if (replaced) {
+                            testCaseToBeFix.getBody().getStatement(index).addComment(comment);
+                        }
                     }
                 }
         );
         Logger.reset();
     }
+
+    private static final Function<Object, String> fieldOfObjectToString = (object) ->
+            object.getClass().getSimpleName() + "." + object.toString();
+
+    private static final Predicate<Object> isFieldOfClass = (object) -> {
+        try {
+            return null != object.getClass().getField(object.toString());
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    };
 
     //TODO fix me to other primitive type
     private static String createSnippetFromObservations(Object o) {
