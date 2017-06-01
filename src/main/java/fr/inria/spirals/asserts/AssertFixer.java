@@ -104,9 +104,15 @@ public class AssertFixer {
         final CtTry aTry = spoon.getFactory().createTry();
         final CtCatch aCatch = spoon.getFactory().createCatch();
         aTry.addCatcher(aCatch);
+        Class<?> exceptionClass = exception.getClass();
+        String exceptionName = exception.getClass().getSimpleName();
+        if (exception.getClass().isAnonymousClass()) {
+            exceptionClass = exceptionClass.getSuperclass();
+            exceptionName = exceptionClass.getSimpleName();
+        }
         final CtCatchVariable catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
-                testCaseToBeFix.getFactory().Type().createReference(exception.getClass()),
-                PREFIX_NAME_EXPECTED_EXCEPTION + exception.getClass().getSimpleName()
+                testCaseToBeFix.getFactory().Type().createReference(exceptionClass),
+                PREFIX_NAME_EXPECTED_EXCEPTION + exceptionName
         );
         aCatch.setParameter(catchVariable);
         aCatch.setBody(spoon.getFactory().createCodeSnippetStatement(
@@ -177,11 +183,17 @@ public class AssertFixer {
     private static final String PREFIX_MESSAGE_EXPECTED_EXCEPTION = "Expecting exception: ";
     private static final String NAME_FAIL_METHOD = "fail";
 
+    @SuppressWarnings("unchecked")
     private static void fixTryCatchFailAssertion(Launcher spoon, CtMethod<?> testCaseToBeFix, Throwable exception, List<CtCatch> catches) {
-        //replace wrong expected exception
+        Class exceptionClass = exception.getClass();
+        String exceptionName = exception.getClass().getSimpleName();
+        if (exception.getClass().isAnonymousClass()) {
+            exceptionClass = exceptionClass.getSuperclass();
+            exceptionName = exceptionClass.getSimpleName();
+        }
         final CtCatchVariable<? extends Throwable> catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
-                testCaseToBeFix.getFactory().Type().createReference(exception.getClass()),
-                PREFIX_NAME_EXPECTED_EXCEPTION + exception.getClass().getSimpleName()
+                testCaseToBeFix.getFactory().Type().createReference(exceptionClass),
+                PREFIX_NAME_EXPECTED_EXCEPTION + exceptionName
         );
         if (!catches.get(0).getBody().getStatements().isEmpty()) {
             catches.get(0).getBody().getElements(new TypeFilter<CtVariableAccess>(CtVariableAccess.class) {

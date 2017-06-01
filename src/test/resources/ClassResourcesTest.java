@@ -15,15 +15,15 @@ public class ClassResourcesTest {
     }
 
     private static int[] getArrayInt() {
-        return new int[] {23,32};
+        return new int[]{23, 32};
     }
 
     private static long[] getArrayLong() {
-        return new long[] {23L,32L};
+        return new long[]{23L, 32L};
     }
 
     private static double[] getArrayDouble() {
-        return new double[] {23.0D,32.0D};
+        return new double[]{23.0D, 32.0D};
     }
 
     private static void throwNPE() {
@@ -32,6 +32,12 @@ public class ClassResourcesTest {
 
     private static void doNotThrowNPE() {
         //empty
+    }
+
+    private static void throwAnonymous() {
+        throw new RuntimeException() {
+
+        };
     }
 
     @Test
@@ -46,9 +52,9 @@ public class ClassResourcesTest {
 
     @Test
     public void testAssertionErrorArray() {
-        assertArrayEquals(new int[] {32,23}, getArrayInt());
-        assertArrayEquals(new long[] {32L,23L}, getArrayLong());
-        assertArrayEquals(new double[] {32.0D,23.0D}, getArrayDouble(), 0.05D);
+        assertArrayEquals(new int[]{32, 23}, getArrayInt());
+        assertArrayEquals(new long[]{32L, 23L}, getArrayLong());
+        assertArrayEquals(new double[]{32.0D, 23.0D}, getArrayDouble(), 0.05D);
     }
 
     @Test
@@ -93,4 +99,18 @@ public class ClassResourcesTest {
         }
     }
 
+    @Test
+    public void testAddExpectedExceptionAnonymous() throws Exception {
+        throwAnonymous();
+    }
+
+    @Test
+    public void testReplaceExpectedExceptionAnonymous() throws Exception {
+        try {
+            throwAnonymous();
+            fail("Expecting exception: Exception");
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+    }
 }
