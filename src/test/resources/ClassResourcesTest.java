@@ -113,4 +113,13 @@ public class ClassResourcesTest {
 
         }
     }
+
+    private static Double getNaN() {
+        return Double.NaN;
+    }
+
+    @Test
+    public void testAssertionErrorField() throws Exception {
+        assertEquals(0.0D, getNaN(), 0.0D);
+    }
 }
