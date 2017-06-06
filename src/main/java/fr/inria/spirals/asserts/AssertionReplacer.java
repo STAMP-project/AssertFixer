@@ -18,8 +18,7 @@ import java.util.stream.Collectors;
  */
 public class AssertionReplacer {
 
-    public static List<Integer> replace(CtMethod<?> clone, String message) {
-        final String expectedAsString = message != null ? message.split("<")[1].split(">")[0] : null;
+    public static List<Integer> replace(CtMethod<?> clone) {
         final List<CtInvocation> assertionsToBeReplaced = clone.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
             @Override
             public boolean matches(CtInvocation element) {
@@ -27,7 +26,6 @@ public class AssertionReplacer {
             }
         }).stream()
                 .sorted(Comparator.comparingInt(ctInvocation -> ctInvocation.getPosition().getLine()))
-                .filter(ctInvocation -> expectedAsString == null || ctInvocation.toString().contains(expectedAsString))
                 .collect(Collectors.toList());
         final List<Integer> indices = new ArrayList<>();
         assertionsToBeReplaced.forEach(assertionToBeReplaced -> {

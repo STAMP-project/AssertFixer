@@ -102,6 +102,21 @@ public class AssertFixerTest {
         test("testAssertionErrorField");
     }
 
+    @Test
+    public void testPositiveInfinity() throws Exception {
+        test("testPositiveInfinity");
+    }
+
+    @Test
+    public void testNegativeInfinity() throws Exception {
+        test("testNegativeInfinity");
+    }
+
+    @Test
+    public void testAssertSame() throws Exception {
+        test("testAssertSame");
+    }
+
     //TODO check that this the behavior we want,
     //TODO it is based on convetion (message of fail() is starting with "Expecting exception: " and endsWith "Exception".
     @Test

@@ -9,6 +9,7 @@ import spoon.SpoonModelBuilder;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtElement;
+import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.factory.Factory;
 import spoon.reflect.visitor.filter.TypeFilter;
@@ -52,9 +53,11 @@ public class AssertFixer {
             if ((exception.getMessage() != null && exception.getMessage().startsWith(PREFIX_MESSAGE_EXPECTED_EXCEPTION)
                     && exception.getMessage().endsWith("Exception"))) {
                 removeExpectedException(spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
+            } else if (exception.getMessage() != null && !exception.getMessage().contains("expected")) {
+                return;
             } else {
                 // replace assertion
-                final List<Integer> indexToLog = AssertionReplacer.replace(clone, exception.getMessage());
+                final List<Integer> indexToLog = AssertionReplacer.replace(clone);
                 // run tests
                 final SpoonModelBuilder compiler = spoon.createCompiler();
                 compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
@@ -152,12 +155,36 @@ public class AssertFixer {
                                         ".assert" + Logger.observations.get(index).toString().toUpperCase().substring(0, 1) + Logger.observations.get(index).toString().substring(1)
                                         + "(" + valueToReplace + ")";
                                 testCaseToBeFix.getBody().getStatement(index).replace(factory.createCodeSnippetStatement(snippet));
+                            } else if ("assertSame".equals(((CtInvocation) valueToReplace.getParent()).getExecutable().getSimpleName())) {
+                                ((CtInvocation) valueToReplace.getParent()).replace(factory.createCodeSnippetStatement(
+                                        valueToReplace.getParent().toString().replace("assertSame", "assertNotSame")
+                                        )
+                                );
+                            } else if ("assertNotSame".equals(((CtInvocation) valueToReplace.getParent()).getExecutable().getSimpleName())) {
+                                ((CtInvocation) valueToReplace.getParent()).replace(factory.createCodeSnippetStatement(
+                                        valueToReplace.getParent().toString().replace("assertSame", "assertSame")
+                                        )
+                                );
                             } else if (isFieldOfClass.test(Logger.observations.get(index))) {
                                 valueToReplace.replace(
                                         factory.createCodeSnippetExpression(
                                                 fieldOfObjectToString.apply(Logger.observations.get(index))
                                         )
                                 );
+                            } else if (Logger.observations.get(index).equals(Double.NEGATIVE_INFINITY)) {
+                                final CtFieldRead<Double> fieldNegativeInfinity = factory.createFieldRead();
+                                fieldNegativeInfinity.setType(factory.createCtTypeReference(Double.class));
+                                final CtField<Double> negative_infinity = (CtField<Double>) factory.Class().get(Double.class).getField("NEGATIVE_INFINITY");
+                                fieldNegativeInfinity.setVariable(negative_infinity.getReference());
+                                fieldNegativeInfinity.setFactory(factory);
+                                valueToReplace.replace(fieldNegativeInfinity);
+                            } else if (Logger.observations.get(index).equals(Double.POSITIVE_INFINITY)) {
+                                final CtFieldRead<Double> fieldPositiveInfinity = factory.createFieldRead();
+                                fieldPositiveInfinity.setType(factory.createCtTypeReference(Double.class));
+                                final CtField<Double> positive_infinity = (CtField<Double>) factory.Class().get(Double.class).getField("POSITIVE_INFINITY");
+                                fieldPositiveInfinity.setVariable(positive_infinity.getReference());
+                                fieldPositiveInfinity.setFactory(factory);
+                                valueToReplace.replace(fieldPositiveInfinity);
                             } else {
                                 valueToReplace.replace(
                                         factory.createLiteral(
