@@ -40,6 +40,14 @@ public class ClassResourcesTest {
         };
     }
 
+    private static Double getInfinityPositive() {
+        return Double.POSITIVE_INFINITY;
+    }
+
+    private static Double getInfinityNegative() {
+        return Double.NEGATIVE_INFINITY;
+    }
+
     @Test
     public void testAssertionErrorBoolean() {
         assertTrue(getFalse());
@@ -121,5 +129,21 @@ public class ClassResourcesTest {
     @Test
     public void testAssertionErrorField() throws Exception {
         assertEquals(0.0D, getNaN(), 0.0D);
+    }
+
+    @Test
+    public void testPositiveInfinity() throws Exception {
+        assertEquals(Double.NEGATIVE_INFINITY, getInfinityPositive(), 0.0D);
+    }
+
+    @Test
+    public void testNegativeInfinity() throws Exception {
+        assertEquals(Double.POSITIVE_INFINITY, getInfinityNegative(), 0.0D);
+    }
+
+    @Test
+    public void testAssertSame() throws Exception {
+        assertNotSame(Double.NEGATIVE_INFINITY, getInfinityNegative());
+        assertSame(Double.POSITIVE_INFINITY, getInfinityNegative());
     }
 }
