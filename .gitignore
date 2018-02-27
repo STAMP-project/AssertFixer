@@ -1,6 +1,6 @@
 ### IDEA config ffile
 .idea
-AssertFixer.iml
+*.iml
 
 ### Generated files
 output

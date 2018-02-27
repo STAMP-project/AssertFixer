@@ -1,13 +1,6 @@
 package fr.inria.spirals.util;
 
-import fr.inria.spirals.test4repair.UtilTest4Repair;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Predicate;

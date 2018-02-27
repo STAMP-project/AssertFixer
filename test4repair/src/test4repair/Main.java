@@ -1,4 +1,4 @@
-package fr.inria.spirals.test4repair;
+package test4repair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

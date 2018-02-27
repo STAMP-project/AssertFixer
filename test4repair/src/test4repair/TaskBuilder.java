@@ -1,4 +1,4 @@
-package fr.inria.spirals.test4repair;
+package test4repair;
 
 import fr.inria.spirals.json.JSONBugID;
 import fr.inria.spirals.json.JSONProject;
@@ -10,8 +10,8 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 
-import static fr.inria.spirals.test4repair.UtilTest4Repair.*;
-import static fr.inria.spirals.test4repair.Main.projects;
+import static test4repair.UtilTest4Repair.*;
+import static test4repair.Main.projects;
 import static fr.inria.spirals.util.Util.*;
 
 /**

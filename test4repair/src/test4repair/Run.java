@@ -1,4 +1,4 @@
-package fr.inria.spirals.test4repair;
+package test4repair;
 
 import fr.inria.spirals.asserts.log.Logger;
 import fr.inria.spirals.json.JSONTest;
