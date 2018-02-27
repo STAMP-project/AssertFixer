@@ -25,7 +25,7 @@ public class AssertFixerTest {
     public void setUp() throws Exception {
         spoon = new Launcher();
         spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/fr/inria/spirals/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
+        spoon.addInputResource("src/main/java/eu/stamp/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);

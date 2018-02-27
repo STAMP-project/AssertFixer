@@ -31,7 +31,7 @@ public class AssertionReplacer {
         assertionsToBeReplaced.forEach(assertionToBeReplaced -> {
             final int index = assertionToBeReplaced.getParent(CtBlock.class).getStatements().indexOf(assertionToBeReplaced);
             indices.add(index);
-            String snippet = "fr.inria.spirals.asserts.log.Logger.log(";
+            String snippet = "eu.stamp.asserts.log.Logger.log(";
             if (assertionToBeReplaced.getExecutable().getSimpleName().endsWith("True") ||
                     assertionToBeReplaced.getExecutable().getSimpleName().endsWith("False")) {
                 assertionToBeReplaced.replace(
