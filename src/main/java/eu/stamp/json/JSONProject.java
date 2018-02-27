@@ -1,4 +1,4 @@
-package fr.inria.spirals.json;
+package eu.stamp.json;
 
 import java.util.ArrayList;
 import java.util.List;

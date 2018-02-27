@@ -1,8 +1,8 @@
-package fr.inria.spirals.asserts;
+package eu.stamp.asserts;
 
-import fr.inria.spirals.asserts.log.Logger;
-import fr.inria.spirals.test.TestRunner;
-import fr.inria.spirals.util.Counter;
+import eu.stamp.test.TestRunner;
+import eu.stamp.asserts.log.Logger;
+import eu.stamp.util.Counter;
 import org.junit.runner.notification.Failure;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
@@ -21,8 +21,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static fr.inria.spirals.asserts.AssertionReplacer.isAssert;
-import static fr.inria.spirals.asserts.AssertionReplacer.isAssertionClass;
+import static eu.stamp.asserts.AssertionReplacer.isAssert;
+import static eu.stamp.asserts.AssertionReplacer.isAssertionClass;
 
 /**
  * Created by Benjamin DANGLOT

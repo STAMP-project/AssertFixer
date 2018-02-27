@@ -1,4 +1,4 @@
-package fr.inria.spirals.util;
+package eu.stamp.util;
 
 import java.io.File;
 import java.util.Arrays;

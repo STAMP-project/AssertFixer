@@ -12,7 +12,6 @@ import java.io.FileReader;
 
 import static test4repair.UtilTest4Repair.*;
 import static test4repair.Main.projects;
-import static fr.inria.spirals.util.Util.*;
 
 /**
  * Created by Benjamin DANGLOT

@@ -1,4 +1,4 @@
-package fr.inria.spirals.test;
+package eu.stamp.test;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package fr.inria.spirals.test;
+package eu.stamp.test;
 
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;

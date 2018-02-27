@@ -1,4 +1,4 @@
-package fr.inria.spirals.test;
+package eu.stamp.test;
 
 import org.junit.runner.Request;
 import org.junit.runner.Runner;
@@ -11,7 +11,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
 import java.util.function.Function;
 
 /**

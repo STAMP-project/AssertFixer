@@ -6,7 +6,7 @@
 
 
     <parent>
-        <groupId>fr.inria.spirals</groupId>
+        <groupId>eu.stamp</groupId>
         <artifactId>assert-fixer</artifactId>
         <version>0.0.1</version>
     </parent>
@@ -21,7 +21,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>fr.inria.spirals</groupId>
+            <groupId>eu.stamp</groupId>
             <artifactId>assert-fixer</artifactId>
             <version>0.0.1</version>
         </dependency>

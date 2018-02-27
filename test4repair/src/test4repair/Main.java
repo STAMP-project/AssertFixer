@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static fr.inria.spirals.util.Util.*;
-
 /**
  * Created by Benjamin DANGLOT
  * benjamin.danglot@inria.fr

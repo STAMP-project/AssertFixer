@@ -1,11 +1,10 @@
-package fr.inria.spirals.asserts;
+package eu.stamp.asserts;
 
-import fr.inria.spirals.test.TestRunner;
+import eu.stamp.test.TestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.notification.Failure;
 import spoon.Launcher;
-import spoon.SpoonModelBuilder;
 import spoon.reflect.code.CtComment;
 
 import java.util.List;

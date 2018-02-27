@@ -1,4 +1,4 @@
-package fr.inria.spirals.asserts;
+package eu.stamp.asserts;
 
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtMethod;

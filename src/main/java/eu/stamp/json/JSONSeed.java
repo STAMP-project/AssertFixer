@@ -1,4 +1,4 @@
-package fr.inria.spirals.json;
+package eu.stamp.json;
 
 import java.util.Collections;
 import java.util.List;

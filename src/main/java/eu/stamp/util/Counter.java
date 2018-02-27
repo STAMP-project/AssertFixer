@@ -1,4 +1,4 @@
-package fr.inria.spirals.util;
+package eu.stamp.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static fr.inria.spirals.util.Util.EXTENSION_JSON;
-import static fr.inria.spirals.util.Util.FILE_SEPARATOR;
 
 /**
  * Created by Benjamin DANGLOT
@@ -107,7 +104,7 @@ public class Counter {
         if (!new File("output").exists()) {
             new File("output").mkdir();
         }
-        try (FileWriter writer = new FileWriter(new File("output" + FILE_SEPARATOR + "metrics" + EXTENSION_JSON), false)) {
+        try (FileWriter writer = new FileWriter(new File("output" + Util.FILE_SEPARATOR + "metrics" + Util.EXTENSION_JSON), false)) {
             JSONMetrics jsonMetrics = new JSONMetrics(
                     _getInstance().initialNumberOfTest,
                     _getInstance().initialNumberOfFailingTestFromException + _getInstance().initialNumbernumberOfFailingTestFromAssertion,

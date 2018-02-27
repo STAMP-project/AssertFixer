@@ -1,8 +1,7 @@
-package fr.inria.spirals.util;
+package eu.stamp.util;
 
-import fr.inria.spirals.asserts.AssertFixer;
-import fr.inria.spirals.test.TestRunner;
-import fr.inria.spirals.util.Counter;
+import eu.stamp.test.TestRunner;
+import eu.stamp.asserts.AssertFixer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.notification.Failure;
@@ -14,9 +13,9 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.inria.spirals.util.Util.EXTENSION_JSON;
-import static fr.inria.spirals.util.Util.FILE_SEPARATOR;
-import static fr.inria.spirals.util.Util.LINE_SEPARATOR;
+import static eu.stamp.util.Util.EXTENSION_JSON;
+import static eu.stamp.util.Util.FILE_SEPARATOR;
+import static eu.stamp.util.Util.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

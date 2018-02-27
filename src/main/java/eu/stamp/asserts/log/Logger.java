@@ -1,4 +1,4 @@
-package fr.inria.spirals.asserts.log;
+package eu.stamp.asserts.log;
 
 import java.util.HashMap;
 import java.util.Map;
