@@ -12,6 +12,7 @@ import java.util.List;
  * benjamin.danglot@inria.fr
  * on 23/05/17
  */
+@Deprecated
 class TestListener extends RunListener {
 
     private List<Description> testRun;
