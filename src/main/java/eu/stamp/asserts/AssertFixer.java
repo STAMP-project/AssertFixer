@@ -1,5 +1,6 @@
 package eu.stamp.asserts;
 
+import eu.stamp.Main;
 import eu.stamp.test.TestRunner;
 import eu.stamp.asserts.log.Logger;
 import eu.stamp.util.Counter;
@@ -14,6 +15,7 @@ import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.factory.Factory;
 import spoon.reflect.visitor.filter.TypeFilter;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +62,7 @@ public class AssertFixer {
                 final List<Integer> indexToLog = AssertionReplacer.replace(clone);
                 // run tests
                 final SpoonModelBuilder compiler = spoon.createCompiler();
+                compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
                 compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
                 TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
                 TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
@@ -96,6 +99,8 @@ public class AssertFixer {
             throw new RuntimeException();
         }
         final SpoonModelBuilder compiler = spoon.createCompiler();
+        compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
+        compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         try {
             TestRunner.runTest(fullQualifiedName, testCaseName, cp.split(":"));
