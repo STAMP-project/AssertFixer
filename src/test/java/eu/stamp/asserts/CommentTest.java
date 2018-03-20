@@ -1,5 +1,6 @@
 package eu.stamp.asserts;
 
+import eu.stamp.Main;
 import eu.stamp.test.TestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +31,8 @@ public class CommentTest {
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
+        spoon.setSourceOutputDirectory("target/spooned");
+        spoon.setBinaryOutputDirectory("target/spooned-classes");
         spoon.run();
     }
 
@@ -51,13 +54,13 @@ public class CommentTest {
         List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
-                new String[]{"spooned-classes/"});// 1st assert fail
+                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
 
         AssertFixer.fixAssert(spoon,
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                "spooned-classes/");
+                Main.configuration.getBinaryOutputDirectory());
 
         final List<CtComment> comments = spoon.getFactory().Class()
                 .get(fullQualifiedName)

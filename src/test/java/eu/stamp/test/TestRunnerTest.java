@@ -1,6 +1,7 @@
 package eu.stamp.test;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
 import org.junit.runner.notification.Failure;
@@ -17,6 +18,7 @@ import static org.junit.Assert.assertTrue;
  * benjamin.danglot@inria.fr
  * on 30/05/17
  */
+@Deprecated
 public class TestRunnerTest {
 
     private Launcher spoon;
@@ -34,6 +36,7 @@ public class TestRunnerTest {
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
     }
 
+    @Ignore
     @Test
     public void testRunTestClass() throws Exception {
         final List<Failure> failures =
@@ -45,6 +48,7 @@ public class TestRunnerTest {
         assertEquals(5, failures.stream().filter(failure -> failure.getException() instanceof RuntimeException).count());
     }
 
+    @Ignore
     @Test
     public void testRunTestCase() throws Exception {
         List<Failure> failures =

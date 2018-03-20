@@ -1,5 +1,6 @@
 package eu.stamp.util;
 
+import eu.stamp.Main;
 import eu.stamp.test.TestRunner;
 import eu.stamp.asserts.AssertFixer;
 import org.junit.Before;
@@ -37,6 +38,8 @@ public class CounterTest {
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
+        spoon.setSourceOutputDirectory(Main.configuration.getSourceOutputDirectory());
+        spoon.setBinaryOutputDirectory(Main.configuration.getBinaryOutputDirectory());
         spoon.run();
         compiler = spoon.createCompiler();
     }
@@ -46,13 +49,13 @@ public class CounterTest {
         List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
-                new String[]{"spooned-classes/"});// 1st assert fail
+                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
 
         AssertFixer.fixAssert(spoon,
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                "spooned-classes/");
+                Main.configuration.getBinaryOutputDirectory());
     }
 
     @Test

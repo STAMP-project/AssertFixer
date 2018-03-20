@@ -18,6 +18,7 @@ import java.util.function.Function;
  * benjamin.danglot@inria.fr
  * on 23/05/17
  */
+@Deprecated
 public class TestRunner {
 
     private static Function<String[], URL[]> arrayStringToArrayUrl = (arrayStr) ->

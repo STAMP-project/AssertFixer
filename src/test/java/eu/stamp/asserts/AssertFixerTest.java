@@ -1,5 +1,7 @@
 package eu.stamp.asserts;
 
+import eu.stamp.Configuration;
+import eu.stamp.Main;
 import eu.stamp.test.TestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +9,7 @@ import org.junit.runner.notification.Failure;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 
+import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -29,8 +32,11 @@ public class AssertFixerTest {
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
+        spoon.setSourceOutputDirectory(Main.configuration.getSourceOutputDirectory());
+        spoon.setBinaryOutputDirectory(Main.configuration.getBinaryOutputDirectory());
         spoon.run();
         compiler = spoon.createCompiler();
+        compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
     }
 
     private void test(String testCaseName) throws Exception  {
@@ -38,7 +44,7 @@ public class AssertFixerTest {
         List<Failure> failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
-                new String[]{"spooned-classes/"});// 1st assert fail
+                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
 
         assertTrue(failures.size() == 1);
 
@@ -46,13 +52,13 @@ public class AssertFixerTest {
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                "spooned-classes/");
+                Main.configuration.getBinaryOutputDirectory());
 
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         failures = TestRunner.runTest(
                 fullQualifiedName,
                 testCaseName,
-                new String[]{"spooned-classes/"});// repaired
+                new String[]{Main.configuration.getBinaryOutputDirectory()});// repaired
 
         assertTrue(failures.isEmpty());
     }
