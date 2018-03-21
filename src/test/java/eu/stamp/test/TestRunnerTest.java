@@ -7,6 +7,6 @@ package eu.stamp.test;
  */
 public class TestRunnerTest {
 
-    //TODO  
+    //TODO
 
 }

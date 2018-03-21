@@ -9,6 +9,7 @@ import spoon.reflect.code.CtLiteral;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.code.CtVariableAccess;
 import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
@@ -25,7 +26,7 @@ public class TryCatchFixer {
     static void fixTryCatchFailAssertion(Launcher spoon, CtMethod<?> testCaseToBeFix, Failure failure, List<CtCatch> catches) {
         final String[] splittedNameException = failure.fullQualifiedNameOfException.split("\\.");
         String exceptionName = splittedNameException[splittedNameException.length - 1];
-        final CtTypeReference reference = testCaseToBeFix.getFactory().Type().get(failure.fullQualifiedNameOfException).getReference();
+        final CtTypeReference reference = testCaseToBeFix.getFactory().Type().createReference(failure.fullQualifiedNameOfException);
         final CtCatchVariable<? extends Throwable> catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
                 reference,
                 PREFIX_NAME_EXPECTED_EXCEPTION + exceptionName
@@ -62,24 +63,25 @@ public class TryCatchFixer {
     }
 
     static void addTryCatchFailAssertion(Launcher spoon, CtMethod<?> testCaseToBeFix, Failure failure) {
-        final CtTry aTry = spoon.getFactory().createTry();
-        final CtCatch aCatch = spoon.getFactory().createCatch();
+        final Factory factory = spoon.getFactory();
+        final CtTry aTry = factory.createTry();
+        final CtCatch aCatch = factory.createCatch();
         aTry.addCatcher(aCatch);
         final String[] splittedNameException = failure.fullQualifiedNameOfException.split("\\.");
         String exceptionName = splittedNameException[splittedNameException.length - 1];
-        final CtCatchVariable catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
-                testCaseToBeFix.getFactory().Type().get(failure.fullQualifiedNameOfException).getReference(),
+        final CtCatchVariable catchVariable = factory.createCatchVariable(
+                factory.Type().createReference(failure.fullQualifiedNameOfException),
                 PREFIX_NAME_EXPECTED_EXCEPTION + exceptionName
         );
         aCatch.setParameter(catchVariable);
-        aCatch.setBody(spoon.getFactory().createCodeSnippetStatement(
+        aCatch.setBody(factory.createCodeSnippetStatement(
                 "org.junit.Assert.assertTrue(true)"
         ));
         aTry.setBody(testCaseToBeFix.getBody().getStatement(0));
         for (int i = 1; i < testCaseToBeFix.getBody().getStatements().size(); i++) {
             aTry.getBody().addStatement(testCaseToBeFix.getBody().getStatement(i));
         }
-        aTry.getBody().addStatement(spoon.getFactory()
+        aTry.getBody().addStatement(factory
                 .createCodeSnippetStatement("org.junit.Assert." + NAME_FAIL_METHOD + "(\"" + PREFIX_MESSAGE_EXPECTED_EXCEPTION + exceptionName + "\")")
         );
         testCaseToBeFix.setBody(aTry);
