@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class AssertionReplacer {
 
-    public static List<Integer> replace(CtMethod<?> clone) {
+    public static List<Integer> replaceByLogStatement(CtMethod<?> clone) {
         final List<CtInvocation> assertionsToBeReplaced = clone.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
             @Override
             public boolean matches(CtInvocation element) {
