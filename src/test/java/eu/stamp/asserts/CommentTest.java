@@ -1,10 +1,10 @@
 package eu.stamp.asserts;
 
+import eu.stamp.EntryPoint;
 import eu.stamp.Main;
-import eu.stamp.test.TestRunner;
+import eu.stamp.runner.test.Failure;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.notification.Failure;
 import spoon.Launcher;
 import spoon.reflect.code.CtComment;
 
@@ -51,10 +51,10 @@ public class CommentTest {
                 .isEmpty()
         );
 
-        List<Failure> failures = TestRunner.runTest(
+        List<Failure> failures = EntryPoint.runTests(
+                Main.configuration.getBinaryOutputDirectory(),
                 fullQualifiedName,
-                testCaseName,
-                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
+                testCaseName).getFailingTests();// 1st assert fail
 
         AssertFixer.fixAssert(spoon,
                 fullQualifiedName,

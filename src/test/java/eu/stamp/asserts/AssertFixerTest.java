@@ -1,11 +1,11 @@
 package eu.stamp.asserts;
 
-import eu.stamp.Configuration;
+import eu.stamp.EntryPoint;
 import eu.stamp.Main;
-import eu.stamp.test.TestRunner;
+import eu.stamp.runner.test.Failure;
+import org.hamcrest.BaseDescription;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.notification.Failure;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 
@@ -24,6 +24,28 @@ public class AssertFixerTest {
     private Launcher spoon;
     private SpoonModelBuilder compiler;
 
+    private static final String dependenciesToRunJUnit;
+
+    static {
+        try {
+            dependenciesToRunJUnit = new File(
+                    Test.class.getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI())
+                    .toString() + ":" +
+                    new File(
+                            BaseDescription.class.getProtectionDomain()
+                                    .getCodeSource()
+                                    .getLocation()
+                                    .toURI())
+                            .toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     @Before
     public void setUp() throws Exception {
         spoon = new Launcher();
@@ -39,12 +61,13 @@ public class AssertFixerTest {
         compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
     }
 
-    private void test(String testCaseName) throws Exception  {
+    private void test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
-        List<Failure> failures = TestRunner.runTest(
+
+        List<Failure> failures = EntryPoint.runTests(
+                Main.configuration.getBinaryOutputDirectory() + ":" + dependenciesToRunJUnit,
                 fullQualifiedName,
-                testCaseName,
-                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
+                testCaseName).getFailingTests();// 1st assert fail
 
         assertTrue(failures.size() == 1);
 
@@ -52,19 +75,20 @@ public class AssertFixerTest {
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                Main.configuration.getBinaryOutputDirectory());
+                Main.configuration.getBinaryOutputDirectory() + ":" + dependenciesToRunJUnit);
 
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        failures = TestRunner.runTest(
+        failures = EntryPoint.runTests(
+                Main.configuration.getBinaryOutputDirectory() + ":" + dependenciesToRunJUnit,
                 fullQualifiedName,
-                testCaseName,
-                new String[]{Main.configuration.getBinaryOutputDirectory()});// repaired
+                testCaseName).getFailingTests();
 
-        assertTrue(failures.isEmpty());
+        assertTrue("should have been empty " + failures ,failures.isEmpty());
     }
 
     @Test
     public void testFixAssertionBoolean() throws Exception {
+        EntryPoint.verbose = true;
         test("testAssertionErrorBoolean");
     }
 

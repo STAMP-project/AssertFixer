@@ -1,5 +1,6 @@
 package eu.stamp.util;
 
+import eu.stamp.EntryPoint;
 import eu.stamp.Main;
 import eu.stamp.test.TestRunner;
 import eu.stamp.asserts.AssertFixer;
@@ -46,10 +47,10 @@ public class CounterTest {
 
     private void test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
-        List<Failure> failures = TestRunner.runTest(
+        List<eu.stamp.runner.test.Failure> failures = EntryPoint.runTests(
+                Main.configuration.getBinaryOutputDirectory(),
                 fullQualifiedName,
-                testCaseName,
-                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
+                testCaseName).getFailingTests();// 1st assert fail
 
         AssertFixer.fixAssert(spoon,
                 fullQualifiedName,
