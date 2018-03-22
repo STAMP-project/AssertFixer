@@ -1,10 +1,11 @@
 package eu.stamp.asserts;
 
+import eu.stamp.AbstractTest;
+import eu.stamp.EntryPoint;
 import eu.stamp.Main;
-import eu.stamp.test.TestRunner;
+import eu.stamp.runner.test.Failure;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.notification.Failure;
 import spoon.Launcher;
 import spoon.reflect.code.CtComment;
 
@@ -19,22 +20,7 @@ import static org.junit.Assert.assertTrue;
  * benjamin.danglot@inria.fr
  * on 30/05/17
  */
-public class CommentTest {
-
-    private Launcher spoon;
-
-    @Before
-    public void setUp() throws Exception {
-        spoon = new Launcher();
-        spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/eu/stamp/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
-        spoon.getEnvironment().setComplianceLevel(7);
-        spoon.getEnvironment().setAutoImports(true);
-        spoon.getEnvironment().setShouldCompile(true);
-        spoon.setSourceOutputDirectory("target/spooned");
-        spoon.setBinaryOutputDirectory("target/spooned-classes");
-        spoon.run();
-    }
+public class CommentTest extends AbstractTest {
 
     @Test
     public void testAddCommentWithOldAssertion() throws Exception {
@@ -51,16 +37,16 @@ public class CommentTest {
                 .isEmpty()
         );
 
-        List<Failure> failures = TestRunner.runTest(
+        List<Failure> failures = EntryPoint.runTests(
+                getClasspath(),
                 fullQualifiedName,
-                testCaseName,
-                new String[]{Main.configuration.getBinaryOutputDirectory()});// 1st assert fail
+                testCaseName).getFailingTests();// 1st assert fail
 
         AssertFixer.fixAssert(spoon,
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                Main.configuration.getBinaryOutputDirectory());
+                getClasspath());
 
         final List<CtComment> comments = spoon.getFactory().Class()
                 .get(fullQualifiedName)
