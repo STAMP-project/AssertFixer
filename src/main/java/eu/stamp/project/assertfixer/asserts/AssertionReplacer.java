@@ -1,15 +1,13 @@
-package eu.stamp.asserts;
+package eu.stamp.project.assertfixer.asserts;
 
-import eu.stamp.util.Util;
+import eu.stamp.project.assertfixer.util.Util;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtMethod;
-import spoon.reflect.declaration.CtType;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +30,7 @@ public class AssertionReplacer {
         assertionsToBeReplaced.forEach(assertionToBeReplaced -> {
             final int index = assertionToBeReplaced.getParent(CtBlock.class).getStatements().indexOf(assertionToBeReplaced);
             indices.add(index);
-            String snippet = "eu.stamp.asserts.log.Logger.log(";
+            String snippet = "eu.stamp.project.assertfixer.asserts.log.Logger.log(";
             if (assertionToBeReplaced.getExecutable().getSimpleName().endsWith("True") ||
                     assertionToBeReplaced.getExecutable().getSimpleName().endsWith("False")) {
                 assertionToBeReplaced.replace(

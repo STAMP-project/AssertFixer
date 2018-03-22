@@ -1,4 +1,4 @@
-package eu.stamp.asserts.log;
+package eu.stamp.project.assertfixer.asserts.log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

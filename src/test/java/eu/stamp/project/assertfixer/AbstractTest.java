@@ -1,9 +1,8 @@
-package eu.stamp;
+package eu.stamp.project.assertfixer;
 
-import eu.stamp.util.Util;
+import eu.stamp.project.assertfixer.util.Util;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.BaseDescription;
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,7 +55,7 @@ public class AbstractTest {
         });
         spoon = new Launcher();
         spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/eu/stamp/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
+        spoon.addInputResource("src/main/java/eu/stamp/project/assertfixer/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);

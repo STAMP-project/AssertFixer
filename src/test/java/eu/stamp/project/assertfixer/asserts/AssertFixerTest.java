@@ -1,10 +1,8 @@
-package eu.stamp.asserts;
+package eu.stamp.project.assertfixer.asserts;
 
-import eu.stamp.AbstractTest;
+import eu.stamp.project.assertfixer.AbstractTest;
 import eu.stamp.EntryPoint;
-import eu.stamp.Main;
 import eu.stamp.runner.test.Failure;
-import eu.stamp.util.Util;
 import org.junit.Test;
 import spoon.SpoonModelBuilder;
 

@@ -1,9 +1,10 @@
-package eu.stamp;
+package eu.stamp.project.assertfixer;
 
-import eu.stamp.asserts.AssertFixer;
+import eu.stamp.EntryPoint;
+import eu.stamp.project.assertfixer.asserts.AssertFixer;
+import eu.stamp.project.assertfixer.test.TestRunner;
+import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp.runner.test.Failure;
-import eu.stamp.runner.test.TestRunner;
-import eu.stamp.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spoon.Launcher;
@@ -50,7 +51,7 @@ public class Main {
     }
 
     private static boolean fixGivenTest(Launcher launcher, String failingTestMethod) {
-        Failure failure = eu.stamp.test.TestRunner.runTest(launcher, failingTestMethod).getFailingTests().get(0);
+        Failure failure = TestRunner.runTest(launcher, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
         try {
             AssertFixer.fixAssert(

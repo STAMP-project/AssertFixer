@@ -1,10 +1,10 @@
-package eu.stamp.asserts;
+package eu.stamp.project.assertfixer.asserts;
 
-import eu.stamp.asserts.log.Logger;
+import eu.stamp.project.assertfixer.asserts.log.Logger;
+import eu.stamp.project.assertfixer.test.TestRunner;
+import eu.stamp.project.assertfixer.util.Counter;
+import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp.runner.test.Failure;
-import eu.stamp.test.TestRunner;
-import eu.stamp.util.Counter;
-import eu.stamp.util.Util;
 import spoon.Launcher;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCatch;
@@ -52,7 +52,7 @@ public class AssertFixer {
                 // replace assertion
                 final List<Integer> indexToLog = AssertionReplacer.replaceByLogStatement(clone);
                 // run tests
-                eu.stamp.test.TestRunner.runTestWithLogger(spoon, cp, fullQualifiedName, testCaseName);
+                TestRunner.runTestWithLogger(spoon, cp, fullQualifiedName, testCaseName);
                 Logger.load();
                 // replace wrong value
                 classTestToBeFixed.removeMethod(clone);

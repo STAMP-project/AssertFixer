@@ -1,13 +1,12 @@
-package eu.stamp;
+package eu.stamp.project.assertfixer;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
-import eu.stamp.util.Util;
+import eu.stamp.project.assertfixer.util.Util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

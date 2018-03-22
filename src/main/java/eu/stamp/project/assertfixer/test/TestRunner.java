@@ -1,9 +1,9 @@
-package eu.stamp.test;
+package eu.stamp.project.assertfixer.test;
 
 import eu.stamp.EntryPoint;
-import eu.stamp.asserts.log.Logger;
+import eu.stamp.project.assertfixer.asserts.log.Logger;
+import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp.runner.test.TestListener;
-import eu.stamp.util.Util;
 import org.junit.AfterClass;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.IntStream;
 
-import static eu.stamp.Main.configuration;
+import static eu.stamp.project.assertfixer.Main.configuration;
 
 /**
  * Created by Benjamin DANGLOT
@@ -51,7 +51,7 @@ public class TestRunner {
         final CtClass<?> testClass = factory.Class().get(fullQualifiedName);
         addSaveStatementInTearDownAfterClass(testClass);
 
-        final String loggerClasspath = ":target/classes/eu/stamp/asserts/log/Logger.class";
+        final String loggerClasspath = ":target/classes/eu/stamp/project/assertfixer/log/Logger.class";
         final String binaryOutputDirectory = configuration.getBinaryOutputDirectory();
         final SpoonModelBuilder compiler = spoon.createCompiler();
 
