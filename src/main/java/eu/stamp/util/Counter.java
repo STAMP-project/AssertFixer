@@ -104,7 +104,7 @@ public class Counter {
         if (!new File("output").exists()) {
             new File("output").mkdir();
         }
-        try (FileWriter writer = new FileWriter(new File("output" + Util.FILE_SEPARATOR + "metrics" + Util.EXTENSION_JSON), false)) {
+        try (FileWriter writer = new FileWriter(new File("output" + Util.FILE_SEPARATOR + "metrics.json"), false)) {
             JSONMetrics jsonMetrics = new JSONMetrics(
                     _getInstance().initialNumberOfTest,
                     _getInstance().initialNumberOfFailingTestFromException + _getInstance().initialNumbernumberOfFailingTestFromAssertion,

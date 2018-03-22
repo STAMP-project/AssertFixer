@@ -2,8 +2,8 @@ package test4repair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.inria.spirals.json.JSONProject;
-import fr.inria.spirals.util.Counter;
+import eu.stamp.json.JSONProject;
+import eu.stamp.util.Counter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static eu.stamp.util.Util.FILE_SEPARATOR;
+import static eu.stamp.util.Util.IS_JSON_FILE;
+import static test4repair.UtilTest4Repair.EXTENSION_JSON;
 
 /**
  * Created by Benjamin DANGLOT

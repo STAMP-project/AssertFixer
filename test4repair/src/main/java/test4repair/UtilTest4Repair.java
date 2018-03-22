@@ -111,6 +111,32 @@ public class UtilTest4Repair {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+    public static final String EXTENSION_JSON = ".json";
+
+    public static final String EXTENSION_JAVA = ".java";
+
+    public static final Predicate<File> IS_JSON_FILE = file -> (file.getName().endsWith(EXTENSION_JSON));
+
+    public static final Predicate<File> IS_JAVA_FILE = file -> (file.getName().endsWith(EXTENSION_JAVA));
+
+    public static final Predicate<File> CONTAINS_JAVA_FILE = file ->
+            file.listFiles() != null &&
+                    (Arrays.stream(file.listFiles()).anyMatch(IS_JAVA_FILE));
+
+    public static final Function<File, String> JSON_FILE_TO_STRING_WITHOUT_EXTENSION = file ->
+            (file.getName().substring(0, file.getName().length() - EXTENSION_JSON.length()));
+
+    public static String extractDigitAtEndOfString(String string) {
+        StringBuilder digits = new StringBuilder();
+        int index = string.length() - 1;
+        final char[] chars = string.toCharArray();
+        while (Character.isDigit(chars[index])) {
+            digits.append(chars[index]);
+            index--;
+        }
+        return digits.reverse().toString();
+    }
+
 }

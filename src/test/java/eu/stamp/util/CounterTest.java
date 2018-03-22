@@ -10,7 +10,6 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eu.stamp.util.Util.EXTENSION_JSON;
 import static eu.stamp.util.Util.FILE_SEPARATOR;
 import static eu.stamp.util.Util.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
@@ -46,7 +45,7 @@ public class CounterTest extends AbstractTest {
         test("testReplaceExpectedException");
         test("testRemoveTryCatchBlock");
         Counter.print();
-        try (BufferedReader reader = new BufferedReader(new FileReader("output" + FILE_SEPARATOR + "metrics" + EXTENSION_JSON))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("output" + FILE_SEPARATOR + "metrics.json"))) {
             String jsonAsString = reader.lines().collect(Collectors.joining(LINE_SEPARATOR));
             assertEquals(expectedJson, jsonAsString);
         }
