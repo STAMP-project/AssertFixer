@@ -1,13 +1,11 @@
 package eu.stamp.asserts;
 
-import eu.stamp.EntryPoint;
-import eu.stamp.Main;
 import eu.stamp.asserts.log.Logger;
 import eu.stamp.runner.test.Failure;
+import eu.stamp.test.TestRunner;
 import eu.stamp.util.Counter;
 import eu.stamp.util.Util;
 import spoon.Launcher;
-import spoon.SpoonModelBuilder;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtInvocation;
@@ -16,7 +14,6 @@ import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.visitor.filter.TypeFilter;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -84,14 +81,7 @@ public class AssertFixer {
         if (!remove) {
             throw new RuntimeException();
         }
-        final SpoonModelBuilder compiler = spoon.createCompiler();
-        compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
-        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        try {
-            EntryPoint.runTests(cp, fullQualifiedName, testCaseName);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        TestRunner.runTest(spoon, testCaseName);
     }
 
 }

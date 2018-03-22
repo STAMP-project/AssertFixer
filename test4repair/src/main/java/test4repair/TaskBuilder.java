@@ -1,11 +1,11 @@
 package test4repair;
 
-import fr.inria.spirals.json.JSONBugID;
-import fr.inria.spirals.json.JSONProject;
-import fr.inria.spirals.json.JSONSeed;
-import fr.inria.spirals.util.Counter;
+import eu.stamp.util.Counter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import test4repair.json.JSONBugID;
+import test4repair.json.JSONProject;
+import test4repair.json.JSONSeed;
 
 import java.io.File;
 import java.io.FileReader;

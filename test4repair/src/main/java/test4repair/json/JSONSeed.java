@@ -1,4 +1,4 @@
-package eu.stamp.json;
+package test4repair.json;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,20 +1,22 @@
 package test4repair;
 
-import fr.inria.spirals.asserts.log.Logger;
-import fr.inria.spirals.json.JSONTest;
-import fr.inria.spirals.test.TestRunner;
-import fr.inria.spirals.util.Counter;
+import eu.stamp.asserts.log.Logger;
+import eu.stamp.test.TestRunner;
+import eu.stamp.util.Counter;
 import org.junit.runner.notification.Failure;
 import org.junit.runners.model.TestTimedOutException;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 import spoon.reflect.declaration.CtClass;
+import test4repair.json.JSONTest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static fr.inria.spirals.asserts.AssertFixer.fixAssert;
+import static eu.stamp.asserts.AssertFixer.fixAssert;
+import static eu.stamp.util.Util.FILE_SEPARATOR;
+import static eu.stamp.util.Util.PATH_SEPARATOR;
 
 /**
  * Created by Benjamin DANGLOT

@@ -1,6 +1,6 @@
 package test4repair;
 
-import fr.inria.spirals.util.Util;
+import eu.stamp.util.Util;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Created by Benjamin DANGLOT
