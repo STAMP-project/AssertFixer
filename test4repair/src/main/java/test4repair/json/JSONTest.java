@@ -1,4 +1,4 @@
-package eu.stamp.json;
+package test4repair.json;
 
 /**
  * Created by Benjamin DANGLOT

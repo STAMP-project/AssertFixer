@@ -2,8 +2,8 @@ package test4repair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import eu.stamp.json.JSONProject;
 import eu.stamp.util.Counter;
+import test4repair.json.JSONProject;
 
 import java.io.File;
 import java.io.FileWriter;
