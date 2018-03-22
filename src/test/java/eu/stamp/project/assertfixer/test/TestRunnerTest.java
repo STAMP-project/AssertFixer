@@ -1,4 +1,4 @@
-package eu.stamp.test;
+package eu.stamp.project.assertfixer.test;
 
 /**
  * Created by Benjamin DANGLOT

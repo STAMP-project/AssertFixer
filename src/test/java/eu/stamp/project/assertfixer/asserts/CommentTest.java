@@ -1,12 +1,9 @@
-package eu.stamp.asserts;
+package eu.stamp.project.assertfixer.asserts;
 
-import eu.stamp.AbstractTest;
+import eu.stamp.project.assertfixer.AbstractTest;
 import eu.stamp.EntryPoint;
-import eu.stamp.Main;
 import eu.stamp.runner.test.Failure;
-import org.junit.Before;
 import org.junit.Test;
-import spoon.Launcher;
 import spoon.reflect.code.CtComment;
 
 import java.util.List;

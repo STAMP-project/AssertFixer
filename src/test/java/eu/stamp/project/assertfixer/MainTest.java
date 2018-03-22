@@ -1,4 +1,4 @@
-package eu.stamp;
+package eu.stamp.project.assertfixer;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static eu.stamp.AbstractTest.dependenciesToRunJUnit;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -19,7 +18,7 @@ public class MainTest {
     @Test
     public void test() throws Exception {
         assertEquals(0, Main.run(new String[]{
-                "--classpath", dependenciesToRunJUnit,
+                "--classpath", AbstractTest.dependenciesToRunJUnit,
                 "--test-class", "aPackage.ClassResourcesTest",
                 "--test-method", "testAssertionErrorBoolean:testAssertionErrorPrimitive",
                 "--source-path", "src/test/resources/ClassResourcesTest.java",

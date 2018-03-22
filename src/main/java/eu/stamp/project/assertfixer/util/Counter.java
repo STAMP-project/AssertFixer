@@ -1,4 +1,4 @@
-package eu.stamp.util;
+package eu.stamp.project.assertfixer.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,8 +1,8 @@
-package eu.stamp.asserts;
+package eu.stamp.project.assertfixer.asserts;
 
-import eu.stamp.asserts.log.Logger;
-import eu.stamp.util.Counter;
-import eu.stamp.util.Util;
+import eu.stamp.project.assertfixer.asserts.log.Logger;
+import eu.stamp.project.assertfixer.util.Counter;
+import eu.stamp.project.assertfixer.util.Util;
 import spoon.reflect.code.CtComment;
 import spoon.reflect.code.CtFieldRead;
 import spoon.reflect.code.CtInvocation;

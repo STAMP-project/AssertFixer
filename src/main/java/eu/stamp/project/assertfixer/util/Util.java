@@ -1,11 +1,9 @@
-package eu.stamp.util;
+package eu.stamp.project.assertfixer.util;
 
 import spoon.reflect.code.CtInvocation;
 import spoon.reflect.declaration.CtType;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;

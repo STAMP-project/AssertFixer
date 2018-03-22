@@ -1,8 +1,8 @@
-package eu.stamp.util;
+package eu.stamp.project.assertfixer.util;
 
-import eu.stamp.AbstractTest;
+import eu.stamp.project.assertfixer.AbstractTest;
 import eu.stamp.EntryPoint;
-import eu.stamp.asserts.AssertFixer;
+import eu.stamp.project.assertfixer.asserts.AssertFixer;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -10,8 +10,8 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eu.stamp.util.Util.FILE_SEPARATOR;
-import static eu.stamp.util.Util.LINE_SEPARATOR;
+import static eu.stamp.project.assertfixer.util.Util.FILE_SEPARATOR;
+import static eu.stamp.project.assertfixer.util.Util.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 
 /**

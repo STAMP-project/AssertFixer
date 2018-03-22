@@ -1,4 +1,4 @@
-package eu.stamp.asserts;
+package eu.stamp.project.assertfixer.asserts;
 
 import eu.stamp.runner.test.Failure;
 import spoon.Launcher;
@@ -14,7 +14,6 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
