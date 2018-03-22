@@ -1,14 +1,10 @@
 package eu.stamp.test;
 
 import eu.stamp.EntryPoint;
-import eu.stamp.Main;
 import eu.stamp.asserts.log.Logger;
+import eu.stamp.runner.test.TestListener;
+import eu.stamp.util.Util;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.runner.Request;
-import org.junit.runner.Runner;
-import org.junit.runner.notification.Failure;
-import org.junit.runner.notification.RunNotifier;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 import spoon.reflect.declaration.CtAnnotation;
@@ -21,15 +17,12 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.function.Function;
 import java.util.stream.IntStream;
+
+import static eu.stamp.Main.configuration;
 
 /**
  * Created by Benjamin DANGLOT
@@ -38,8 +31,16 @@ import java.util.stream.IntStream;
  */
 public class TestRunner {
 
-    public static void runTest() {
-
+    public static TestListener runTest(Launcher launcher, String failingTestMethod) {
+        final SpoonModelBuilder compiler = launcher.createCompiler();
+        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
+        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+        return EntryPoint.runTests(
+                configuration.getBinaryOutputDirectory()
+                        + Util.PATH_SEPARATOR + configuration.classpath,
+                configuration.fullQualifiedFailingTestClass,
+                failingTestMethod
+        );
     }
 
     public static void runTestWithLogger(Launcher spoon,
@@ -51,6 +52,7 @@ public class TestRunner {
         addSaveStatementInTearDownAfterClass(testClass);
 
         final String loggerClasspath = ":target/classes/eu/stamp/asserts/log/Logger.class";
+        final String binaryOutputDirectory = configuration.getBinaryOutputDirectory();
         final SpoonModelBuilder compiler = spoon.createCompiler();
 
         final CtMethod<?> ctMethod = testClass.getMethodsByName(testCaseName).get(0);
@@ -60,9 +62,9 @@ public class TestRunner {
                     clone.setSimpleName(clone.getSimpleName() + "_" + index);
                     testClass.addMethod(clone);
                 });
-        compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
+        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        EntryPoint.runTests(classpath + loggerClasspath,
+        EntryPoint.runTests(binaryOutputDirectory + Util.PATH_SEPARATOR + classpath + loggerClasspath,
                 fullQualifiedName,
                 testCaseName,
                 testCaseName + "_0",
