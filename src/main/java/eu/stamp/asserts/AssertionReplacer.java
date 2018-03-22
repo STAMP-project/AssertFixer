@@ -1,5 +1,6 @@
 package eu.stamp.asserts;
 
+import eu.stamp.util.Util;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
@@ -18,11 +19,11 @@ import java.util.stream.Collectors;
  */
 public class AssertionReplacer {
 
-    public static List<Integer> replaceByLogStatement(CtMethod<?> clone) {
+    static List<Integer> replaceByLogStatement(CtMethod<?> clone) {
         final List<CtInvocation> assertionsToBeReplaced = clone.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
             @Override
             public boolean matches(CtInvocation element) {
-                return isAssert.test(element) && super.matches(element);
+                return Util.isAssert.test(element) && super.matches(element);
             }
         }).stream()
                 .sorted(Comparator.comparingInt(ctInvocation -> ctInvocation.getPosition().getLine()))
@@ -46,13 +47,5 @@ public class AssertionReplacer {
         return indices;
     }
 
-    public static final Predicate<CtInvocation> isAssert = ctInvocation ->
-            ctInvocation.getExecutable().getSimpleName().startsWith("assert") ||
-                    isAssertionClass(ctInvocation.getExecutable().getDeclaringType().getDeclaration());
 
-    public static boolean isAssertionClass(CtType klass) {
-        return klass != null &&
-                ("org.junit.Assert".equals(klass.getQualifiedName()) || "junit.framework.Assert".equals(klass.getQualifiedName())) &&
-                klass.getSuperclass() != null && isAssertionClass(klass.getSuperclass().getDeclaration());
-    }
 }

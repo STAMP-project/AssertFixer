@@ -1,14 +1,9 @@
 package eu.stamp.util;
 
+import eu.stamp.AbstractTest;
 import eu.stamp.EntryPoint;
-import eu.stamp.Main;
-import eu.stamp.test.TestRunner;
 import eu.stamp.asserts.AssertFixer;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.notification.Failure;
-import spoon.Launcher;
-import spoon.SpoonModelBuilder;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,36 +14,18 @@ import static eu.stamp.util.Util.EXTENSION_JSON;
 import static eu.stamp.util.Util.FILE_SEPARATOR;
 import static eu.stamp.util.Util.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Benjamin DANGLOT
  * benjamin.danglot@inria.fr
  * on 30/05/17
  */
-public class CounterTest {
-
-    private Launcher spoon;
-    private SpoonModelBuilder compiler;
-
-    @Before
-    public void setUp() throws Exception {
-        spoon = new Launcher();
-        spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/eu/stamp/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
-        spoon.getEnvironment().setComplianceLevel(7);
-        spoon.getEnvironment().setAutoImports(true);
-        spoon.getEnvironment().setShouldCompile(true);
-        spoon.setSourceOutputDirectory(Main.configuration.getSourceOutputDirectory());
-        spoon.setBinaryOutputDirectory(Main.configuration.getBinaryOutputDirectory());
-        spoon.run();
-        compiler = spoon.createCompiler();
-    }
+public class CounterTest extends AbstractTest {
 
     private void test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
         List<eu.stamp.runner.test.Failure> failures = EntryPoint.runTests(
-                Main.configuration.getBinaryOutputDirectory(),
+                getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
@@ -56,7 +33,7 @@ public class CounterTest {
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                Main.configuration.getBinaryOutputDirectory());
+                getClasspath());
     }
 
     @Test

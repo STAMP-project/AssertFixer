@@ -2,6 +2,7 @@ package eu.stamp.asserts;
 
 import eu.stamp.asserts.log.Logger;
 import eu.stamp.util.Counter;
+import eu.stamp.util.Util;
 import spoon.reflect.code.CtComment;
 import spoon.reflect.code.CtFieldRead;
 import spoon.reflect.code.CtInvocation;
@@ -33,7 +34,7 @@ public class AssertionsFixer {
                     if (Logger.observations.containsKey(index)) {
                         if (Logger.observations.get(index) != null &&
                                 Logger.observations.get(index).getClass().isArray()) {
-                            if (Utils.isPrimitiveArray.test(Logger.observations.get(index))) {//TODO only primitive are supported
+                            if (Util.isPrimitiveArray.test(Logger.observations.get(index))) {//TODO only primitive are supported
                                 String snippet = createSnippetFromObservations(Logger.observations.get(index));
                                 valueToReplace.replace(factory.createCodeSnippetExpression(snippet));
                                 Counter.incNumberOfArrayFixed();
@@ -55,10 +56,10 @@ public class AssertionsFixer {
                                         valueToReplace.getParent().toString().replace("assertSame", "assertSame")
                                         )
                                 );
-                            } else if (Utils.isFieldOfClass.test(Logger.observations.get(index))) {
+                            } else if (Util.isFieldOfClass.test(Logger.observations.get(index))) {
                                 valueToReplace.replace(
                                         factory.createCodeSnippetExpression(
-                                                Utils.fieldOfObjectToString.apply(Logger.observations.get(index))
+                                                Util.fieldOfObjectToString.apply(Logger.observations.get(index))
                                         )
                                 );
                             } else if (Logger.observations.get(index).equals(Double.NEGATIVE_INFINITY)) {

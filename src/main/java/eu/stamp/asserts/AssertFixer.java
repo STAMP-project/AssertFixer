@@ -5,6 +5,7 @@ import eu.stamp.Main;
 import eu.stamp.asserts.log.Logger;
 import eu.stamp.runner.test.Failure;
 import eu.stamp.util.Counter;
+import eu.stamp.util.Util;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 import spoon.reflect.code.CtBlock;
@@ -18,8 +19,6 @@ import spoon.reflect.visitor.filter.TypeFilter;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
-
-import static eu.stamp.asserts.AssertionReplacer.isAssert;
 
 /**
  * Created by Benjamin DANGLOT
@@ -36,11 +35,11 @@ public class AssertFixer {
         Counter.addNumberOfAssertionInTests(testCaseToBeFix.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
             @Override
             public boolean matches(CtInvocation element) {
-                return isAssert.test(element);
+                return Util.isAssert.test(element);
             }
         }).size());
 
-        if (failure.fullQualifiedNameOfException.equals("java.lang.AssertionError")) {
+        if (Util.assertionErrors.contains(failure.fullQualifiedNameOfException)) {
             Counter.incNumberOfFailingAssertion();
             Counter.incNumberOfFailingTestFromAssertion();
             CtMethod<?> clone = testCaseToBeFix.clone();
@@ -78,7 +77,7 @@ public class AssertFixer {
         final CtTry ctTry = clone.getElements(new TypeFilter<>(CtTry.class)).get(0);
         ctTry.replace(ctTry.getBody());
         final CtInvocation failToRemove = clone.getElements(new TypeFilter<>(CtInvocation.class)).stream()
-                .filter(Utils.isFail)
+                .filter(Util.isFail)
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
         final boolean remove = failToRemove.getParent(CtBlock.class).getStatements().remove(failToRemove);

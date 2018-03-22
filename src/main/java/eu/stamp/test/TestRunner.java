@@ -38,6 +38,10 @@ import java.util.stream.IntStream;
  */
 public class TestRunner {
 
+    public static void runTest() {
+
+    }
+
     public static void runTestWithLogger(Launcher spoon,
                                          String classpath,
                                          String fullQualifiedName,

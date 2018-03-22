@@ -1,15 +1,13 @@
 package eu.stamp.asserts;
 
+import eu.stamp.AbstractTest;
 import eu.stamp.EntryPoint;
 import eu.stamp.Main;
 import eu.stamp.runner.test.Failure;
-import org.hamcrest.BaseDescription;
-import org.junit.Before;
+import eu.stamp.util.Util;
 import org.junit.Test;
-import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 
-import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -19,53 +17,13 @@ import static org.junit.Assert.assertTrue;
  * benjamin.danglot@inria.fr
  * on 30/05/17
  */
-public class AssertFixerTest {
-
-    private Launcher spoon;
-    private SpoonModelBuilder compiler;
-
-    private static final String dependenciesToRunJUnit;
-
-    static {
-        try {
-            dependenciesToRunJUnit = new File(
-                    Test.class.getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI())
-                    .toString() + ":" +
-                    new File(
-                            BaseDescription.class.getProtectionDomain()
-                                    .getCodeSource()
-                                    .getLocation()
-                                    .toURI())
-                            .toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @Before
-    public void setUp() throws Exception {
-        spoon = new Launcher();
-        spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/eu/stamp/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
-        spoon.getEnvironment().setComplianceLevel(7);
-        spoon.getEnvironment().setAutoImports(true);
-        spoon.getEnvironment().setShouldCompile(true);
-        spoon.setSourceOutputDirectory(Main.configuration.getSourceOutputDirectory());
-        spoon.setBinaryOutputDirectory(Main.configuration.getBinaryOutputDirectory());
-        spoon.run();
-        compiler = spoon.createCompiler();
-        compiler.setBinaryOutputDirectory(new File(Main.configuration.getBinaryOutputDirectory()));
-    }
+public class AssertFixerTest extends AbstractTest {
 
     private void test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
 
         List<Failure> failures = EntryPoint.runTests(
-                Main.configuration.getBinaryOutputDirectory() + ":" + dependenciesToRunJUnit,
+                getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
@@ -75,11 +33,11 @@ public class AssertFixerTest {
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                Main.configuration.getBinaryOutputDirectory() + ":" + dependenciesToRunJUnit);
+                getClasspath());
 
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         failures = EntryPoint.runTests(
-                Main.configuration.getBinaryOutputDirectory() + ":" + dependenciesToRunJUnit,
+                getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();
 
@@ -88,7 +46,6 @@ public class AssertFixerTest {
 
     @Test
     public void testFixAssertionBoolean() throws Exception {
-        EntryPoint.verbose = true;
         test("testAssertionErrorBoolean");
     }
 

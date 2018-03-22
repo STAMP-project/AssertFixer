@@ -1,5 +1,6 @@
 package eu.stamp.asserts;
 
+import eu.stamp.AbstractTest;
 import eu.stamp.EntryPoint;
 import eu.stamp.Main;
 import eu.stamp.runner.test.Failure;
@@ -19,22 +20,7 @@ import static org.junit.Assert.assertTrue;
  * benjamin.danglot@inria.fr
  * on 30/05/17
  */
-public class CommentTest {
-
-    private Launcher spoon;
-
-    @Before
-    public void setUp() throws Exception {
-        spoon = new Launcher();
-        spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/eu/stamp/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
-        spoon.getEnvironment().setComplianceLevel(7);
-        spoon.getEnvironment().setAutoImports(true);
-        spoon.getEnvironment().setShouldCompile(true);
-        spoon.setSourceOutputDirectory("target/spooned");
-        spoon.setBinaryOutputDirectory("target/spooned-classes");
-        spoon.run();
-    }
+public class CommentTest extends AbstractTest {
 
     @Test
     public void testAddCommentWithOldAssertion() throws Exception {
@@ -52,7 +38,7 @@ public class CommentTest {
         );
 
         List<Failure> failures = EntryPoint.runTests(
-                Main.configuration.getBinaryOutputDirectory(),
+                getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
@@ -60,7 +46,7 @@ public class CommentTest {
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),
-                Main.configuration.getBinaryOutputDirectory());
+                getClasspath());
 
         final List<CtComment> comments = spoon.getFactory().Class()
                 .get(fullQualifiedName)

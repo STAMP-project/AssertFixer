@@ -14,6 +14,9 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 /**
  * Created by Benjamin DANGLOT
@@ -22,11 +25,18 @@ import java.util.List;
  */
 public class TryCatchFixer {
 
+    private static Predicate<String> isAnonymous = fullQualifiedName ->
+            Pattern.compile("(.+)\\$\\d+").matcher(fullQualifiedName).matches();
+
     @SuppressWarnings("unchecked")
     static void fixTryCatchFailAssertion(Launcher spoon, CtMethod<?> testCaseToBeFix, Failure failure, List<CtCatch> catches) {
-        final String[] splittedNameException = failure.fullQualifiedNameOfException.split("\\.");
+        String fullQualifiedNameException = failure.fullQualifiedNameOfException;
+        CtTypeReference reference = testCaseToBeFix.getFactory().Type().createReference(fullQualifiedNameException);
+        final String[] splittedNameException = fullQualifiedNameException.split("\\.");
         String exceptionName = splittedNameException[splittedNameException.length - 1];
-        final CtTypeReference reference = testCaseToBeFix.getFactory().Type().createReference(failure.fullQualifiedNameOfException);
+        if (isAnonymous.test(failure.fullQualifiedNameOfException)) {
+            reference = testCaseToBeFix.getFactory().Type().createReference(fullQualifiedNameException).getSuperclass();
+        }
         final CtCatchVariable<? extends Throwable> catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
                 reference,
                 PREFIX_NAME_EXPECTED_EXCEPTION + exceptionName
@@ -67,10 +77,15 @@ public class TryCatchFixer {
         final CtTry aTry = factory.createTry();
         final CtCatch aCatch = factory.createCatch();
         aTry.addCatcher(aCatch);
-        final String[] splittedNameException = failure.fullQualifiedNameOfException.split("\\.");
+        String fullQualifiedNameException = failure.fullQualifiedNameOfException;
+        CtTypeReference reference = testCaseToBeFix.getFactory().Type().createReference(fullQualifiedNameException);
+        final String[] splittedNameException = fullQualifiedNameException.split("\\.");
         String exceptionName = splittedNameException[splittedNameException.length - 1];
-        final CtCatchVariable catchVariable = factory.createCatchVariable(
-                factory.Type().createReference(failure.fullQualifiedNameOfException),
+        if (isAnonymous.test(failure.fullQualifiedNameOfException)) {
+            reference = testCaseToBeFix.getFactory().Type().createReference(fullQualifiedNameException).getSuperclass();
+        }
+        final CtCatchVariable<? extends Throwable> catchVariable = testCaseToBeFix.getFactory().createCatchVariable(
+                reference,
                 PREFIX_NAME_EXPECTED_EXCEPTION + exceptionName
         );
         aCatch.setParameter(catchVariable);
