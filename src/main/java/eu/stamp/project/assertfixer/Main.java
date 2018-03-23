@@ -1,10 +1,10 @@
 package eu.stamp.project.assertfixer;
 
-import eu.stamp.EntryPoint;
 import eu.stamp.project.assertfixer.asserts.AssertFixer;
 import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Util;
-import eu.stamp.runner.test.Failure;
+import eu.stamp.project.testrunner.EntryPoint;
+import eu.stamp.project.testrunner.runner.test.Failure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spoon.Launcher;

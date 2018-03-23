@@ -1,8 +1,8 @@
 package eu.stamp.project.assertfixer.asserts;
 
 import eu.stamp.project.assertfixer.AbstractTest;
-import eu.stamp.EntryPoint;
-import eu.stamp.runner.test.Failure;
+import eu.stamp.project.testrunner.EntryPoint;
+import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
 import spoon.reflect.code.CtComment;
 

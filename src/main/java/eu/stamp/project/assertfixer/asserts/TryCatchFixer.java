@@ -1,6 +1,6 @@
 package eu.stamp.project.assertfixer.asserts;
 
-import eu.stamp.runner.test.Failure;
+import eu.stamp.project.testrunner.runner.test.Failure;
 import spoon.Launcher;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtCatchVariable;

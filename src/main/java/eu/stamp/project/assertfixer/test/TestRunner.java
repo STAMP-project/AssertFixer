@@ -1,9 +1,9 @@
 package eu.stamp.project.assertfixer.test;
 
-import eu.stamp.EntryPoint;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Util;
-import eu.stamp.runner.test.TestListener;
+import eu.stamp.project.testrunner.EntryPoint;
+import eu.stamp.project.testrunner.runner.test.TestListener;
 import org.junit.AfterClass;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
