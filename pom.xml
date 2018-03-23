@@ -17,17 +17,6 @@
         <github.global.server>github</github.global.server>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>stamp-maven-repository-mvn-repo</id>
-            <url>https://stamp-project.github.io/stamp-maven-repository/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>fr.inria.gforge.spoon</groupId>
@@ -61,9 +50,9 @@
         </dependency>
 
         <dependency>
-            <groupId>eu.stamp</groupId>
+            <groupId>eu.stamp-project</groupId>
             <artifactId>test-runner</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->

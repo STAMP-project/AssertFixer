@@ -4,7 +4,7 @@ import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Counter;
 import eu.stamp.project.assertfixer.util.Util;
-import eu.stamp.runner.test.Failure;
+import eu.stamp.project.testrunner.runner.test.Failure;
 import spoon.Launcher;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCatch;

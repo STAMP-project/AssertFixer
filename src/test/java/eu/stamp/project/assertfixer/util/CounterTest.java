@@ -1,8 +1,9 @@
 package eu.stamp.project.assertfixer.util;
 
 import eu.stamp.project.assertfixer.AbstractTest;
-import eu.stamp.EntryPoint;
 import eu.stamp.project.assertfixer.asserts.AssertFixer;
+import eu.stamp.project.testrunner.EntryPoint;
+import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ public class CounterTest extends AbstractTest {
 
     private void test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
-        List<eu.stamp.runner.test.Failure> failures = EntryPoint.runTests(
+        List<Failure> failures = EntryPoint.runTests(
                 getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
