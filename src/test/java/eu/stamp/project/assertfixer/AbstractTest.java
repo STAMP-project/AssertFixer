@@ -19,6 +19,7 @@ import java.io.File;
 public class AbstractTest {
 
     protected static String dependenciesToRunJUnit;
+    protected static Configuration configuration;
 
     static {
         try {
@@ -44,7 +45,7 @@ public class AbstractTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        Main.configuration = Configuration.get(new String[]{
+        configuration = JSAPConfiguration.get(new String[]{
                 "--classpath", dependenciesToRunJUnit,
                 "--test-class", "aPackage.ClassResourcesTest",
                 "--test-method", "testAssertionErrorBoolean:testAssertionErrorPrimitive",

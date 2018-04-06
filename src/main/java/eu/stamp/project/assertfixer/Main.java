@@ -8,6 +8,7 @@ import eu.stamp.project.testrunner.runner.test.Failure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spoon.Launcher;
+import spoon.SpoonAPI;
 import spoon.SpoonModelBuilder;
 
 import java.io.File;
@@ -21,27 +22,27 @@ public class Main {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static Configuration configuration;
+    Configuration configuration;
 
-    public static void main(String[] args) {
-        System.exit(run(args));
+    public Main(Configuration configuration) {
+        this.configuration = configuration;
     }
 
-    public static int run(String [] args) {
-        Main.configuration = Configuration.get(args);
-        EntryPoint.verbose = Main.configuration.verbose;
+    public static void main(String[] args) {
+        System.exit(Main.run(args));
+    }
 
-        Launcher launcher = new Launcher();
-        launcher.getEnvironment().setAutoImports(true);
-        launcher.getEnvironment().setNoClasspath(true);
-        launcher.getEnvironment().setSourceClasspath(configuration.classpath.split(Util.PATH_SEPARATOR));
-        launcher.addInputResource(configuration.pathToSourceFolder);
-        launcher.addInputResource(configuration.pathToTestFolder);
-        launcher.getEnvironment().setShouldCompile(true);
-        launcher.run();
+    public static int run(String[] args) {
+        Configuration configuration = JSAPConfiguration.get(args);
+        Main main = new Main(configuration);
+        return main.run();
+    }
 
-        final Boolean result = Main.configuration.failingTestMethods.stream()
-                .map(failingTestMethod -> fixGivenTest(launcher, failingTestMethod))
+    public int run() {
+        Launcher launcher = this.getSpoonAPIForProject();
+
+        final Boolean result = this.configuration.getFailingTestMethods().stream()
+                .map(failingTestMethod -> this.fixGivenTest(launcher, failingTestMethod))
                 .reduce(Boolean.TRUE, Boolean::logicalAnd);
         if (result) {
             return 1;
@@ -50,23 +51,37 @@ public class Main {
         }
     }
 
-    private static boolean fixGivenTest(Launcher launcher, String failingTestMethod) {
-        Failure failure = TestRunner.runTest(launcher, failingTestMethod).getFailingTests().get(0);
+    private Launcher getSpoonAPIForProject() {
+        EntryPoint.verbose = this.configuration.isVerbose();
+
+        Launcher launcher = new Launcher();
+        launcher.getEnvironment().setAutoImports(true);
+        launcher.getEnvironment().setNoClasspath(true);
+        launcher.getEnvironment().setSourceClasspath(this.configuration.getClasspath().split(Util.PATH_SEPARATOR));
+        launcher.addInputResource(this.configuration.getPathToSourceFolder());
+        launcher.addInputResource(this.configuration.getPathToTestFolder());
+        launcher.getEnvironment().setShouldCompile(true);
+        launcher.run();
+
+        return launcher;
+    }
+
+    private boolean fixGivenTest(Launcher launcher, String failingTestMethod) {
+        Failure failure = TestRunner.runTest(this.configuration, launcher, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
         try {
             AssertFixer.fixAssert(
+                    configuration,
                     launcher,
-                    configuration.fullQualifiedFailingTestClass,
+                    this.configuration.getFullQualifiedFailingTestClass(),
                     failingTestMethod,
                     failure,
-                    configuration.classpath
+                    this.configuration.getClasspath()
             );
-            final SpoonModelBuilder compiler = launcher.createCompiler();
-            compiler.setBinaryOutputDirectory(new File(Main.configuration.output));
             return EntryPoint.runTests(
-                    Main.configuration.getBinaryOutputDirectory() +
-                            Util.PATH_SEPARATOR + configuration.classpath,
-                    configuration.fullQualifiedFailingTestClass,
+                    this.configuration.getBinaryOutputDirectory() +
+                            Util.PATH_SEPARATOR + configuration.getClasspath(),
+                    configuration.getFullQualifiedFailingTestClass(),
                     failingTestMethod
             ).getFailingTests().isEmpty();
         } catch (Exception e) {

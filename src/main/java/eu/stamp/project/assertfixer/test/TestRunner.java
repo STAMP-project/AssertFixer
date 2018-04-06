@@ -1,5 +1,6 @@
 package eu.stamp.project.assertfixer.test;
 
+import eu.stamp.project.assertfixer.Configuration;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp.project.testrunner.EntryPoint;
@@ -22,8 +23,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.IntStream;
 
-import static eu.stamp.project.assertfixer.Main.configuration;
-
 /**
  * Created by Benjamin DANGLOT
  * benjamin.danglot@inria.fr
@@ -31,19 +30,19 @@ import static eu.stamp.project.assertfixer.Main.configuration;
  */
 public class TestRunner {
 
-    public static TestListener runTest(Launcher launcher, String failingTestMethod) {
+    public static TestListener runTest(Configuration configuration, Launcher launcher, String failingTestMethod) {
         final SpoonModelBuilder compiler = launcher.createCompiler();
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         return EntryPoint.runTests(
                 configuration.getBinaryOutputDirectory()
-                        + Util.PATH_SEPARATOR + configuration.classpath,
-                configuration.fullQualifiedFailingTestClass,
+                        + Util.PATH_SEPARATOR + configuration.getClasspath(),
+                configuration.getFullQualifiedFailingTestClass(),
                 failingTestMethod
         );
     }
 
-    public static void runTestWithLogger(Launcher spoon,
+    public static void runTestWithLogger(Configuration configuration, Launcher spoon,
                                          String classpath,
                                          String fullQualifiedName,
                                          String testCaseName) {

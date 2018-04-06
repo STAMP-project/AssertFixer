@@ -29,7 +29,7 @@ public class CounterTest extends AbstractTest {
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
-        AssertFixer.fixAssert(spoon,
+        AssertFixer.fixAssert(configuration, spoon,
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),

@@ -1,5 +1,6 @@
 package eu.stamp.project.assertfixer.asserts;
 
+import eu.stamp.project.assertfixer.Configuration;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Counter;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class AssertFixer {
 
-    public static void fixAssert(Launcher spoon, String fullQualifiedName, String testCaseName, Failure failure, String cp) throws MalformedURLException, ClassNotFoundException {
+    public static void fixAssert(Configuration configuration, Launcher spoon, String fullQualifiedName, String testCaseName, Failure failure, String cp) throws MalformedURLException, ClassNotFoundException {
         final CtClass<?> classTestToBeFixed = spoon.getFactory().Class().get(fullQualifiedName);
         System.out.println(fullQualifiedName + "#" + testCaseName);
         CtMethod<?> testCaseToBeFix = classTestToBeFixed.getMethodsByName(testCaseName).get(0);
@@ -45,14 +46,14 @@ public class AssertFixer {
             if ((failure.messageOfFailure != null &&
                     failure.messageOfFailure.startsWith(TryCatchFixer.PREFIX_MESSAGE_EXPECTED_EXCEPTION)
                     && failure.messageOfFailure.endsWith("Exception"))) {
-                removeExpectedException(spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
+                removeExpectedException(configuration, spoon, fullQualifiedName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
             } else if (failure.messageOfFailure != null && !failure.messageOfFailure.contains("expected")) {
                 return;
             } else {
                 // replace assertion
                 final List<Integer> indexToLog = AssertionReplacer.replaceByLogStatement(clone);
                 // run tests
-                TestRunner.runTestWithLogger(spoon, cp, fullQualifiedName, testCaseName);
+                TestRunner.runTestWithLogger(configuration, spoon, cp, fullQualifiedName, testCaseName);
                 Logger.load();
                 // replace wrong value
                 classTestToBeFixed.removeMethod(clone);
@@ -70,7 +71,7 @@ public class AssertFixer {
         }
     }
 
-    private static void removeExpectedException(Launcher spoon, String fullQualifiedName, String testCaseName, String cp, CtMethod<?> clone) {
+    private static void removeExpectedException(Configuration configuration, Launcher spoon, String fullQualifiedName, String testCaseName, String cp, CtMethod<?> clone) {
         final CtTry ctTry = clone.getElements(new TypeFilter<>(CtTry.class)).get(0);
         ctTry.replace(ctTry.getBody());
         final CtInvocation failToRemove = clone.getElements(new TypeFilter<>(CtInvocation.class)).stream()
@@ -81,7 +82,7 @@ public class AssertFixer {
         if (!remove) {
             throw new RuntimeException();
         }
-        TestRunner.runTest(spoon, testCaseName);
+        TestRunner.runTest(configuration, spoon, testCaseName);
     }
 
 }
