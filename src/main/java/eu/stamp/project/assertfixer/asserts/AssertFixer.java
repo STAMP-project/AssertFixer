@@ -82,7 +82,7 @@ public class AssertFixer {
         if (!remove) {
             throw new RuntimeException();
         }
-        TestRunner.runTest(configuration, spoon, testCaseName);
+        TestRunner.runTest(configuration, spoon, fullQualifiedName, testCaseName);
     }
 
 }

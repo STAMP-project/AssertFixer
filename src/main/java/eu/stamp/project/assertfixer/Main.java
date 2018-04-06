@@ -12,6 +12,10 @@ import spoon.SpoonAPI;
 import spoon.SpoonModelBuilder;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Benjamin DANGLOT
@@ -22,7 +26,7 @@ public class Main {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    Configuration configuration;
+    private Configuration configuration;
 
     public Main(Configuration configuration) {
         this.configuration = configuration;
@@ -39,16 +43,34 @@ public class Main {
     }
 
     public int run() {
-        Launcher launcher = this.getSpoonAPIForProject();
-
-        final Boolean result = this.configuration.getFailingTestMethods().stream()
-                .map(failingTestMethod -> this.fixGivenTest(launcher, failingTestMethod))
+        final Boolean result = this.runWithResults().stream()
+                .map(AssertFixerResult::isSuccess)
                 .reduce(Boolean.TRUE, Boolean::logicalAnd);
         if (result) {
             return 1;
         } else {
             return 0;
         }
+    }
+
+    public List<AssertFixerResult> runWithResults() {
+        List<AssertFixerResult> allResults = new ArrayList<>();
+        Launcher launcher = this.getSpoonAPIForProject();
+
+        if (this.configuration.getMultipleTestCases() != null) {
+            Map<String, List<String>> multipleTestCases = this.configuration.getMultipleTestCases();
+            for (String testClass : multipleTestCases.keySet()) {
+                for (String testMethod : multipleTestCases.get(testClass)) {
+                    allResults.add(this.fixGivenTest(launcher, testClass, testMethod));
+                }
+            }
+        } else {
+            for (String testMethod : this.configuration.getFailingTestMethods()) {
+                allResults.add(this.fixGivenTest(launcher, this.configuration.getFullQualifiedFailingTestClass(), testMethod));
+            }
+        }
+
+        return allResults;
     }
 
     private Launcher getSpoonAPIForProject() {
@@ -66,26 +88,31 @@ public class Main {
         return launcher;
     }
 
-    private boolean fixGivenTest(Launcher launcher, String failingTestMethod) {
-        Failure failure = TestRunner.runTest(this.configuration, launcher, failingTestMethod).getFailingTests().get(0);
+    private AssertFixerResult fixGivenTest(Launcher launcher, String failingClass, String failingTestMethod) {
+        AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
+        Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
         try {
             AssertFixer.fixAssert(
-                    configuration,
-                    launcher,
-                    this.configuration.getFullQualifiedFailingTestClass(),
-                    failingTestMethod,
-                    failure,
-                    this.configuration.getClasspath()
-            );
-            return EntryPoint.runTests(
-                    this.configuration.getBinaryOutputDirectory() +
-                            Util.PATH_SEPARATOR + configuration.getClasspath(),
-                    configuration.getFullQualifiedFailingTestClass(),
-                    failingTestMethod
-            ).getFailingTests().isEmpty();
+                        configuration,
+                        launcher,
+                        this.configuration.getFullQualifiedFailingTestClass(),
+                        failingTestMethod,
+                        failure,
+                        this.configuration.getClasspath()
+                );
         } catch (Exception e) {
-            return false;
+            fixerResult.setExceptionMessage(e.getMessage());
         }
+
+        boolean success = EntryPoint.runTests(
+                this.configuration.getBinaryOutputDirectory() +
+                        Util.PATH_SEPARATOR + configuration.getClasspath(),
+                configuration.getFullQualifiedFailingTestClass(),
+                failingTestMethod
+        ).getFailingTests().isEmpty();
+
+        fixerResult.setSuccess(success);
+        return fixerResult;
     }
 }

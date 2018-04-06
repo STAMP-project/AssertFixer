@@ -1,6 +1,8 @@
 package eu.stamp.project.assertfixer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Benjamin DANGLOT
@@ -15,6 +17,7 @@ public class Configuration {
     private String pathToTestFolder;
     private boolean verbose;
     private String output;
+    private Map<String, List<String>> multipleTestCases;
 
     public String getSourceOutputDirectory() {
         return this.output + "/spooned";
@@ -78,5 +81,13 @@ public class Configuration {
 
     public void setOutput(String output) {
         this.output = output;
+    }
+
+    public Map<String, List<String>> getMultipleTestCases() {
+        return multipleTestCases;
+    }
+
+    public void setMultipleTestCases(Map<String, List<String>> multipleTestCases) {
+        this.multipleTestCases = new HashMap<>(multipleTestCases);
     }
 }

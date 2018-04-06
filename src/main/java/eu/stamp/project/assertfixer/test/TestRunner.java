@@ -30,14 +30,14 @@ import java.util.stream.IntStream;
  */
 public class TestRunner {
 
-    public static TestListener runTest(Configuration configuration, Launcher launcher, String failingTestMethod) {
+    public static TestListener runTest(Configuration configuration, Launcher launcher, String failingTestClass, String failingTestMethod) {
         final SpoonModelBuilder compiler = launcher.createCompiler();
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         return EntryPoint.runTests(
                 configuration.getBinaryOutputDirectory()
                         + Util.PATH_SEPARATOR + configuration.getClasspath(),
-                configuration.getFullQualifiedFailingTestClass(),
+                failingTestClass,
                 failingTestMethod
         );
     }
