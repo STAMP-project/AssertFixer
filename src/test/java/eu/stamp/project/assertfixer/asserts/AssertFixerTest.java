@@ -27,7 +27,7 @@ public class AssertFixerTest extends AbstractTest {
 
         assertTrue(failures.size() == 1);
 
-        AssertFixer.fixAssert(spoon,
+        AssertFixer.fixAssert(configuration, spoon,
                 fullQualifiedName,
                 testCaseName,
                 failures.get(0),

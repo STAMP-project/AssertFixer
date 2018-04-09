@@ -8,9 +8,14 @@ import eu.stamp.project.testrunner.runner.test.Failure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spoon.Launcher;
+import spoon.SpoonAPI;
 import spoon.SpoonModelBuilder;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Benjamin DANGLOT
@@ -21,27 +26,25 @@ public class Main {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static Configuration configuration;
+    private Configuration configuration;
 
-    public static void main(String[] args) {
-        System.exit(run(args));
+    public Main(Configuration configuration) {
+        this.configuration = configuration;
     }
 
-    public static int run(String [] args) {
-        Main.configuration = Configuration.get(args);
-        EntryPoint.verbose = Main.configuration.verbose;
+    public static void main(String[] args) {
+        System.exit(Main.run(args));
+    }
 
-        Launcher launcher = new Launcher();
-        launcher.getEnvironment().setAutoImports(true);
-        launcher.getEnvironment().setNoClasspath(true);
-        launcher.getEnvironment().setSourceClasspath(configuration.classpath.split(Util.PATH_SEPARATOR));
-        launcher.addInputResource(configuration.pathToSourceFolder);
-        launcher.addInputResource(configuration.pathToTestFolder);
-        launcher.getEnvironment().setShouldCompile(true);
-        launcher.run();
+    public static int run(String[] args) {
+        Configuration configuration = JSAPConfiguration.get(args);
+        Main main = new Main(configuration);
+        return main.run();
+    }
 
-        final Boolean result = Main.configuration.failingTestMethods.stream()
-                .map(failingTestMethod -> fixGivenTest(launcher, failingTestMethod))
+    public int run() {
+        final Boolean result = this.runWithResults().stream()
+                .map(AssertFixerResult::isSuccess)
                 .reduce(Boolean.TRUE, Boolean::logicalAnd);
         if (result) {
             return 1;
@@ -50,27 +53,66 @@ public class Main {
         }
     }
 
-    private static boolean fixGivenTest(Launcher launcher, String failingTestMethod) {
-        Failure failure = TestRunner.runTest(launcher, failingTestMethod).getFailingTests().get(0);
+    public List<AssertFixerResult> runWithResults() {
+        List<AssertFixerResult> allResults = new ArrayList<>();
+        Launcher launcher = this.getSpoonAPIForProject();
+
+        if (this.configuration.getMultipleTestCases() != null) {
+            Map<String, List<String>> multipleTestCases = this.configuration.getMultipleTestCases();
+            for (String testClass : multipleTestCases.keySet()) {
+                for (String testMethod : multipleTestCases.get(testClass)) {
+                    allResults.add(this.fixGivenTest(launcher, testClass, testMethod));
+                }
+            }
+        } else {
+            for (String testMethod : this.configuration.getFailingTestMethods()) {
+                allResults.add(this.fixGivenTest(launcher, this.configuration.getFullQualifiedFailingTestClass(), testMethod));
+            }
+        }
+
+        return allResults;
+    }
+
+    private Launcher getSpoonAPIForProject() {
+        EntryPoint.verbose = this.configuration.isVerbose();
+
+        Launcher launcher = new Launcher();
+        launcher.getEnvironment().setAutoImports(true);
+        launcher.getEnvironment().setNoClasspath(true);
+        launcher.getEnvironment().setSourceClasspath(this.configuration.getClasspath().split(Util.PATH_SEPARATOR));
+        launcher.addInputResource(this.configuration.getPathToSourceFolder());
+        launcher.addInputResource(this.configuration.getPathToTestFolder());
+        launcher.getEnvironment().setShouldCompile(true);
+        launcher.run();
+
+        return launcher;
+    }
+
+    private AssertFixerResult fixGivenTest(Launcher launcher, String failingClass, String failingTestMethod) {
+        AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
+        Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
         try {
             AssertFixer.fixAssert(
-                    launcher,
-                    configuration.fullQualifiedFailingTestClass,
-                    failingTestMethod,
-                    failure,
-                    configuration.classpath
-            );
-            final SpoonModelBuilder compiler = launcher.createCompiler();
-            compiler.setBinaryOutputDirectory(new File(Main.configuration.output));
-            return EntryPoint.runTests(
-                    Main.configuration.getBinaryOutputDirectory() +
-                            Util.PATH_SEPARATOR + configuration.classpath,
-                    configuration.fullQualifiedFailingTestClass,
-                    failingTestMethod
-            ).getFailingTests().isEmpty();
+                        configuration,
+                        launcher,
+                        this.configuration.getFullQualifiedFailingTestClass(),
+                        failingTestMethod,
+                        failure,
+                        this.configuration.getClasspath()
+                );
         } catch (Exception e) {
-            return false;
+            fixerResult.setExceptionMessage(e.getMessage());
         }
+
+        boolean success = EntryPoint.runTests(
+                this.configuration.getBinaryOutputDirectory() +
+                        Util.PATH_SEPARATOR + configuration.getClasspath(),
+                configuration.getFullQualifiedFailingTestClass(),
+                failingTestMethod
+        ).getFailingTests().isEmpty();
+
+        fixerResult.setSuccess(success);
+        return fixerResult;
     }
 }
