@@ -1,6 +1,7 @@
 package eu.stamp.project.assertfixer.asserts;
 
 import eu.stamp.project.assertfixer.AbstractTest;
+import eu.stamp.project.assertfixer.AssertFixerResult;
 import eu.stamp.project.testrunner.EntryPoint;
 import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import spoon.SpoonModelBuilder;
 
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class AssertFixerTest extends AbstractTest {
 
-    private void test(String testCaseName) throws Exception {
+    private AssertFixerResult test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
 
         List<Failure> failures = EntryPoint.runTests(
@@ -27,9 +29,10 @@ public class AssertFixerTest extends AbstractTest {
 
         assertTrue(failures.size() == 1);
 
+        AssertFixerResult assertFixerResult = new AssertFixerResult(fullQualifiedName, testCaseName);
+
         AssertFixer.fixAssert(configuration, spoon,
-                fullQualifiedName,
-                testCaseName,
+                assertFixerResult,
                 failures.get(0),
                 getClasspath());
 
@@ -40,11 +43,14 @@ public class AssertFixerTest extends AbstractTest {
                 testCaseName).getFailingTests();
 
         assertTrue("should have been empty " + failures ,failures.isEmpty());
+        return assertFixerResult;
     }
 
     @Test
     public void testFixAssertionBoolean() throws Exception {
-        test("testAssertionErrorBoolean");
+        AssertFixerResult result = test("testAssertionErrorBoolean");
+
+        assertNotNull(result.getDiff());
     }
 
     @Test

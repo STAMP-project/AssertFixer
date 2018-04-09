@@ -96,8 +96,7 @@ public class Main {
             AssertFixer.fixAssert(
                         configuration,
                         launcher,
-                        this.configuration.getFullQualifiedFailingTestClass(),
-                        failingTestMethod,
+                        fixerResult,
                         failure,
                         this.configuration.getClasspath()
                 );

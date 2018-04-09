@@ -1,6 +1,7 @@
 package eu.stamp.project.assertfixer.asserts;
 
 import eu.stamp.project.assertfixer.AbstractTest;
+import eu.stamp.project.assertfixer.AssertFixerResult;
 import eu.stamp.project.testrunner.EntryPoint;
 import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
@@ -39,9 +40,9 @@ public class CommentTest extends AbstractTest {
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
+        AssertFixerResult assertFixerResult = new AssertFixerResult(fullQualifiedName, testCaseName);
         AssertFixer.fixAssert(configuration, spoon,
-                fullQualifiedName,
-                testCaseName,
+                assertFixerResult,
                 failures.get(0),
                 getClasspath());
 

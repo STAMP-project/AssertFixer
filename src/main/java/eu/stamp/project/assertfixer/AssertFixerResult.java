@@ -1,5 +1,7 @@
 package eu.stamp.project.assertfixer;
 
+import com.github.difflib.patch.Patch;
+
 import java.io.File;
 
 public class AssertFixerResult {
@@ -7,7 +9,9 @@ public class AssertFixerResult {
     private String testMethod;
     private boolean success;
     private String exceptionMessage;
-    private File patch;
+    private String diff;
+    private Patch<String> patch;
+
 
     public AssertFixerResult(String testClass, String testMethod) {
         this.testClass = testClass;
@@ -38,11 +42,19 @@ public class AssertFixerResult {
         this.exceptionMessage = exceptionMessage;
     }
 
-    public File getPatch() {
+    public String getDiff() {
+        return diff;
+    }
+
+    public void setDiff(String diff) {
+        this.diff = diff;
+    }
+
+    public Patch<String> getPatch() {
         return patch;
     }
 
-    public void setPatch(File patch) {
+    public void setPatch(Patch<String> patch) {
         this.patch = patch;
     }
 }
