@@ -39,7 +39,9 @@ public class AssertFixer {
     public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) throws MalformedURLException, ClassNotFoundException {
         final CtClass<?> classTestToBeFixed = originalClass.clone();
         final String originalClassStr = originalClass.toString();
-        final String filePath = originalClass.getPosition().getFile().toString();
+        final String filePath = originalClass.getPosition().getFile().getPath();
+        final String basePath = new File(".").getPath();
+        String relativeFilePath = new File(basePath).toURI().relativize(new File(filePath).toURI()).getPath();
         final CtPackage parentPackage = originalClass.getPackage();
 
         // switch the original class and the clone from the model
@@ -106,7 +108,7 @@ public class AssertFixer {
                 testCaseName
         ).getFailingTests().isEmpty();
 
-        String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), filePath);
+        String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
         result.setDiff(diff);
         result.setSuccess(success);
 

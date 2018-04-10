@@ -51,8 +51,8 @@ public class AbstractTest {
         configuration.setClasspath(dependenciesToRunJUnit);
         configuration.setFullQualifiedFailingTestClass("aPackage.ClassResourcesTest");
         configuration.setFailingTestMethods(Arrays.asList("testAssertionErrorBoolean:testAssertionErrorPrimitive"));
-        configuration.setPathToSourceFolder("src/test/resources/ClassResourcesTest.java");
-        configuration.setPathToTestFolder("src/test/resources/ClassResourcesTest.java");
+        configuration.setPathToSourceFolder("src/test/resources");
+        configuration.setPathToTestFolder("src/test/resources");
         configuration.setVerbose(true);
         configuration.setOutput("target/assert-fixer");
 
