@@ -80,6 +80,7 @@ public class Main {
         Launcher launcher = new Launcher();
         launcher.getEnvironment().setAutoImports(true);
         launcher.getEnvironment().setNoClasspath(true);
+        launcher.getEnvironment().setCommentEnabled(true);
         launcher.getEnvironment().setSourceClasspath(this.configuration.getClasspath().split(Util.PATH_SEPARATOR));
         launcher.addInputResource(this.configuration.getPathToSourceFolder());
         launcher.addInputResource(this.configuration.getPathToTestFolder());

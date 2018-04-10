@@ -62,6 +62,7 @@ public class AbstractTest {
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
+        spoon.getEnvironment().setCommentEnabled(true);
         spoon.setSourceOutputDirectory(configuration.getSourceOutputDirectory());
         spoon.setBinaryOutputDirectory(configuration.getBinaryOutputDirectory());
         spoon.run();
