@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import spoon.Launcher;
 import spoon.SpoonAPI;
 import spoon.SpoonModelBuilder;
+import spoon.reflect.declaration.CtClass;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -89,29 +90,25 @@ public class Main {
     }
 
     private AssertFixerResult fixGivenTest(Launcher launcher, String failingClass, String failingTestMethod) {
-        AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
+        CtClass testClass = launcher.getFactory().Class().get(failingClass);
+
         Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
+
         try {
-            AssertFixer.fixAssert(
+            return AssertFixer.fixAssert(
                         configuration,
                         launcher,
-                        fixerResult,
+                        testClass,
+                        failingTestMethod,
                         failure,
                         this.configuration.getClasspath()
                 );
         } catch (Exception e) {
+            AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
             fixerResult.setExceptionMessage(e.getMessage());
+            fixerResult.setSuccess(false);
+            return fixerResult;
         }
-
-        boolean success = EntryPoint.runTests(
-                this.configuration.getBinaryOutputDirectory() +
-                        Util.PATH_SEPARATOR + configuration.getClasspath(),
-                configuration.getFullQualifiedFailingTestClass(),
-                failingTestMethod
-        ).getFailingTests().isEmpty();
-
-        fixerResult.setSuccess(success);
-        return fixerResult;
     }
 }

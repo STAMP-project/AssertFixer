@@ -6,6 +6,7 @@ import eu.stamp.project.testrunner.EntryPoint;
 import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
 import spoon.reflect.code.CtComment;
+import spoon.reflect.declaration.CtClass;
 
 import java.util.List;
 
@@ -40,9 +41,10 @@ public class CommentTest extends AbstractTest {
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
-        AssertFixerResult assertFixerResult = new AssertFixerResult(fullQualifiedName, testCaseName);
+        CtClass testClass = spoon.getFactory().Class().get(fullQualifiedName);
         AssertFixer.fixAssert(configuration, spoon,
-                assertFixerResult,
+                testClass,
+                testCaseName,
                 failures.get(0),
                 getClasspath());
 

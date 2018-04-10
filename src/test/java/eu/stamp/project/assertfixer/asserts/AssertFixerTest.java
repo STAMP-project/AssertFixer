@@ -6,9 +6,11 @@ import eu.stamp.project.testrunner.EntryPoint;
 import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
 import spoon.SpoonModelBuilder;
+import spoon.reflect.declaration.CtClass;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -28,29 +30,29 @@ public class AssertFixerTest extends AbstractTest {
                 testCaseName).getFailingTests();// 1st assert fail
 
         assertTrue(failures.size() == 1);
-
-        AssertFixerResult assertFixerResult = new AssertFixerResult(fullQualifiedName, testCaseName);
-
-        AssertFixer.fixAssert(configuration, spoon,
-                assertFixerResult,
+        CtClass testClass = spoon.getFactory().Class().get(fullQualifiedName);
+        AssertFixerResult result = AssertFixer.fixAssert(configuration, spoon,
+                testClass,
+                testCaseName,
                 failures.get(0),
                 getClasspath());
 
-        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        failures = EntryPoint.runTests(
-                getClasspath(),
-                fullQualifiedName,
-                testCaseName).getFailingTests();
-
-        assertTrue("should have been empty " + failures ,failures.isEmpty());
-        return assertFixerResult;
+        assertTrue("result should have been successful", result.isSuccess());
+        return result;
     }
 
     @Test
     public void testFixAssertionBoolean() throws Exception {
         AssertFixerResult result = test("testAssertionErrorBoolean");
 
+        String expectedDiff = "--- /Users/urli/Github/AssertFixer/src/test/resources/ClassResourcesTest.java\n" +
+                "+++ /Users/urli/Github/AssertFixer/src/test/resources/ClassResourcesTest.java\n" +
+                "+    @Test\n" +
+                "@@ -43,1 +53,1 @@\n" +
+                "-        Assert.assertTrue(ClassResourcesTest.getFalse());\n" +
+                "+        Assert.assertFalse(ClassResourcesTest.getFalse());\n";
         assertNotNull(result.getDiff());
+        assertEquals(expectedDiff, result.getDiff());
     }
 
     @Test

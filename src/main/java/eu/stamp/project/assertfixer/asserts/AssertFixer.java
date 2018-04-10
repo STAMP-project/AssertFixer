@@ -1,30 +1,31 @@
 package eu.stamp.project.assertfixer.asserts;
 
 import com.github.difflib.DiffUtils;
+import com.github.difflib.UnifiedDiffUtils;
 import com.github.difflib.algorithm.DiffException;
 import com.github.difflib.patch.Patch;
-import com.github.difflib.text.DiffRow;
-import com.github.difflib.text.DiffRowGenerator;
 import eu.stamp.project.assertfixer.AssertFixerResult;
 import eu.stamp.project.assertfixer.Configuration;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Counter;
 import eu.stamp.project.assertfixer.util.Util;
+import eu.stamp.project.testrunner.EntryPoint;
 import eu.stamp.project.testrunner.runner.test.Failure;
+import org.apache.commons.lang3.StringUtils;
 import spoon.Launcher;
+import spoon.SpoonModelBuilder;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCatch;
 import spoon.reflect.code.CtInvocation;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtPackage;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,10 +36,20 @@ import java.util.List;
  */
 public class AssertFixer {
 
-    public static void fixAssert(Configuration configuration, Launcher spoon, AssertFixerResult fixerResult, Failure failure, String cp) throws MalformedURLException, ClassNotFoundException {
-        final CtClass<?> classTestToBeFixed = spoon.getFactory().Class().get(fixerResult.getTestClass());
-        CtMethod<?> testCaseToBeFix = classTestToBeFixed.getMethodsByName(fixerResult.getTestMethod()).get(0);
-        String oldMethodString = testCaseToBeFix.toString();
+    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) throws MalformedURLException, ClassNotFoundException {
+        final CtClass<?> classTestToBeFixed = originalClass.clone();
+        final String originalClassStr = originalClass.toString();
+        final String filePath = originalClass.getPosition().getFile().toString();
+        final CtPackage parentPackage = originalClass.getPackage();
+
+        // switch the original class and the clone from the model
+        parentPackage.removeType(originalClass);
+        parentPackage.addType(classTestToBeFixed);
+
+        String testClassName = originalClass.getQualifiedName();
+
+        AssertFixerResult result = new AssertFixerResult(testClassName, testCaseName);
+        CtMethod<?> testCaseToBeFix = classTestToBeFixed.getMethodsByName(testCaseName).get(0);
 
         Counter.addNumberOfAssertionInTests(testCaseToBeFix.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
             @Override
@@ -46,6 +57,7 @@ public class AssertFixer {
                 return Util.isAssert.test(element);
             }
         }).size());
+
 
         if (Util.assertionErrors.contains(failure.fullQualifiedNameOfException)) {
             Counter.incNumberOfFailingAssertion();
@@ -56,14 +68,16 @@ public class AssertFixer {
             if ((failure.messageOfFailure != null &&
                     failure.messageOfFailure.startsWith(TryCatchFixer.PREFIX_MESSAGE_EXPECTED_EXCEPTION)
                     && failure.messageOfFailure.endsWith("Exception"))) {
-                removeExpectedException(configuration, spoon, fixerResult.getTestClass(), fixerResult.getTestMethod(), cp, clone);//TODO this remove the fail failure but there is no more oracle
+                removeExpectedException(configuration, spoon, testClassName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
             } else if (failure.messageOfFailure != null && !failure.messageOfFailure.contains("expected")) {
-                return;
+                String message = "AssertFixer cannot fix this assertion. Message of failure: "+failure.messageOfFailure;
+                result.setSuccess(false);
+                result.setExceptionMessage(message);
             } else {
                 // replace assertion
                 final List<Integer> indexToLog = AssertionReplacer.replaceByLogStatement(clone);
                 // run tests
-                TestRunner.runTestWithLogger(configuration, spoon, cp, fixerResult.getTestClass(), fixerResult.getTestMethod());
+                TestRunner.runTestWithLogger(configuration, spoon, cp, testClassName, testCaseName);
                 Logger.load();
                 // replace wrong value
                 classTestToBeFixed.removeMethod(clone);
@@ -80,56 +94,41 @@ public class AssertFixer {
             }
         }
 
-        computeDiff(fixerResult, oldMethodString, testCaseToBeFix.toString());
+
+        SpoonModelBuilder compiler = spoon.createCompiler();
+        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
+        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+
+        boolean success = EntryPoint.runTests(
+                configuration.getBinaryOutputDirectory() +
+                        Util.PATH_SEPARATOR + configuration.getClasspath(),
+                testClassName,
+                testCaseName
+        ).getFailingTests().isEmpty();
+
+        String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), filePath);
+        result.setDiff(diff);
+        result.setSuccess(success);
+
+        // switch back the clone and the original class in the model for other changes
+        parentPackage.removeType(classTestToBeFixed);
+        parentPackage.addType(originalClass);
+        return result;
     }
 
-    private static void computeDiff(AssertFixerResult fixerResult, String oldMethod, String newMethod) {
-        List<String> oldMethodLines = Arrays.asList(oldMethod.split("\\n"));
-        List<String> newMethodLines = Arrays.asList(newMethod.split("\\n"));
+    private static String computeDiff(String oldClassStr, String newClassStr, String filePath) {
+        List<String> oldClassLines = Arrays.asList(oldClassStr.split("\\n"));
+        List<String> newClassLines = Arrays.asList(newClassStr.split("\\n"));
 
         try {
-            Patch<String> patch = DiffUtils.diff(oldMethodLines, newMethodLines);
-            fixerResult.setPatch(patch);
+            Patch<String> patch = DiffUtils.diff(oldClassLines, newClassLines);
+            List<String> strings = UnifiedDiffUtils.generateUnifiedDiff(filePath, filePath, oldClassLines, patch, 0);
 
-            DiffRowGenerator rowGenerator = DiffRowGenerator.create()
-                                            .showInlineDiffs(false)
-                                            .mergeOriginalRevised(false)
-                                            .reportLinesUnchanged(true)
-                                            .build();
-
-            List<DiffRow> diffRows = rowGenerator.generateDiffRows(oldMethodLines, newMethodLines);
-
-            StringBuilder stringBuilder = new StringBuilder();
-            for (DiffRow diffRow : diffRows) {
-                if (!diffRow.toString().isEmpty()) {
-                    switch (diffRow.getTag()) {
-                        case DELETE:
-                            stringBuilder.append("- ");
-                            stringBuilder.append(diffRow.getOldLine());
-                            break;
-
-                        case INSERT:
-                            stringBuilder.append("+ ");
-                            stringBuilder.append(diffRow.getNewLine());
-                            break;
-
-                        case CHANGE:
-                            stringBuilder.append("- ");
-                            stringBuilder.append(diffRow.getOldLine());
-                            stringBuilder.append("+ ");
-                            stringBuilder.append(diffRow.getNewLine());
-                            break;
-
-                        case EQUAL:
-                            stringBuilder.append(diffRow.getNewLine());
-                    }
-                    stringBuilder.append('\n');
-                }
-            }
-            fixerResult.setDiff(stringBuilder.toString());
+            return StringUtils.join(strings, "\n");
         } catch (DiffException e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     private static void removeExpectedException(Configuration configuration, Launcher spoon, String fullQualifiedName, String testCaseName, String cp, CtMethod<?> clone) {

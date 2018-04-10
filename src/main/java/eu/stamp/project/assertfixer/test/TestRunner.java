@@ -8,8 +8,11 @@ import eu.stamp.project.testrunner.runner.test.TestListener;
 import org.junit.AfterClass;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
+import spoon.reflect.code.CtInvocation;
+import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtAnnotation;
 import spoon.reflect.declaration.CtClass;
+import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.declaration.ModifierKind;
@@ -18,9 +21,11 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -48,18 +53,21 @@ public class TestRunner {
                                          String testCaseName) {
         final Factory factory = spoon.getFactory();
         final CtClass<?> testClass = factory.Class().get(fullQualifiedName);
-        addSaveStatementInTearDownAfterClass(testClass);
+        final CtElement addedElement = addSaveStatementInTearDownAfterClass(testClass);
 
         final String loggerClasspath = ":target/classes/eu/stamp/project/assertfixer/log/Logger.class";
         final String binaryOutputDirectory = configuration.getBinaryOutputDirectory();
         final SpoonModelBuilder compiler = spoon.createCompiler();
 
         final CtMethod<?> ctMethod = testClass.getMethodsByName(testCaseName).get(0);
+
+        List<CtMethod> addedMethod = new ArrayList<>();
         IntStream.range(0, 2)
                 .forEach(index -> {
                     final CtMethod<?> clone = ctMethod.clone();
                     clone.setSimpleName(clone.getSimpleName() + "_" + index);
                     testClass.addMethod(clone);
+                    addedMethod.add(clone);
                 });
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
@@ -69,10 +77,25 @@ public class TestRunner {
                 testCaseName + "_0",
                 testCaseName + "_1"
         );
+
+        addedMethod.forEach(testClass::removeMethod);
+
+        if (addedElement instanceof CtMethod) {
+            testClass.removeMethod((CtMethod) addedElement);
+        } else {
+            CtMethod<?> testDownAfterClass = testClass.filterChildren(new TypeFilter<CtMethod>(CtMethod.class) {
+                @Override
+                public boolean matches(CtMethod element) {
+                    return element.getAnnotations().contains(factory.Annotation().get(AfterClass.class));
+                }
+            }).first();
+
+            testDownAfterClass.getBody().removeStatement((CtStatement) addedElement);
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private static void addSaveStatementInTearDownAfterClass(CtClass<?> testClass) {
+    private static CtElement addSaveStatementInTearDownAfterClass(CtClass<?> testClass) {
         final Factory factory = testClass.getFactory();
         CtMethod<?> testDownAfterClass = testClass.filterChildren(new TypeFilter<CtMethod>(CtMethod.class) {
             @Override
@@ -80,15 +103,25 @@ public class TestRunner {
                 return element.getAnnotations().contains(factory.Annotation().get(AfterClass.class));
             }
         }).first();
+
+        boolean methodCreated = false;
         if (testDownAfterClass == null) {
+            methodCreated = true;
             testDownAfterClass = initializeTestDownAfterClassMethod(factory, testClass);
         }
         final CtType<?> loggerType = factory.Type().get(Logger.class);
         final CtMethod<?> save = loggerType.getMethodsByName("save").get(0);
+
+        CtInvocation invocation = factory.createInvocation(factory.Code().createTypeAccess(loggerType.getReference()),
+                save.getReference());
         testDownAfterClass.getBody().insertEnd(
-                factory.createInvocation(factory.Code().createTypeAccess(loggerType.getReference()),
-                        save.getReference())
+                invocation
         );
+        if (methodCreated) {
+            return testDownAfterClass;
+        } else {
+            return invocation;
+        }
     }
 
     private static CtMethod<?> initializeTestDownAfterClassMethod(Factory factory, CtClass<?> testClass) {
