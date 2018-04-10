@@ -1,13 +1,12 @@
 package eu.stamp.project.assertfixer;
 
-import java.io.File;
-
 public class AssertFixerResult {
     private String testClass;
     private String testMethod;
     private boolean success;
     private String exceptionMessage;
-    private File patch;
+    private String diff;
+
 
     public AssertFixerResult(String testClass, String testMethod) {
         this.testClass = testClass;
@@ -38,11 +37,11 @@ public class AssertFixerResult {
         this.exceptionMessage = exceptionMessage;
     }
 
-    public File getPatch() {
-        return patch;
+    public String getDiff() {
+        return diff;
     }
 
-    public void setPatch(File patch) {
-        this.patch = patch;
+    public void setDiff(String diff) {
+        this.diff = diff;
     }
 }

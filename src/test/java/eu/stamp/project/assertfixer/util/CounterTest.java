@@ -1,10 +1,12 @@
 package eu.stamp.project.assertfixer.util;
 
 import eu.stamp.project.assertfixer.AbstractTest;
+import eu.stamp.project.assertfixer.AssertFixerResult;
 import eu.stamp.project.assertfixer.asserts.AssertFixer;
 import eu.stamp.project.testrunner.EntryPoint;
 import eu.stamp.project.testrunner.runner.test.Failure;
 import org.junit.Test;
+import spoon.reflect.declaration.CtClass;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,8 +31,9 @@ public class CounterTest extends AbstractTest {
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
+        CtClass testClass = spoon.getFactory().Class().get(fullQualifiedName);
         AssertFixer.fixAssert(configuration, spoon,
-                fullQualifiedName,
+                testClass,
                 testCaseName,
                 failures.get(0),
                 getClasspath());

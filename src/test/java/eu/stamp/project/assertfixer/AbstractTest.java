@@ -10,6 +10,7 @@ import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Created by Benjamin DANGLOT
@@ -45,26 +46,28 @@ public class AbstractTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        configuration = JSAPConfiguration.get(new String[]{
-                "--classpath", dependenciesToRunJUnit,
-                "--test-class", "aPackage.ClassResourcesTest",
-                "--test-method", "testAssertionErrorBoolean:testAssertionErrorPrimitive",
-                "--source-path", "src/test/resources/ClassResourcesTest.java",
-                "--test-path", "src/test/resources/ClassResourcesTest.java",
-                "--verbose",
-                "--output", "target/assert-fixer"
-        });
+
+        configuration = new Configuration();
+        configuration.setClasspath(dependenciesToRunJUnit);
+        configuration.setFullQualifiedFailingTestClass("aPackage.ClassResourcesTest");
+        configuration.setFailingTestMethods(Arrays.asList("testAssertionErrorBoolean:testAssertionErrorPrimitive"));
+        configuration.setPathToSourceFolder("src/test/resources");
+        configuration.setPathToTestFolder("src/test/resources");
+        configuration.setVerbose(true);
+        configuration.setOutput("target/assert-fixer");
+
         spoon = new Launcher();
-        spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
+        spoon.addInputResource(configuration.getPathToSourceFolder());
         spoon.addInputResource("src/main/java/eu/stamp/project/assertfixer/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
-        spoon.setSourceOutputDirectory("target/assert-fixer/spooned");
-        spoon.setBinaryOutputDirectory("target/assert-fixer/spooned-classes");
+        spoon.getEnvironment().setCommentEnabled(true);
+        spoon.setSourceOutputDirectory(configuration.getSourceOutputDirectory());
+        spoon.setBinaryOutputDirectory(configuration.getBinaryOutputDirectory());
         spoon.run();
         compiler = spoon.createCompiler();
-        compiler.setBinaryOutputDirectory(new File("target/assert-fixer/spooned-classes"));
+        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
     }
 
     @AfterClass
