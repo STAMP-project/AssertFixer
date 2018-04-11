@@ -9,7 +9,7 @@ See: [Brett Daniel et al.](https://scholar.google.com/citations?view_op=view_cit
 ### CLI
 
 ```
-                        (-c|--classpath) <classpath> (-t|--test-class) <testClass> (-m|--test-method) <testMethod> [(-s|--source-path) <sourcePath>] [(-p|--test-path) <testPath>] [--verbose] [(-o|--output) <output>] [-h|--help]
+                          (-c|--classpath) <classpath> (-t|--test-class) <testClass> (-m|--test-method) <testMethod> [(-s|--source-path) <sourcePath>] [(-p|--test-path) <testPath>] [--verbose] [(-o|--output) <output>] [-h|--help]
 
   (-c|--classpath) <classpath>
         [Mandatory] Use must specify a complete classpath to execute tests on
@@ -27,18 +27,16 @@ See: [Brett Daniel et al.](https://scholar.google.com/citations?view_op=view_cit
 
   [(-s|--source-path) <sourcePath>]
         [Optional] Specify the path to the source folder.
-        (default: src/main/java/) (default: src/main/java/)
 
   [(-p|--test-path) <testPath>]
-        [Optional] Specify the path to the test source folder.
-        (default: src/test/java/) (default: src/main/java/)
+        Specify the path to the test source folder. (default: src/test/java/)
 
   [--verbose]
         Enable verbose mode
 
   [(-o|--output) <output>]
-        [Optional] Specify an output folder for result and temporary files
-        (default: target/assert-fixer) (default: target/assert-fixer)
+        [Optional] Specify an output folder for result and temporary files.
+        (default: target/assert-fixer)
 
   [-h|--help]
         Display this help and exit
