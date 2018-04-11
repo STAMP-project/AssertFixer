@@ -90,4 +90,17 @@ public class Configuration {
     public void setMultipleTestCases(Map<String, List<String>> multipleTestCases) {
         this.multipleTestCases = new HashMap<>(multipleTestCases);
     }
+
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "classpath='" + classpath + '\'' +
+                ", fullQualifiedFailingTestClass='" + fullQualifiedFailingTestClass + '\'' +
+                ", failingTestMethods=" + failingTestMethods +
+                ", pathToSourceFolder='" + pathToSourceFolder + '\'' +
+                ", pathToTestFolder='" + pathToTestFolder + '\'' +
+                ", verbose=" + verbose +
+                ", output='" + output + '\'' +
+                '}';
+    }
 }

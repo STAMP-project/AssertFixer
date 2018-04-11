@@ -82,7 +82,9 @@ public class Main {
         launcher.getEnvironment().setNoClasspath(true);
         launcher.getEnvironment().setCommentEnabled(true);
         launcher.getEnvironment().setSourceClasspath(this.configuration.getClasspath().split(Util.PATH_SEPARATOR));
-        launcher.addInputResource(this.configuration.getPathToSourceFolder());
+        if (this.configuration.getPathToSourceFolder() != null) {
+            launcher.addInputResource(this.configuration.getPathToSourceFolder());
+        }
         launcher.addInputResource(this.configuration.getPathToTestFolder());
         launcher.getEnvironment().setShouldCompile(true);
         launcher.run();

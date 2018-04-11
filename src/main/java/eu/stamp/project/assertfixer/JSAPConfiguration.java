@@ -67,22 +67,18 @@ public class JSAPConfiguration extends Configuration {
         FlaggedOption sourcePath = new FlaggedOption("sourcePath");
         sourcePath.setLongFlag("source-path");
         sourcePath.setShortFlag('s');
-        sourcePath.setHelp("[Optional] Specify the path to the source folder."
-                + Util.LINE_SEPARATOR +
-                "(default: src/main/java/)");
+        sourcePath.setHelp("[Optional] Specify the path to the source folder.");
         sourcePath.setStringParser(JSAP.STRING_PARSER);
         sourcePath.setAllowMultipleDeclarations(false);
-        sourcePath.setDefault("src/main/java/");
+        sourcePath.setRequired(false);
 
         FlaggedOption testPath = new FlaggedOption("testPath");
         testPath.setLongFlag("test-path");
         testPath.setShortFlag('p');
-        testPath.setHelp("[Optional] Specify the path to the test source folder."
-                + Util.LINE_SEPARATOR +
-                " (default: src/test/java/)");
+        testPath.setHelp("Specify the path to the test source folder.");
         testPath.setStringParser(JSAP.STRING_PARSER);
         testPath.setAllowMultipleDeclarations(false);
-        testPath.setDefault("src/main/java/");
+        testPath.setDefault("src/test/java/");
 
         Switch verbose = new Switch("verbose");
         verbose.setLongFlag("verbose");
@@ -92,9 +88,7 @@ public class JSAPConfiguration extends Configuration {
         FlaggedOption output = new FlaggedOption("output");
         output.setLongFlag("output");
         output.setShortFlag('o');
-        output.setHelp("[Optional] Specify an output folder for result and temporary files"
-                + Util.LINE_SEPARATOR +
-                "(default: target/assert-fixer)");
+        output.setHelp("[Optional] Specify an output folder for result and temporary files.");
         output.setDefault("target/assert-fixer");
         output.setStringParser(JSAP.STRING_PARSER);
         output.setAllowMultipleDeclarations(false);
