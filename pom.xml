@@ -35,6 +35,10 @@
             <organization>STAMP-project</organization>
             <organizationUrl>https://www.stamp-project.eu/view/main/</organizationUrl>
         </developer>
+        <developer>
+            <name>Simon Urli</name>
+            <email>simon.urli@inria.fr</email>
+        </developer>
     </developers>
 
     <scm>
