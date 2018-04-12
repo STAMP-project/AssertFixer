@@ -9,6 +9,7 @@ import eu.stamp.project.assertfixer.util.Util;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class JSAPConfiguration extends Configuration {
     private static final String SYSTEM_SEPARATOR = File.pathSeparator;
@@ -16,7 +17,12 @@ public class JSAPConfiguration extends Configuration {
 
     private JSAPConfiguration(String[] args) {
         final JSAPResult options = jsap.parse(args);
-        if (options.getBoolean("help")) {
+        if (options.getBoolean("help") || !options.success()) {
+            if (!options.getBoolean("help")) {
+                for (java.util.Iterator<?> errs = options.getErrorMessageIterator(); errs.hasNext();) {
+                    System.err.println("Error: " + errs.next());
+                }
+            }
             usage();
         }
         this.setClasspath(options.getString("classpath"));
