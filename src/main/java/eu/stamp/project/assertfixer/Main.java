@@ -83,9 +83,19 @@ public class Main {
         launcher.getEnvironment().setCommentEnabled(true);
         launcher.getEnvironment().setSourceClasspath(this.configuration.getClasspath().split(Util.PATH_SEPARATOR));
         if (this.configuration.getPathToSourceFolder() != null) {
-            launcher.addInputResource(this.configuration.getPathToSourceFolder());
+            for (String path : this.configuration.getPathToSourceFolder()) {
+                launcher.addInputResource(path);
+            }
+
         }
-        launcher.addInputResource(this.configuration.getPathToTestFolder());
+
+        if (this.configuration.getPathToTestFolder() == null) {
+            throw new RuntimeException("Test folder must be set for AssertFixer to be executed.");
+        }
+        for (String path : this.configuration.getPathToTestFolder()) {
+            launcher.addInputResource(path);
+        }
+
         launcher.getEnvironment().setShouldCompile(true);
         launcher.run();
 
