@@ -1,5 +1,8 @@
 package eu.stamp.project.assertfixer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +16,8 @@ public class Configuration {
     private String classpath;
     private String fullQualifiedFailingTestClass;
     private List<String> failingTestMethods;
-    private String pathToSourceFolder;
-    private String pathToTestFolder;
+    private List<String> pathToSourceFolder;
+    private List<String> pathToTestFolder;
     private boolean verbose;
     private String output;
     private Map<String, List<String>> multipleTestCases;
@@ -51,20 +54,32 @@ public class Configuration {
         this.failingTestMethods = failingTestMethods;
     }
 
-    public String getPathToSourceFolder() {
+    public List<String> getPathToSourceFolder() {
         return pathToSourceFolder;
     }
 
-    public void setPathToSourceFolder(String pathToSourceFolder) {
-        this.pathToSourceFolder = pathToSourceFolder;
+    public void setPathToSourceFolder(List<String> pathToSourceFolder) {
+        for (String path : pathToSourceFolder) {
+            if (!new File(path).exists()) {
+                throw new RuntimeException("All paths to source folder must be existing", new FileNotFoundException(path+" does not exist."));
+            }
+        }
+
+        this.pathToSourceFolder = new ArrayList<>(pathToSourceFolder);
     }
 
-    public String getPathToTestFolder() {
+    public List<String> getPathToTestFolder() {
         return pathToTestFolder;
     }
 
-    public void setPathToTestFolder(String pathToTestFolder) {
-        this.pathToTestFolder = pathToTestFolder;
+    public void setPathToTestFolder(List<String> pathToTestFolder) {
+        for (String path : pathToTestFolder) {
+            if (!new File(path).exists()) {
+                throw new RuntimeException("All paths to test folder must be existing", new FileNotFoundException(path+" does not exist."));
+            }
+        }
+
+        this.pathToTestFolder = new ArrayList<>(pathToTestFolder);
     }
 
     public boolean isVerbose() {

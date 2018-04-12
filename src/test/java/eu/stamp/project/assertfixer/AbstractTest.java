@@ -51,13 +51,14 @@ public class AbstractTest {
         configuration.setClasspath(dependenciesToRunJUnit);
         configuration.setFullQualifiedFailingTestClass("aPackage.ClassResourcesTest");
         configuration.setFailingTestMethods(Arrays.asList("testAssertionErrorBoolean:testAssertionErrorPrimitive"));
-        configuration.setPathToSourceFolder("src/test/resources");
-        configuration.setPathToTestFolder("src/test/resources");
+        configuration.setPathToTestFolder(Arrays.asList("src/test/resources"));
         configuration.setVerbose(true);
         configuration.setOutput("target/assert-fixer");
 
         spoon = new Launcher();
-        spoon.addInputResource(configuration.getPathToSourceFolder());
+        for (String path : configuration.getPathToTestFolder()) {
+            spoon.addInputResource(path);
+        }
         spoon.addInputResource("src/main/java/eu/stamp/project/assertfixer/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
