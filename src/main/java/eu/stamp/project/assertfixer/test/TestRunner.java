@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 
 /**
@@ -39,12 +40,16 @@ public class TestRunner {
         final SpoonModelBuilder compiler = launcher.createCompiler();
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        return EntryPoint.runTests(
-                configuration.getBinaryOutputDirectory()
-                        + Util.PATH_SEPARATOR + configuration.getClasspath(),
-                failingTestClass,
-                failingTestMethod
-        );
+        try {
+            return EntryPoint.runTests(
+                    configuration.getBinaryOutputDirectory()
+                            + Util.PATH_SEPARATOR + configuration.getClasspath(),
+                    failingTestClass,
+                    failingTestMethod
+            );
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void runTestWithLogger(Configuration configuration, Launcher spoon,
@@ -71,12 +76,17 @@ public class TestRunner {
                 });
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
-        EntryPoint.runTests(binaryOutputDirectory + Util.PATH_SEPARATOR + classpath + loggerClasspath,
-                fullQualifiedName,
-                testCaseName,
-                testCaseName + "_0",
-                testCaseName + "_1"
-        );
+
+        try {
+            EntryPoint.runTests(binaryOutputDirectory + Util.PATH_SEPARATOR + classpath + loggerClasspath,
+                    fullQualifiedName,
+                    testCaseName,
+                    testCaseName + "_0",
+                    testCaseName + "_1"
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         addedMethod.forEach(testClass::removeMethod);
 

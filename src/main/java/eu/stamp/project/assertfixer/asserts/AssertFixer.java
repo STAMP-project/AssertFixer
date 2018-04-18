@@ -28,6 +28,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Benjamin DANGLOT
@@ -101,12 +102,17 @@ public class AssertFixer {
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
 
-        boolean success = EntryPoint.runTests(
-                configuration.getBinaryOutputDirectory() +
-                        Util.PATH_SEPARATOR + configuration.getClasspath(),
-                testClassName,
-                testCaseName
-        ).getFailingTests().isEmpty();
+        boolean success = false;
+        try {
+            success = EntryPoint.runTests(
+                    configuration.getBinaryOutputDirectory() +
+                            Util.PATH_SEPARATOR + configuration.getClasspath(),
+                    testClassName,
+                    testCaseName
+            ).getFailingTests().isEmpty();
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
 
         String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
         result.setDiff(diff);
