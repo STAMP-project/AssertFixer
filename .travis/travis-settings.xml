@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>ossrh-assert-fixer-snapshots</id>
+            <username>${env.OSS_ASSERTFIXER_USERNAME}</username>
+            <password>${env.OSS_ASSERTFIXER_PASSWORD}</password>
+        </server>
+    </servers>
+</settings>
