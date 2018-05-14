@@ -6,6 +6,7 @@ public class AssertFixerResult {
     private boolean success;
     private String exceptionMessage;
     private String diff;
+    private String filePath;
 
 
     public AssertFixerResult(String testClass, String testMethod) {
@@ -43,5 +44,13 @@ public class AssertFixerResult {
 
     public void setDiff(String diff) {
         this.diff = diff;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

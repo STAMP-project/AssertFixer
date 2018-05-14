@@ -119,6 +119,7 @@ public class Main {
                 );
         } catch (Exception e) {
             AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
+            fixerResult.setFilePath(testClass.getPosition().getFile().getPath());
             fixerResult.setExceptionMessage(e.getMessage());
             fixerResult.setSuccess(false);
             return fixerResult;
