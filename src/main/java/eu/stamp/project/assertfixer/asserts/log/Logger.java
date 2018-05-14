@@ -1,5 +1,6 @@
 package eu.stamp.project.assertfixer.asserts.log;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,56 +34,28 @@ public class Logger {
     }
 
     public static void save() {
-        FileOutputStream fout = null;
-        ObjectOutputStream oos = null;
-        try {
-            fout = new FileOutputStream(nameOfSerializedObservations);
-            oos = new ObjectOutputStream(fout);
-            oos.writeObject(observations);
+        try (FileOutputStream fout = new FileOutputStream(nameOfSerializedObservations)) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+                System.out.print(String.format("Saving %d observations...", observations.size()));
+                oos.writeObject(observations);
+                System.out.println(" Saved!");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException ignored) {
-
-                }
-            }
-            if (fout != null) {
-                try {
-                    fout.close();
-                } catch (IOException ignored) {
-
-                }
-            }
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void load() {
-        FileInputStream fin = null;
-        ObjectInputStream ois = null;
-        try {
-            fin = new FileInputStream(nameOfSerializedObservations);
-            ois = new ObjectInputStream(fin);
-            observations = (Map) ois.readObject();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            if (fin != null) {
-                try {
-                    fin.close();
-                } catch (IOException ignored) {
-                }
+        try (FileInputStream fi = new FileInputStream(new File(nameOfSerializedObservations))) {
+            try (ObjectInputStream oi = new ObjectInputStream(fi)) {
+                observations = (Map) oi.readObject();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-            if (ois != null) {
-                try {
-                    ois.close();
-                } catch (IOException ignored) {
-                }
-            }
-
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
