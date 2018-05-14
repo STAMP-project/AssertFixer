@@ -60,7 +60,8 @@ public class TestRunner {
         final CtClass<?> testClass = factory.Class().get(fullQualifiedName);
         final CtElement addedElement = addSaveStatementInTearDownAfterClass(testClass);
 
-        final String loggerClasspath = ":target/classes/eu/stamp/project/assertfixer/log/Logger.class";
+        // TODO should compute the path to Logger.class using the class loader instead of hard coded value
+        final String loggerClasspath = "target/classes/eu/stamp/project/assertfixer/log/Logger.class";
         final String binaryOutputDirectory = configuration.getBinaryOutputDirectory();
         final SpoonModelBuilder compiler = spoon.createCompiler();
 
@@ -78,7 +79,9 @@ public class TestRunner {
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
 
         try {
-            EntryPoint.runTests(binaryOutputDirectory + Util.PATH_SEPARATOR + classpath + loggerClasspath,
+            EntryPoint.runTests(binaryOutputDirectory + Util.PATH_SEPARATOR + classpath
+                            + (new File(loggerClasspath).exists() ?
+                            Util.PATH_SEPARATOR + loggerClasspath : ""),
                     fullQualifiedName,
                     testCaseName,
                     testCaseName + "_0",
