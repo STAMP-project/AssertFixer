@@ -50,7 +50,7 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh-snapshots</id>
+            <id>ossrh-assert-fixer-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
