@@ -109,7 +109,7 @@
         <dependency>
             <groupId>eu.stamp-project</groupId>
             <artifactId>test-runner</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
