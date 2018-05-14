@@ -52,6 +52,7 @@ public class AssertFixer {
         String testClassName = originalClass.getQualifiedName();
 
         AssertFixerResult result = new AssertFixerResult(testClassName, testCaseName);
+        result.setFilePath(originalClass.getPosition().getFile().getPath());
         CtMethod<?> testCaseToBeFix = classTestToBeFixed.getMethodsByName(testCaseName).get(0);
 
         Counter.addNumberOfAssertionInTests(testCaseToBeFix.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
