@@ -10,8 +10,8 @@ import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Counter;
 import eu.stamp.project.assertfixer.util.Util;
-import eu.stamp.project.testrunner.EntryPoint;
-import eu.stamp.project.testrunner.runner.test.Failure;
+import eu.stamp_project.testrunner.EntryPoint;
+import eu.stamp_project.testrunner.runner.test.Failure;
 import org.apache.commons.lang3.StringUtils;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
@@ -53,6 +53,7 @@ public class AssertFixer {
 
         AssertFixerResult result = new AssertFixerResult(testClassName, testCaseName);
         result.setFilePath(originalClass.getPosition().getFile().getPath());
+        AssertFixerResult.RepairType repairType = AssertFixerResult.RepairType.NoRepair;
         CtMethod<?> testCaseToBeFix = classTestToBeFixed.getMethodsByName(testCaseName).get(0);
 
         Counter.addNumberOfAssertionInTests(testCaseToBeFix.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
@@ -73,6 +74,7 @@ public class AssertFixer {
                     failure.messageOfFailure.startsWith(TryCatchFixer.PREFIX_MESSAGE_EXPECTED_EXCEPTION)
                     && failure.messageOfFailure.endsWith("Exception"))) {
                 removeExpectedException(configuration, spoon, testClassName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
+                repairType = AssertFixerResult.RepairType.RemoveException;
             } else if (failure.messageOfFailure != null && !failure.messageOfFailure.contains("expected")) {
                 String message = "AssertFixer cannot fix this assertion. Message of failure: "+failure.messageOfFailure;
                 result.setSuccess(false);
@@ -87,6 +89,7 @@ public class AssertFixer {
                 classTestToBeFixed.removeMethod(clone);
                 classTestToBeFixed.addMethod(testCaseToBeFix);
                 AssertionsFixer.fixAssertion(spoon.getFactory(), testCaseToBeFix, indexToLog);
+                repairType = AssertFixerResult.RepairType.AssertRepair;
             }
         } else {
             Counter.incNumberOfFailingTestFromException();
@@ -96,6 +99,7 @@ public class AssertFixer {
             } else {
                 TryCatchFixer.addTryCatchFailAssertion(spoon, testCaseToBeFix, failure);
             }
+            repairType = AssertFixerResult.RepairType.TryCatchRepair;
         }
 
 
@@ -118,6 +122,9 @@ public class AssertFixer {
         String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
         result.setDiff(diff);
         result.setSuccess(success);
+        if (success) {
+            result.setRepairType(repairType);
+        }
 
         // switch back the clone and the original class in the model for other changes
         parentPackage.removeType(classTestToBeFixed);

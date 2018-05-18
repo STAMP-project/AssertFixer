@@ -2,10 +2,9 @@ package eu.stamp.project.assertfixer.asserts;
 
 import eu.stamp.project.assertfixer.AbstractTest;
 import eu.stamp.project.assertfixer.AssertFixerResult;
-import eu.stamp.project.testrunner.EntryPoint;
-import eu.stamp.project.testrunner.runner.test.Failure;
+import eu.stamp_project.testrunner.EntryPoint;
+import eu.stamp_project.testrunner.runner.test.Failure;
 import org.junit.Test;
-import spoon.SpoonModelBuilder;
 import spoon.reflect.declaration.CtClass;
 
 import java.util.List;
