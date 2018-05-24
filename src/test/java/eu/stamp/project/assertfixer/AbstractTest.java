@@ -54,6 +54,7 @@ public class AbstractTest {
         configuration.setPathToTestFolder(Arrays.asList("src/test/resources"));
         configuration.setVerbose(true);
         configuration.setOutput("target/assert-fixer");
+        configuration.setGenTryCatch(true);
 
         spoon = new Launcher();
         for (String path : configuration.getPathToTestFolder()) {

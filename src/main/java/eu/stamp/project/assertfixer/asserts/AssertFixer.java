@@ -76,7 +76,7 @@ public class AssertFixer {
                 removeExpectedException(configuration, spoon, testClassName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
                 repairType = AssertFixerResult.RepairType.RemoveException;
             } else if (failure.messageOfFailure != null && !failure.messageOfFailure.contains("expected")) {
-                String message = "AssertFixer cannot fix this assertion. Message of failure: "+failure.messageOfFailure;
+                String message = "AssertFixer cannot fix this assertion. Message of failure: " + failure.messageOfFailure;
                 result.setSuccess(false);
                 result.setExceptionMessage(message);
             } else {
@@ -97,7 +97,12 @@ public class AssertFixer {
             if (!catches.isEmpty()) {
                 TryCatchFixer.fixTryCatchFailAssertion(spoon, testCaseToBeFix, failure, catches);
             } else {
-                TryCatchFixer.addTryCatchFailAssertion(spoon, testCaseToBeFix, failure);
+                if (configuration.isGenTryCatch()) {
+                    TryCatchFixer.addTryCatchFailAssertion(spoon, testCaseToBeFix, failure);
+                } else {
+                    result.setSuccess(false);
+                    result.setExceptionMessage("addTryCatchFailAssertion skipped");
+                }
             }
             repairType = AssertFixerResult.RepairType.TryCatchRepair;
         }
@@ -119,10 +124,10 @@ public class AssertFixer {
             throw new RuntimeException(e);
         }
 
-        String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
-        result.setDiff(diff);
         result.setSuccess(success);
         if (success) {
+            String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
+            result.setDiff(diff);
             result.setRepairType(repairType);
         }
 
