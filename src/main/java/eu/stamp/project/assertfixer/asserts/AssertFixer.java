@@ -96,8 +96,13 @@ public class AssertFixer {
             final List<CtCatch> catches = testCaseToBeFix.getElements(new TypeFilter<>(CtCatch.class));
             if (!catches.isEmpty()) {
                 TryCatchFixer.fixTryCatchFailAssertion(spoon, testCaseToBeFix, failure, catches);
-            } else if (configuration.isGenTryCatch()) {
-                TryCatchFixer.addTryCatchFailAssertion(spoon, testCaseToBeFix, failure);
+            } else {
+                if (configuration.isGenTryCatch()) {
+                    TryCatchFixer.addTryCatchFailAssertion(spoon, testCaseToBeFix, failure);
+                } else {
+                    result.setSuccess(false);
+                    result.setExceptionMessage("addTryCatchFailAssertion skipped");
+                }
             }
             repairType = AssertFixerResult.RepairType.TryCatchRepair;
         }
@@ -119,10 +124,10 @@ public class AssertFixer {
             throw new RuntimeException(e);
         }
 
-        String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
-        result.setDiff(diff);
         result.setSuccess(success);
         if (success) {
+            String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
+            result.setDiff(diff);
             result.setRepairType(repairType);
         }
 
