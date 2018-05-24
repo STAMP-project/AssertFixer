@@ -109,8 +109,7 @@ public class JSAPConfiguration extends Configuration {
         Switch genTryCatch = new Switch("genTryCatch");
         genTryCatch.setLongFlag("gen-try-catch");
         genTryCatch.setDefault("false");
-        genTryCatch.setDefault("Enable the generation of try/catch/fail block to repair test method");
-
+        genTryCatch.setHelp("Enable the generation of try/catch/fail block to repair test method");
 
         Switch help = new Switch("help");
         help.setLongFlag("help");
