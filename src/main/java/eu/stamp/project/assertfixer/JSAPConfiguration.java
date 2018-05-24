@@ -32,6 +32,7 @@ public class JSAPConfiguration extends Configuration {
         this.setPathToTestFolder(Arrays.asList(options.getString("testPath").split(SYSTEM_SEPARATOR)));
         this.setVerbose(options.getBoolean("verbose"));
         this.setOutput(options.getString("output"));
+        this.setGenTryCatch(options.getBoolean("genTryCatch"));
     }
 
     public static JSAPConfiguration get(String[] args) {
@@ -105,6 +106,12 @@ public class JSAPConfiguration extends Configuration {
         output.setStringParser(JSAP.STRING_PARSER);
         output.setAllowMultipleDeclarations(false);
 
+        Switch genTryCatch = new Switch("genTryCatch");
+        genTryCatch.setLongFlag("gen-try-catch");
+        genTryCatch.setDefault("false");
+        genTryCatch.setDefault("Enable the generation of try/catch/fail block to repair test method");
+
+
         Switch help = new Switch("help");
         help.setLongFlag("help");
         help.setShortFlag('h');
@@ -120,6 +127,7 @@ public class JSAPConfiguration extends Configuration {
             jsap.registerParameter(testPath);
             jsap.registerParameter(verbose);
             jsap.registerParameter(output);
+            jsap.registerParameter(genTryCatch);
             jsap.registerParameter(help);
         } catch (JSAPException e) {
             throw new RuntimeException(e);

@@ -21,6 +21,7 @@ public class Configuration {
     private boolean verbose;
     private String output;
     private Map<String, List<String>> multipleTestCases;
+    private boolean genTryCatch;
 
     public String getSourceOutputDirectory() {
         return this.output + "/spooned";
@@ -104,6 +105,14 @@ public class Configuration {
 
     public void setMultipleTestCases(Map<String, List<String>> multipleTestCases) {
         this.multipleTestCases = new HashMap<>(multipleTestCases);
+    }
+
+    public boolean isGenTryCatch() {
+        return genTryCatch;
+    }
+
+    public void setGenTryCatch(boolean genTryCatch) {
+        this.genTryCatch = genTryCatch;
     }
 
     @Override

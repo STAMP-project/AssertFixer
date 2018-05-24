@@ -76,7 +76,7 @@ public class AssertFixer {
                 removeExpectedException(configuration, spoon, testClassName, testCaseName, cp, clone);//TODO this remove the fail failure but there is no more oracle
                 repairType = AssertFixerResult.RepairType.RemoveException;
             } else if (failure.messageOfFailure != null && !failure.messageOfFailure.contains("expected")) {
-                String message = "AssertFixer cannot fix this assertion. Message of failure: "+failure.messageOfFailure;
+                String message = "AssertFixer cannot fix this assertion. Message of failure: " + failure.messageOfFailure;
                 result.setSuccess(false);
                 result.setExceptionMessage(message);
             } else {
@@ -96,7 +96,7 @@ public class AssertFixer {
             final List<CtCatch> catches = testCaseToBeFix.getElements(new TypeFilter<>(CtCatch.class));
             if (!catches.isEmpty()) {
                 TryCatchFixer.fixTryCatchFailAssertion(spoon, testCaseToBeFix, failure, catches);
-            } else {
+            } else if (configuration.isGenTryCatch()) {
                 TryCatchFixer.addTryCatchFailAssertion(spoon, testCaseToBeFix, failure);
             }
             repairType = AssertFixerResult.RepairType.TryCatchRepair;
