@@ -91,7 +91,7 @@ public class TryCatchFixer {
         aCatch.setBody(factory.createCodeSnippetStatement(
                 "org.junit.Assert.assertTrue(true)"
         ));
-        aTry.setBody(testCaseToBeFix.getBody().getStatement(0));
+        aTry.setBody(testCaseToBeFix.getBody().getStatement(0).clone());
         for (int i = 1; i < testCaseToBeFix.getBody().getStatements().size(); i++) {
             aTry.getBody().addStatement(testCaseToBeFix.getBody().getStatement(i));
         }
