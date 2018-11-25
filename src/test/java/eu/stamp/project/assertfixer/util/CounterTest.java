@@ -3,7 +3,7 @@ package eu.stamp.project.assertfixer.util;
 import eu.stamp.project.assertfixer.AbstractTest;
 import eu.stamp.project.assertfixer.asserts.AssertFixer;
 import eu.stamp_project.testrunner.EntryPoint;
-import eu.stamp_project.testrunner.runner.test.Failure;
+import eu.stamp_project.testrunner.runner.Failure;
 import org.junit.Test;
 import spoon.reflect.declaration.CtClass;
 

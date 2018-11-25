@@ -3,9 +3,10 @@ package eu.stamp.project.assertfixer.asserts;
 import eu.stamp.project.assertfixer.AbstractTest;
 import eu.stamp.project.assertfixer.AssertFixerResult;
 import eu.stamp_project.testrunner.EntryPoint;
-import eu.stamp_project.testrunner.runner.test.Failure;
+import eu.stamp_project.testrunner.runner.Failure;
 import org.junit.Test;
 import spoon.reflect.declaration.CtClass;
+
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class AssertFixerTest extends AbstractTest {
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
 
-        assertTrue(failures.size() == 1);
+        assertEquals(1, failures.size());
         CtClass testClass = spoon.getFactory().Class().get(fullQualifiedName);
         AssertFixerResult result = AssertFixer.fixAssert(configuration, spoon,
                 testClass,

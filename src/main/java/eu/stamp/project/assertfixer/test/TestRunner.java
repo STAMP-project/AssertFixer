@@ -4,7 +4,7 @@ import eu.stamp.project.assertfixer.Configuration;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp_project.testrunner.EntryPoint;
-import eu.stamp_project.testrunner.runner.test.TestListener;
+import eu.stamp_project.testrunner.listener.TestListener;
 import org.junit.AfterClass;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;

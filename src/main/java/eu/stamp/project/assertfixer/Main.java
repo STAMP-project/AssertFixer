@@ -4,7 +4,7 @@ import eu.stamp.project.assertfixer.asserts.AssertFixer;
 import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp_project.testrunner.EntryPoint;
-import eu.stamp_project.testrunner.runner.test.Failure;
+import eu.stamp_project.testrunner.runner.Failure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spoon.Launcher;
