@@ -11,7 +11,7 @@ import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Counter;
 import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp_project.testrunner.EntryPoint;
-import eu.stamp_project.testrunner.runner.test.Failure;
+import eu.stamp_project.testrunner.runner.Failure;
 import org.apache.commons.lang3.StringUtils;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
