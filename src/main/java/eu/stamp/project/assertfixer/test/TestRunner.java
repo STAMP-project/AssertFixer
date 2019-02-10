@@ -83,9 +83,9 @@ public class TestRunner {
                             + (new File(loggerClasspath).exists() ?
                             Util.PATH_SEPARATOR + loggerClasspath : ""),
                     fullQualifiedName,
-                    testCaseName,
+                    new String[] {testCaseName,
                     testCaseName + "_0",
-                    testCaseName + "_1"
+                    testCaseName + "_1"}
             );
         } catch (Exception e) {
             throw new RuntimeException(e);
