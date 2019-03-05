@@ -4,7 +4,7 @@ import eu.stamp.project.assertfixer.Configuration;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp_project.testrunner.EntryPoint;
-import eu.stamp_project.testrunner.listener.TestListener;
+import eu.stamp_project.testrunner.listener.TestResult;
 import org.junit.AfterClass;
 import spoon.Launcher;
 import spoon.SpoonModelBuilder;
@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
  */
 public class TestRunner {
 
-    public static TestListener runTest(Configuration configuration, Launcher launcher, String failingTestClass, String failingTestMethod) {
+    public static TestResult runTest(Configuration configuration, Launcher launcher, String failingTestClass, String failingTestMethod) {
         final SpoonModelBuilder compiler = launcher.createCompiler();
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
