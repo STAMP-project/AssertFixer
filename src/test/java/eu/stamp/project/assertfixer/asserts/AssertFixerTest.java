@@ -146,8 +146,8 @@ public class AssertFixerTest extends AbstractTest {
                 "@@ -108,2 +108,2 @@\n" +
                 "-            Assert.fail(\"Expecting exception: Exception\");\n" +
                 "-        } catch (IndexOutOfBoundsException e) {\n" +
-                "+            Assert.fail(\"Expecting exception: ClassResourcesTest$1\");\n" +
-                "+        } catch (RuntimeException expectedException__ClassResourcesTest$1) {";
+                "+            Assert.fail(\"Expecting exception: RuntimeException\");\n" +
+                "+        } catch (RuntimeException expectedException__RuntimeException) {";
         assertEquals(expectedDiff, result.getDiff());
     }
 
@@ -161,8 +161,8 @@ public class AssertFixerTest extends AbstractTest {
                 "-        ClassResourcesTest.throwAnonymous();\n" +
                 "+        try {\n" +
                 "+            ClassResourcesTest.throwAnonymous();\n" +
-                "+            org.junit.Assert.fail(\"Expecting exception: ClassResourcesTest$1\");\n" +
-                "+        } catch (RuntimeException expectedException__ClassResourcesTest$1) {\n" +
+                "+            org.junit.Assert.fail(\"Expecting exception: RuntimeException\");\n" +
+                "+        } catch (RuntimeException expectedException__RuntimeException) {\n" +
                 "+            org.junit.Assert.assertTrue(true);\n" +
                 "+        }";
         assertEquals(expectedDiff, result.getDiff());

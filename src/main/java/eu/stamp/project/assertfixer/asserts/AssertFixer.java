@@ -11,9 +11,12 @@ import eu.stamp.project.assertfixer.test.TestRunner;
 import eu.stamp.project.assertfixer.util.Counter;
 import eu.stamp.project.assertfixer.util.Util;
 import eu.stamp_project.testrunner.EntryPoint;
+import eu.stamp_project.testrunner.listener.TestResult;
 import eu.stamp_project.testrunner.runner.Failure;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import spoon.Launcher;
+import spoon.OutputType;
 import spoon.SpoonModelBuilder;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCatch;
@@ -37,7 +40,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class AssertFixer {
 
-    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) throws MalformedURLException, ClassNotFoundException {
+    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) throws Exception {
         final CtClass<?> classTestToBeFixed = originalClass.clone();
         final String originalClassStr = originalClass.toString();
         final String filePath = originalClass.getPosition().getFile().getPath();
@@ -107,19 +110,22 @@ public class AssertFixer {
             repairType = AssertFixerResult.RepairType.TryCatchRepair;
         }
 
-
         SpoonModelBuilder compiler = spoon.createCompiler();
+        compiler.addInputSource(new File(configuration.getSourceOutputDirectory()));
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
-        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+        compiler.generateProcessedSourceFiles(OutputType.CLASSES);
+        compiler.compile();
 
         boolean success = false;
+        TestResult testResult;
         try {
-            success = EntryPoint.runTests(
+            testResult = EntryPoint.runTests(
                     configuration.getBinaryOutputDirectory() +
                             Util.PATH_SEPARATOR + configuration.getClasspath(),
                     testClassName,
                     testCaseName
-            ).getFailingTests().isEmpty();
+            );
+            success = testResult.getFailingTests().isEmpty();
         } catch (TimeoutException e) {
             throw new RuntimeException(e);
         }
@@ -129,6 +135,8 @@ public class AssertFixer {
             String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
             result.setDiff(diff);
             result.setRepairType(repairType);
+        } else {
+            System.err.println(testResult.getFailingTests());
         }
 
         // switch back the clone and the original class in the model for other changes
