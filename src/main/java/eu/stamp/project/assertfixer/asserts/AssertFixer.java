@@ -40,7 +40,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class AssertFixer {
 
-    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) throws Exception {
+    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) {
         final CtClass<?> classTestToBeFixed = originalClass.clone();
         final String originalClassStr = originalClass.toString();
         final String filePath = originalClass.getPosition().getFile().getPath();
@@ -110,11 +110,17 @@ public class AssertFixer {
             repairType = AssertFixerResult.RepairType.TryCatchRepair;
         }
 
+        // we generate the source on disk
         SpoonModelBuilder compiler = spoon.createCompiler();
-        compiler.addInputSource(new File(configuration.getSourceOutputDirectory()));
-        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.generateProcessedSourceFiles(OutputType.CLASSES);
-        compiler.compile();
+
+        // we compile the sources in a fresh spoon
+        Launcher spoon2 = new Launcher();
+        spoon2.addInputResource(configuration.getSourceOutputDirectory());
+        spoon2.getEnvironment().setSourceClasspath(configuration.getClasspath().split(Util.PATH_SEPARATOR));
+        spoon2.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
+        spoon2.getEnvironment().setShouldCompile(true);
+        spoon2.run();
 
         boolean success = false;
         TestResult testResult;

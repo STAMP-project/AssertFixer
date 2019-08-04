@@ -37,7 +37,7 @@ public class AssertFixerTest extends AbstractTest {
                 failures.get(0),
                 getClasspath());
 
-        assertTrue("result should have been successful", result.isSuccess());
+        assertTrue("result should have been successful " + result.getExceptionMessage(), result.isSuccess());
         return result;
     }
 
@@ -50,7 +50,7 @@ public class AssertFixerTest extends AbstractTest {
                 "@@ -44,1 +44,2 @@\n" +
                 "-        Assert.assertTrue(ClassResourcesTest.getFalse());\n" +
                 "+        // AssertFixer: old assertion Assert.assertTrue(ClassResourcesTest.getFalse())\n" +
-                "+        Assert.assertFalse(ClassResourcesTest.getFalse());";
+                "+        org.junit.Assert.assertFalse(ClassResourcesTest.getFalse());";
         assertNotNull(result.getDiff());
         assertEquals(expectedDiff, result.getDiff());
     }
@@ -213,9 +213,7 @@ public class AssertFixerTest extends AbstractTest {
         assertNotNull(result.getDiff());
         String expectedDiff = "--- src/test/resources/ClassResourcesTest.java\n" +
                 "+++ src/test/resources/ClassResourcesTest.java\n" +
-                "@@ -134,0 +134,1 @@\n" +
-                "+        // AssertFixer: old assertion Assert.assertNotSame(Double.NEGATIVE_INFINITY, ClassResourcesTest.getInfinityNegative())\n" +
-                "@@ -135,1 +136,2 @@\n" +
+                "@@ -134,1 +134,2 @@\n" +
                 "-        Assert.assertSame(Double.POSITIVE_INFINITY, ClassResourcesTest.getInfinityNegative());\n" +
                 "+        // AssertFixer: old assertion Assert.assertSame(Double.POSITIVE_INFINITY, ClassResourcesTest.getInfinityNegative())\n" +
                 "+        Assert.assertNotSame(Double.POSITIVE_INFINITY, ClassResourcesTest.getInfinityNegative());";

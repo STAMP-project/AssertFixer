@@ -3,6 +3,7 @@ package eu.stamp.project.assertfixer.asserts;
 import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Counter;
 import eu.stamp.project.assertfixer.util.Util;
+import org.junit.Assert;
 import spoon.reflect.code.CtComment;
 import spoon.reflect.code.CtFieldRead;
 import spoon.reflect.code.CtInvocation;
@@ -42,20 +43,14 @@ public class AssertionsFixer {
                             }
                         } else if (!((valueToReplace instanceof CtLiteral) && Logger.observations.get(index).equals(((CtLiteral) valueToReplace).getValue()))) {
                             if (Logger.observations.get(index) instanceof Boolean) {
-                                String snippet = ((CtInvocation) testCaseToBeFix.getBody().getStatement(index)).getTarget().toString() +
+                                String snippet = Assert.class.getCanonicalName() +
                                         ".assert" + Logger.observations.get(index).toString().toUpperCase().substring(0, 1) + Logger.observations.get(index).toString().substring(1)
                                         + "(" + valueToReplace + ")";
                                 testCaseToBeFix.getBody().getStatement(index).replace(factory.createCodeSnippetStatement(snippet));
                             } else if ("assertSame".equals(((CtInvocation) valueToReplace.getParent()).getExecutable().getSimpleName())) {
-                                ((CtInvocation) valueToReplace.getParent()).replace(factory.createCodeSnippetStatement(
-                                        valueToReplace.getParent().toString().replace("assertSame", "assertNotSame")
-                                        )
-                                );
+                                ((CtInvocation) valueToReplace.getParent()).getExecutable().setSimpleName("assertNotSame");
                             } else if ("assertNotSame".equals(((CtInvocation) valueToReplace.getParent()).getExecutable().getSimpleName())) {
-                                ((CtInvocation) valueToReplace.getParent()).replace(factory.createCodeSnippetStatement(
-                                        valueToReplace.getParent().toString().replace("assertSame", "assertSame")
-                                        )
-                                );
+                                ((CtInvocation) valueToReplace.getParent()).getExecutable().setSimpleName("assertSame");
                             } else if (Util.isFieldOfClass.test(Logger.observations.get(index))) {
                                 valueToReplace.replace(
                                         factory.createCodeSnippetExpression(

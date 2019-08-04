@@ -21,6 +21,7 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,10 +37,8 @@ import java.util.stream.IntStream;
  */
 public class TestRunner {
 
-    public static TestResult runTest(Configuration configuration, Launcher launcher, String failingTestClass, String failingTestMethod) {
-        final SpoonModelBuilder compiler = launcher.createCompiler();
-        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
-        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+    public static TestResult runTest(Configuration configuration, Launcher spoon, String failingTestClass, String failingTestMethod) {
+        compile(spoon, configuration);
         try {
             return EntryPoint.runTests(
                     configuration.getBinaryOutputDirectory()
@@ -52,6 +51,29 @@ public class TestRunner {
         }
     }
 
+    public static String getLoggerPath() {
+        try {
+            return new File(
+                    Logger.class.getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI())
+                    .getAbsolutePath();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    private static void compile(Launcher spoon, Configuration configuration) {
+        final SpoonModelBuilder compiler = spoon.createCompiler();
+        List<String> split = new ArrayList<>(Arrays.asList(configuration.getClasspath().split(Util.PATH_SEPARATOR)));
+        split.add(getLoggerPath());
+        compiler.setSourceClasspath(split.toArray(new String[0]));
+        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
+        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+    }
+
     public static void runTestWithLogger(Configuration configuration, Launcher spoon,
                                          String classpath,
                                          String fullQualifiedName,
@@ -60,10 +82,8 @@ public class TestRunner {
         final CtClass<?> testClass = factory.Class().get(fullQualifiedName);
         final CtElement addedElement = addSaveStatementInTearDownAfterClass(testClass);
 
-        // TODO should compute the path to Logger.class using the class loader instead of hard coded value
-        final String loggerClasspath = "target/classes/eu/stamp/project/assertfixer/log/Logger.class";
+        final String loggerClasspath = getLoggerPath();
         final String binaryOutputDirectory = configuration.getBinaryOutputDirectory();
-        final SpoonModelBuilder compiler = spoon.createCompiler();
 
         final CtMethod<?> ctMethod = testClass.getMethodsByName(testCaseName).get(0);
 
@@ -75,8 +95,8 @@ public class TestRunner {
                     testClass.addMethod(clone);
                     addedMethod.add(clone);
                 });
-        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
-        compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
+
+        compile(spoon, configuration);
 
         try {
             EntryPoint.runTests(binaryOutputDirectory + Util.PATH_SEPARATOR + classpath

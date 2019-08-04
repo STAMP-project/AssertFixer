@@ -75,7 +75,6 @@ public class Main {
 
         Launcher launcher = new Launcher();
         launcher.getEnvironment().setAutoImports(true);
-        launcher.getEnvironment().setNoClasspath(true);
         launcher.getEnvironment().setCommentEnabled(true);
         launcher.getEnvironment().setSourceClasspath(this.configuration.getClasspath().split(Util.PATH_SEPARATOR));
         if (this.configuration.getPathToSourceFolder() != null) {
@@ -103,22 +102,13 @@ public class Main {
 
         Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
-
-        try {
-            return AssertFixer.fixAssert(
-                        configuration,
-                        launcher,
-                        testClass,
-                        failingTestMethod,
-                        failure,
-                        this.configuration.getClasspath()
-                );
-        } catch (Exception e) {
-            AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
-            fixerResult.setFilePath(testClass.getPosition().getFile().getPath());
-            fixerResult.setExceptionMessage(e.getMessage());
-            fixerResult.setSuccess(false);
-            return fixerResult;
-        }
+        return AssertFixer.fixAssert(
+                    configuration,
+                    launcher,
+                    testClass,
+                    failingTestMethod,
+                    failure,
+                    this.configuration.getClasspath()
+            );
     }
 }
