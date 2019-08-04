@@ -1,5 +1,6 @@
 package eu.stamp.project.assertfixer;
 
+import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Util;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.BaseDescription;
@@ -20,40 +21,34 @@ import java.util.Arrays;
  */
 public class AbstractTest {
 
-    protected static String dependenciesToRunJUnit;
+    protected static String dependencies;
     protected static Configuration configuration;
 
-	public final static String junitJarPath = getJunitPath();
 	public final static String pathdep = "target/dependency-binary";
 
     static {
         try {
-			dependenciesToRunJUnit = junitJarPath + ":" +
-                    new File(
-                            BaseDescription.class.getProtectionDomain()
-                                    .getCodeSource()
-                                    .getLocation()
-                                    .toURI())
-                            .toString();
+			dependencies = getJarPath(Test.class)
+					+ Util.PATH_SEPARATOR + getJarPath(BaseDescription.class)
+					+ Util.PATH_SEPARATOR + getJarPath(Logger.class)
+					+ Util.PATH_SEPARATOR + pathdep
+			;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-	private static String getJunitPath() {
-		try {
-			return new File(
-					Test.class.getProtectionDomain()
-							.getCodeSource()
-							.getLocation()
-							.toURI()).getAbsolutePath();
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
+	private static String getJarPath(Class c) throws URISyntaxException {
+		return new File(
+				c.getProtectionDomain()
+						.getCodeSource()
+						.getLocation()
+						.toURI())
+				.getAbsolutePath();
 	}
 
+
 	protected static Launcher spoon;
-    protected static SpoonModelBuilder compiler;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -68,7 +63,7 @@ public class AbstractTest {
 
 
         configuration = new Configuration();
-        configuration.setClasspath(dependenciesToRunJUnit+":"+pathdep);
+        configuration.setClasspath(dependencies);
         configuration.setFullQualifiedFailingTestClass("aPackage.ClassResourcesTest");
         configuration.setFailingTestMethods(Arrays.asList("testAssertionErrorBoolean:testAssertionErrorPrimitive"));
         configuration.setPathToTestFolder(Arrays.asList("src/test/resources"));
@@ -78,8 +73,7 @@ public class AbstractTest {
 
         spoon = new Launcher();
         spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
-        spoon.addInputResource("src/main/java/eu/stamp/project/assertfixer/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
-		spoon.getModelBuilder().setSourceClasspath(junitJarPath, pathdep);
+		spoon.getModelBuilder().setSourceClasspath(configuration.getClasspath().split(Util.PATH_SEPARATOR));
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
@@ -87,8 +81,6 @@ public class AbstractTest {
         spoon.setSourceOutputDirectory(configuration.getSourceOutputDirectory());
         spoon.setBinaryOutputDirectory(configuration.getBinaryOutputDirectory());
         spoon.run();
-        compiler = spoon.createCompiler();
-        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
     }
 
     @AfterClass
@@ -97,7 +89,7 @@ public class AbstractTest {
     }
 
     protected static String getClasspath() {
-        return  dependenciesToRunJUnit + Util.PATH_SEPARATOR + pathdep + Util.PATH_SEPARATOR + configuration.getBinaryOutputDirectory();
+        return  dependencies + Util.PATH_SEPARATOR + configuration.getBinaryOutputDirectory();
     }
 
 }
