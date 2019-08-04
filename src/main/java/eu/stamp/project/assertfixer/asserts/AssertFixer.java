@@ -114,7 +114,7 @@ public class AssertFixer {
         SpoonModelBuilder compiler = spoon.createCompiler();
         compiler.generateProcessedSourceFiles(OutputType.CLASSES);
 
-        // we compile the sources
+        // we compile the sources in a fresh spoon
         Launcher spoon2 = new Launcher();
         spoon2.addInputResource(configuration.getSourceOutputDirectory());
         spoon2.getEnvironment().setSourceClasspath(configuration.getClasspath().split(Util.PATH_SEPARATOR));
