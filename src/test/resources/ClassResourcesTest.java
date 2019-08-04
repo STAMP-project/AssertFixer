@@ -146,4 +146,8 @@ public class ClassResourcesTest {
         assertNotSame(Double.NEGATIVE_INFINITY, getInfinityNegative());
         assertSame(Double.POSITIVE_INFINITY, getInfinityNegative());
     }
+
+    static {
+        foo.NotExist.foo();
+    }
 }

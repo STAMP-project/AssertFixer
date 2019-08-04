@@ -21,6 +21,7 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,7 +62,17 @@ public class TestRunner {
         final CtElement addedElement = addSaveStatementInTearDownAfterClass(testClass);
 
         // TODO should compute the path to Logger.class using the class loader instead of hard coded value
-        final String loggerClasspath = "target/classes/eu/stamp/project/assertfixer/log/Logger.class";
+        final String loggerClasspath;
+        try {
+            loggerClasspath = new File(
+                    Logger.class.getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI())
+                    .toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         final String binaryOutputDirectory = configuration.getBinaryOutputDirectory();
         final SpoonModelBuilder compiler = spoon.createCompiler();
 

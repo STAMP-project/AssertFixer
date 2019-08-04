@@ -10,6 +10,7 @@ import spoon.Launcher;
 import spoon.SpoonModelBuilder;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 /**
@@ -22,14 +23,12 @@ public class AbstractTest {
     protected static String dependenciesToRunJUnit;
     protected static Configuration configuration;
 
+	public final static String junitJarPath = getJunitPath();
+	public final static String pathdep = "target/dependency-binary";
+
     static {
         try {
-            dependenciesToRunJUnit = new File(
-                    Test.class.getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI())
-                    .toString() + ":" +
+			dependenciesToRunJUnit = junitJarPath + ":" +
                     new File(
                             BaseDescription.class.getProtectionDomain()
                                     .getCodeSource()
@@ -41,14 +40,35 @@ public class AbstractTest {
         }
     }
 
-    protected static Launcher spoon;
+	private static String getJunitPath() {
+		try {
+			return new File(
+					Test.class.getProtectionDomain()
+							.getCodeSource()
+							.getLocation()
+							.toURI()).getAbsolutePath();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected static Launcher spoon;
     protected static SpoonModelBuilder compiler;
 
     @BeforeClass
     public static void setUp() throws Exception {
+		Launcher preparation = new Launcher();
+		preparation.addInputResource("src/test/resources/NotExist.java");
+		preparation.getEnvironment().setComplianceLevel(7);
+		preparation.getEnvironment().setAutoImports(true);
+		preparation.getEnvironment().setShouldCompile(true);
+		preparation.getEnvironment().setCommentEnabled(true);
+		preparation.setBinaryOutputDirectory(pathdep);
+		preparation.run();
+
 
         configuration = new Configuration();
-        configuration.setClasspath(dependenciesToRunJUnit);
+        configuration.setClasspath(dependenciesToRunJUnit+":"+pathdep);
         configuration.setFullQualifiedFailingTestClass("aPackage.ClassResourcesTest");
         configuration.setFailingTestMethods(Arrays.asList("testAssertionErrorBoolean:testAssertionErrorPrimitive"));
         configuration.setPathToTestFolder(Arrays.asList("src/test/resources"));
@@ -57,10 +77,9 @@ public class AbstractTest {
         configuration.setGenTryCatch(true);
 
         spoon = new Launcher();
-        for (String path : configuration.getPathToTestFolder()) {
-            spoon.addInputResource(path);
-        }
+        spoon.addInputResource("src/test/resources/ClassResourcesTest.java");
         spoon.addInputResource("src/main/java/eu/stamp/project/assertfixer/asserts/log/Logger.java"); // adding the logger to the spoon model to compile and run it to fix assertions
+		spoon.getModelBuilder().setSourceClasspath(junitJarPath, pathdep);
         spoon.getEnvironment().setComplianceLevel(7);
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setShouldCompile(true);
@@ -78,7 +97,7 @@ public class AbstractTest {
     }
 
     protected static String getClasspath() {
-        return "target/assert-fixer/spooned-classes" + Util.PATH_SEPARATOR + dependenciesToRunJUnit;
+        return  dependenciesToRunJUnit + Util.PATH_SEPARATOR + pathdep + Util.PATH_SEPARATOR + configuration.getBinaryOutputDirectory();
     }
 
 }

@@ -21,7 +21,7 @@ public class MainTest {
                 "--classpath", AbstractTest.dependenciesToRunJUnit,
                 "--test-class", "aPackage.ClassResourcesTest",
                 "--test-method", "testAssertionErrorBoolean:testAssertionErrorPrimitive",
-                "--source-path", "src/test/resources/ClassResourcesTest.java",
+                "--source-path", "src/test/resources/NotExist.java",
                 "--test-path", "src/test/resources/ClassResourcesTest.java",
                 "--verbose",
                 "--output", "target/assert-fixer"
