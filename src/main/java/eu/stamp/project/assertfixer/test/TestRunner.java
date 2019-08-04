@@ -39,6 +39,7 @@ public class TestRunner {
 
     public static TestResult runTest(Configuration configuration, Launcher launcher, String failingTestClass, String failingTestMethod) {
         final SpoonModelBuilder compiler = launcher.createCompiler();
+        compiler.setSourceClasspath(configuration.getClasspath().split(Util.PATH_SEPARATOR));
         compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         compiler.compile(SpoonModelBuilder.InputType.CTTYPES);
         try {
