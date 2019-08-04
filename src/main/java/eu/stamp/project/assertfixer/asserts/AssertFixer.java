@@ -110,17 +110,12 @@ public class AssertFixer {
             repairType = AssertFixerResult.RepairType.TryCatchRepair;
         }
 
-        Launcher spoon2 = new Launcher();
-        spoon2.getEnvironment().setSourceClasspath(configuration.getClasspath().split(Util.PATH_SEPARATOR));
-        spoon2.addInputResource(configuration.getSourceOutputDirectory());
-        spoon2.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
-        spoon2.getEnvironment().setShouldCompile(true);
-//        SpoonModelBuilder compiler = spoon.createCompiler();
-//        compiler.addInputSource(new File(configuration.getSourceOutputDirectory()));
-//        compiler.setSourceClasspath(configuration.getClasspath().split(":"));
-//        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
-//        compiler.generateProcessedSourceFiles(OutputType.CLASSES);
-//        compiler.compile();
+        SpoonModelBuilder compiler = spoon.createCompiler();
+        compiler.addInputSource(new File(configuration.getSourceOutputDirectory()));
+        compiler.setSourceClasspath(configuration.getClasspath().split(":"));
+        compiler.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
+        compiler.generateProcessedSourceFiles(OutputType.CLASSES);
+        compiler.compile();
 
         boolean success = false;
         TestResult testResult;
