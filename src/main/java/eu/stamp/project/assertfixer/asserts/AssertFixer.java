@@ -111,7 +111,7 @@ public class AssertFixer {
         }
 
         Launcher spoon2 = new Launcher();
-        spoon2.getEnvironment().setSourceClasspath(configuration.getClasspath().split(":"));
+        spoon2.getEnvironment().setSourceClasspath(configuration.getClasspath().split(Util.PATH_SEPARATOR));
         spoon2.addInputResource(configuration.getSourceOutputDirectory());
         spoon2.setBinaryOutputDirectory(new File(configuration.getBinaryOutputDirectory()));
         spoon2.getEnvironment().setShouldCompile(true);

@@ -37,7 +37,7 @@ public class AssertFixerTest extends AbstractTest {
                 failures.get(0),
                 getClasspath());
 
-        assertTrue("result should have been successful", result.isSuccess());
+        assertTrue("result should have been successful " + result.getExceptionMessage(), result.isSuccess());
         return result;
     }
 
