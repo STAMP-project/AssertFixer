@@ -4,7 +4,9 @@ import eu.stamp.project.assertfixer.asserts.log.Logger;
 import eu.stamp.project.assertfixer.util.Util;
 import org.apache.commons.io.FileUtils;
 import org.hamcrest.BaseDescription;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import spoon.Launcher;
@@ -21,22 +23,11 @@ import java.util.Arrays;
  */
 public class AbstractTest {
 
-    protected static String dependencies;
-    protected static Configuration configuration;
+    protected String dependencies;
+    protected Configuration configuration;
 
 	public final static String pathdep = "target/dependency-binary";
 
-    static {
-        try {
-			dependencies = getJarPath(Test.class)
-					+ Util.PATH_SEPARATOR + getJarPath(BaseDescription.class)
-					+ Util.PATH_SEPARATOR + getJarPath(Logger.class)
-					+ Util.PATH_SEPARATOR + pathdep
-			;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 	public static String getJarPath(Class c) throws URISyntaxException {
 		return new File(
@@ -50,8 +41,13 @@ public class AbstractTest {
 
 	protected static Launcher spoon;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
+		dependencies = getJarPath(Test.class)
+				+ Util.PATH_SEPARATOR + getJarPath(BaseDescription.class)
+				+ Util.PATH_SEPARATOR + getJarPath(Logger.class)
+				+ Util.PATH_SEPARATOR + pathdep
+		;
 		Launcher preparation = new Launcher();
 		preparation.addInputResource("src/test/resources/NotExist.java");
 		preparation.getEnvironment().setComplianceLevel(7);
@@ -83,12 +79,12 @@ public class AbstractTest {
         spoon.run();
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         FileUtils.forceDelete(new File("target/assert-fixer"));
     }
 
-    protected static String getClasspath() {
+    protected String getClasspath() {
         return  dependencies + Util.PATH_SEPARATOR + configuration.getBinaryOutputDirectory();
     }
 
