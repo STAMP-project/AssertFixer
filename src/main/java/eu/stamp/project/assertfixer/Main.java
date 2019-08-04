@@ -102,18 +102,13 @@ public class Main {
 
         Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod).getFailingTests().get(0);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
-
-        try {
-            return AssertFixer.fixAssert(
-                        configuration,
-                        launcher,
-                        testClass,
-                        failingTestMethod,
-                        failure,
-                        this.configuration.getClasspath()
-                );
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return AssertFixer.fixAssert(
+                    configuration,
+                    launcher,
+                    testClass,
+                    failingTestMethod,
+                    failure,
+                    this.configuration.getClasspath()
+            );
     }
 }

@@ -40,7 +40,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class AssertFixer {
 
-    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) throws Exception {
+    public static AssertFixerResult fixAssert(Configuration configuration, Launcher spoon, CtClass originalClass, String testCaseName, Failure failure, String cp) {
         final CtClass<?> classTestToBeFixed = originalClass.clone();
         final String originalClassStr = originalClass.toString();
         final String filePath = originalClass.getPosition().getFile().getPath();
