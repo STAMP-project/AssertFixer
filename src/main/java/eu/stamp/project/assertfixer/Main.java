@@ -113,11 +113,7 @@ public class Main {
                         this.configuration.getClasspath()
                 );
         } catch (Exception e) {
-            AssertFixerResult fixerResult = new AssertFixerResult(failingClass, failingTestMethod);
-            fixerResult.setFilePath(testClass.getPosition().getFile().getPath());
-            fixerResult.setExceptionMessage(e.getMessage());
-            fixerResult.setSuccess(false);
-            return fixerResult;
+            throw new RuntimeException(e);
         }
     }
 }
