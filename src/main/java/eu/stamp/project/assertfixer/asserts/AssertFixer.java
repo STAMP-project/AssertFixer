@@ -136,6 +136,7 @@ public class AssertFixer {
             throw new RuntimeException(e);
         }
 
+        result.setExceptionMessage(testResult.getFailingTests().toString());
         result.setSuccess(success);
         if (success) {
             String diff = computeDiff(originalClassStr, classTestToBeFixed.toString(), relativeFilePath);
