@@ -38,7 +38,7 @@ public class AbstractTest {
         }
     }
 
-	private static String getJarPath(Class c) throws URISyntaxException {
+	public static String getJarPath(Class c) throws URISyntaxException {
 		return new File(
 				c.getProtectionDomain()
 						.getCodeSource()

@@ -18,7 +18,7 @@ public class MainTest {
     @Test
     public void test() throws Exception {
         assertEquals(0, Main.run(new String[]{
-                "--classpath", AbstractTest.dependencies,
+                "--classpath", AbstractTest.getJarPath(Test.class),
                 "--test-class", "aPackage.ClassResourcesTest",
                 "--test-method", "testAssertionErrorBoolean:testAssertionErrorPrimitive",
                 "--source-path", "src/test/resources/NotExist.java",
