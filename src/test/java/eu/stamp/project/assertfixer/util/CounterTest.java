@@ -9,7 +9,7 @@ import spoon.reflect.declaration.CtClass;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static eu.stamp.project.assertfixer.util.Util.FILE_SEPARATOR;
@@ -25,7 +25,7 @@ public class CounterTest extends AbstractTest {
 
     private void test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
-        List<Failure> failures = EntryPoint.runTests(
+        Set<Failure> failures = EntryPoint.runTests(
                 getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
@@ -34,7 +34,7 @@ public class CounterTest extends AbstractTest {
         AssertFixer.fixAssert(configuration, spoon,
                 testClass,
                 testCaseName,
-                failures.get(0),
+                failures.stream().findFirst().get(),
                 getClasspath());
     }
 

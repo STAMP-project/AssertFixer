@@ -7,12 +7,9 @@ import eu.stamp_project.testrunner.runner.Failure;
 import org.junit.Test;
 import spoon.reflect.declaration.CtClass;
 
+import java.util.Set;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Benjamin DANGLOT
@@ -24,7 +21,7 @@ public class AssertFixerTest extends AbstractTest {
     private AssertFixerResult test(String testCaseName) throws Exception {
         String fullQualifiedName = "aPackage.ClassResourcesTest";
 
-        List<Failure> failures = EntryPoint.runTests(
+        Set<Failure> failures = EntryPoint.runTests(
                 getClasspath(),
                 fullQualifiedName,
                 testCaseName).getFailingTests();// 1st assert fail
@@ -34,7 +31,7 @@ public class AssertFixerTest extends AbstractTest {
         AssertFixerResult result = AssertFixer.fixAssert(configuration, spoon,
                 testClass,
                 testCaseName,
-                failures.get(0),
+                failures.stream().findFirst().get(),
                 getClasspath());
 
         assertTrue("result should have been successful " + result.getExceptionMessage(), result.isSuccess());

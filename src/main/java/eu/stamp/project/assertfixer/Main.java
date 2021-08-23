@@ -100,7 +100,8 @@ public class Main {
     private AssertFixerResult fixGivenTest(Launcher launcher, String failingClass, String failingTestMethod) {
         CtClass testClass = launcher.getFactory().Class().get(failingClass);
 
-        Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod).getFailingTests().get(0);
+        Failure failure = TestRunner.runTest(this.configuration, launcher, failingClass, failingTestMethod)
+                .getFailingTests().stream().findFirst().orElseThrow(RuntimeException::new);
         LOGGER.info("Fixing: {}", failure.messageOfFailure);
         return AssertFixer.fixAssert(
                     configuration,
