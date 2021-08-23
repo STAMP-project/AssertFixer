@@ -61,6 +61,12 @@
 
     <repositories>
       <repository>
+        <id>snapshots-repo</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases><enabled>false</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
+      </repository>
+      <repository>
         <id>gforge.inria.fr-release</id>
         <name>Maven Repository for Spoon Release</name>
         <url>http://maven.inria.fr/artifactory/spoon-public-snapshot/</url>
@@ -109,7 +115,7 @@
         <dependency>
             <groupId>eu.stamp-project</groupId>
             <artifactId>test-runner</artifactId>
-            <version>2.1.1</version>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
@@ -205,7 +211,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.5.201505241946</version>
+                <version>0.8.7</version>
                 <configuration>
                     <excludes>
                         <exclude>**/fr/inria/spirals/test4repair/*</exclude>
