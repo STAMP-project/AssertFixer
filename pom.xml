@@ -59,14 +59,6 @@
         </repository>
     </distributionManagement>
 
-    <repositories>
-      <repository>
-        <id>gforge.inria.fr-release</id>
-        <name>Maven Repository for Spoon Release</name>
-        <url>http://maven.inria.fr/artifactory/spoon-public-snapshot/</url>
-      </repository>
-    </repositories>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <default.encoding>UTF-8</default.encoding>
@@ -78,7 +70,7 @@
         <dependency>
             <groupId>fr.inria.gforge.spoon</groupId>
             <artifactId>spoon-core</artifactId>
-            <version>7.6.0-SNAPSHOT</version>
+            <version>10.1.0</version>
         </dependency>
 
         <dependency>
